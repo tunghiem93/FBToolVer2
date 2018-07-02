@@ -352,19 +352,22 @@ namespace CMS_Shared.Keyword
                             /* call drawler api to crawl data */
                             var model = new CMS_CrawlerModels();
                             CMSPinFactory _fac = new CMSPinFactory();
-                            CrawlerHelper.Get_Tagged_Pins(ref model, keyWord.KeyWord, Commons.PinDefault);
-                            if (model != null && model.Pins != null && model.Pins.Any())
-                            {
-                                var listPinID = model.Pins.Select(o => o.ID).ToList();
-                                Parallel.ForEach(listPinID, pinID =>
-                                {
-                                    CrawlerHelper.Get_Tagged_OrtherPins(ref model, keyWord.KeyWord, Commons.PinOrtherDefault, "", 1, pinID);
-                                });
-                                //foreach (var pinID in listPinID)
-                                //{
-                                //    CrawlerHelper.Get_Tagged_OrtherPins(ref model, keyWord.KeyWord, Commons.PinOrtherDefault, "", 1, pinID);
-                                //}
-                            }
+                            //CrawlerHelper.Get_Tagged_Pins(ref model, keyWord.KeyWord, Commons.PinDefault);
+                            //if (model != null && model.Pins != null && model.Pins.Any())
+                            //{
+                            //    var listPinID = model.Pins.Select(o => o.ID).ToList();
+                            //    Parallel.ForEach(listPinID, pinID =>
+                            //    {
+                            //        CrawlerHelper.Get_Tagged_OrtherPins(ref model, keyWord.KeyWord, Commons.PinOrtherDefault, "", 1, pinID);
+                            //    });
+                            //    //foreach (var pinID in listPinID)
+                            //    //{
+                            //    //    CrawlerHelper.Get_Tagged_OrtherPins(ref model, keyWord.KeyWord, Commons.PinOrtherDefault, "", 1, pinID);
+                            //    //}
+                            //}
+
+                            CrawlerHelperFB.Get_Tagged_Pins(ref model, keyWord.KeyWord, Commons.PinDefault);
+
                             CommonHelper.WriteLogs("Crawler Success !!!");
                             var res = _fac.CreateOrUpdate(model.Pins, keyWord.ID, createdBy, ref msg);
 
