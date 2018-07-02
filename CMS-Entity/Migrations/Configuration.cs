@@ -9,7 +9,7 @@ namespace CMS_Entity.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = false;
+            AutomaticMigrationsEnabled = true;
             AutomaticMigrationDataLossAllowed = true;
 
         }
