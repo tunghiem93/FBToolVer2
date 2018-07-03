@@ -29,7 +29,17 @@ namespace CMS_Entity.Entity
         [StringLength(2000)]
         public string ImageUrl { get; set; }
 
-        public DateTime? Created_At { get; set; }
+        public DateTime Created_At { get; set; }
+
+        /* more field for fb data */
+        public int ReactionCount { get; set; }
+        public int ShareCount { get; set; }
+        public int CommentCount { get; set; }
+
+        [StringLength(2000)]
+        public string Description { get; set; }
+        public string OwnerId { get; set; }
+        public string OwnerName { get; set; }
 
         public int Status { get; set; }
 
