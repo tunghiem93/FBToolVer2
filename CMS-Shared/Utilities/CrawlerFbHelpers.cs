@@ -103,7 +103,6 @@ namespace CMS_Shared.Utilities
 
                                         if (nodeChildImage.Count == 1)
                                             fb_id = fb_ids[index];
-                                       
                                         CrawlerFBDetail(_apiDetail, fb_id, ref Pin);
                                     }
                                     Pin.ImageURL = _image;
@@ -183,6 +182,8 @@ namespace CMS_Shared.Utilities
                     {
                         pin.sharecount = Convert.ToInt16(dictionary["sharecount"]);
                     }
+
+                    pin.ID = fb_id;
                 }
                 else
                 {

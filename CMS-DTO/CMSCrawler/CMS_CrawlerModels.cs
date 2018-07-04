@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 namespace CMS_DTO.CMSCrawler
 {
     public class CMS_CrawlerModels
@@ -28,6 +27,9 @@ namespace CMS_DTO.CMSCrawler
         public int reactioncount { get; set; }
         public int sharecount { get; set; }
         public string ID { get; set; }
+        public string OwnerID { get; set; }
+        public string OwnerName { get; set; }
+        public string Description { get; set; }
         public DateTime Created_At { get; set; }
         public BoardModels Board { get; set; }
         public List<ImageModels> Images { get; set; }

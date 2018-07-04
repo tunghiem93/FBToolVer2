@@ -40,10 +40,14 @@ namespace CMS_Shared.CMSEmployees
                     /* update pin */
                     foreach (var uPin in lstPinUpdate)
                     {
-                        var repin_count = lstPin.Where(o => o.ID == uPin.ID).Select(o => o.Repin_count).FirstOrDefault();
-                        if (repin_count != uPin.Repin_count)
+                        var checkPin = lstPin.Where(o => o.ID == uPin.ID).FirstOrDefault();
+                        if (checkPin != null)
                         {
-                            uPin.Repin_count = repin_count;
+                            uPin.Repin_count = checkPin.Repin_count;
+                            uPin.ReactionCount = checkPin.reactioncount;
+                            uPin.ShareCount = checkPin.sharecount;
+                            uPin.CommentCount = checkPin.commentTotalCount;
+                            uPin.Description = checkPin.Description;
                             uPin.UpdatedBy = createdBy;
                             uPin.UpdatedDate = DateTime.Now;
                         }
@@ -58,8 +62,14 @@ namespace CMS_Shared.CMSEmployees
                             ID = pin.ID,
                             Link = pin.Link,
                             Repin_count = pin.Repin_count,
-                            ImageUrl = pin.Images.Select(o => o.url).First(),
-                            Created_At = pin.Created_At,
+                            ReactionCount = pin.reactioncount,
+                            ShareCount = pin.sharecount,
+                            CommentCount = pin.commentTotalCount,
+                            OwnerId = pin.OwnerID,
+                            OwnerName = pin.OwnerName,
+                            Description = pin.Description,
+                            ImageUrl = pin.ImageURL,
+                            Created_At = pin.Created_At < Commons.MinDate ? Commons.MinDate: pin.Created_At,
                             Domain = pin.Domain,
                             Status = (byte)Commons.EStatus.Active,
                             CreatedBy = createdBy,
@@ -216,7 +226,7 @@ namespace CMS_Shared.CMSEmployees
                         ID = o.ID,
                         Link = o.Link,
                         Domain = o.Domain,
-                        Repin_count = o.Repin_count ?? 0,
+                        Repin_count = o.Repin_count,
                         Images = new List<ImageModels>()
                                     {
                                         new ImageModels()

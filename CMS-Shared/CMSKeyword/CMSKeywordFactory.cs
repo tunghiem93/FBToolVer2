@@ -341,7 +341,7 @@ namespace CMS_Shared.Keyword
                     {
                         /* check time span crawl */
                         var timeSpanCrawl = DateTime.Now - keyWord.UpdatedDate;
-                        if(timeSpanCrawl.Value.TotalMinutes > 5 || keyWord.UpdatedDate == keyWord.CreatedDate) /* 5min to crawl data again */
+                        //if(timeSpanCrawl.Value.TotalMinutes > 5 || keyWord.UpdatedDate == keyWord.CreatedDate) /* 5min to crawl data again */
                         {
                             /* update crawer date */
                             var bkTime = keyWord.UpdatedDate;
@@ -353,20 +353,6 @@ namespace CMS_Shared.Keyword
                             var model = new CMS_CrawlerModels();
                             CMSPinFactory _fac = new CMSPinFactory();
                             CrawlerFbHelpers.CrawlerFb(keyWord.KeyWord, ref model);
-                            //CrawlerHelper.Get_Tagged_Pins(ref model, keyWord.KeyWord, Commons.PinDefault);
-                            //if (model != null && model.Pins != null && model.Pins.Any())
-                            //{
-                            //    var listPinID = model.Pins.Select(o => o.ID).ToList();
-                            //    Parallel.ForEach(listPinID, pinID =>
-                            //    {
-                            //        CrawlerHelper.Get_Tagged_OrtherPins(ref model, keyWord.KeyWord, Commons.PinOrtherDefault, "", 1, pinID);
-                            //    });
-                            //    //foreach (var pinID in listPinID)
-                            //    //{
-                            //    //    CrawlerHelper.Get_Tagged_OrtherPins(ref model, keyWord.KeyWord, Commons.PinOrtherDefault, "", 1, pinID);
-                            //    //}
-                            //}
-
                           //  CrawlerHelperFB.Get_Tagged_Pins(ref model, keyWord.KeyWord, Commons.PinDefault);
 
                             CommonHelper.WriteLogs("Crawler Success !!!");
