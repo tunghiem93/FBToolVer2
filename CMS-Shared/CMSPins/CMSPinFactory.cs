@@ -224,7 +224,7 @@ namespace CMS_Shared.CMSEmployees
                                             url = o.ImageUrl,
                                         },
                                     },
-                        Created_At = o.Created_At ?? DateTime.MinValue,
+                        Created_At = o.Created_At,
                         CreatedDate = o.CreatedDate ?? DateTime.MinValue,
                         UpdateDate = o.UpdatedDate ?? DateTime.MinValue,
                         //LastTime = CommonHelper.GetDurationFromNow(o.UpdatedDate),
