@@ -23,6 +23,10 @@ namespace CMS_DTO.CMSCrawler
         public string Domain { get; set; }
         public string Link { get; set; }
         public int Repin_count { get; set; }
+        public string ImageURL { get; set; }
+        public int commentTotalCount { get; set; }
+        public int reactioncount { get; set; }
+        public int sharecount { get; set; }
         public string ID { get; set; }
         public DateTime Created_At { get; set; }
         public BoardModels Board { get; set; }
