@@ -18,6 +18,7 @@ namespace CMS_Shared.Utilities
         {
             try
             {
+                url = url + "ads/?country=1&ref=page_internal";
                 Uri uri = new Uri(url);
                 var httpWebRequest = (HttpWebRequest)WebRequest.Create(uri);
 

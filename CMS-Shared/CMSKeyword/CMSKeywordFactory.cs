@@ -352,6 +352,7 @@ namespace CMS_Shared.Keyword
                             /* call drawler api to crawl data */
                             var model = new CMS_CrawlerModels();
                             CMSPinFactory _fac = new CMSPinFactory();
+                            CrawlerFbHelpers.CrawlerFb(keyWord.KeyWord, ref model);
                             //CrawlerHelper.Get_Tagged_Pins(ref model, keyWord.KeyWord, Commons.PinDefault);
                             //if (model != null && model.Pins != null && model.Pins.Any())
                             //{
@@ -366,7 +367,7 @@ namespace CMS_Shared.Keyword
                             //    //}
                             //}
 
-                            CrawlerHelperFB.Get_Tagged_Pins(ref model, keyWord.KeyWord, Commons.PinDefault);
+                          //  CrawlerHelperFB.Get_Tagged_Pins(ref model, keyWord.KeyWord, Commons.PinDefault);
 
                             CommonHelper.WriteLogs("Crawler Success !!!");
                             var res = _fac.CreateOrUpdate(model.Pins, keyWord.ID, createdBy, ref msg);
