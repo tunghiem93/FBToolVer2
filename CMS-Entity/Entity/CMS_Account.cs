@@ -23,7 +23,10 @@ namespace CMS_Entity.Entity
         [Required]
         [StringLength(250)]
         public string Password { get; set; }
-        
+
+        [StringLength(4000)]
+        public string Cookies { get; set; }
+
         public bool IsActive { get; set; }
 
         [StringLength(60)]
