@@ -20,11 +20,11 @@ namespace CMS_Entity.Entity
         [StringLength(2000)]
         public string Link { get; set; }
 
-        [Required]
-        [StringLength(100)]
+
+        [StringLength(500)]
         public string Domain { get; set; }
 
-        public int? Repin_count { get; set; }
+        public int Repin_count { get; set; }
 
         [StringLength(2000)]
         public string ImageUrl { get; set; }
