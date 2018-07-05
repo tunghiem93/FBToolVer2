@@ -28,12 +28,7 @@ namespace CMS_Shared.Utilities
                 httpWebRequest.Headers["Cookie"] = "fr=00vWc1xIrs0snjSy5.AWVqFN0KE5XOIZP6R8_OtgSYx74.BbPZjk.hq.AAA.0.0.BbPZ55.AWWFnpj1; sb=5Jg9W17E6SfjFKl6ZZYbq1i8; locale=vi_VN; wd=1164x269; datr=dZ49W6NkZHIQV9dBM55VxhS0; c_user=100027081379227; xs=40%3AjigBdKAofOFqbQ%3A2%3A1530764921%3A-1%3A-1; pl=n; spin=r.4072592_b.trunk_t.1530764922_s.1_v.2_; act=1530764986937%2F1; presence=EDvF3EtimeF1530765226EuserFA21B27081379227A2EstateFDutF1530765226895CEchFDp_5f1B27081379227F2CC";
                 httpWebRequest.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:61.0) Gecko/20100101 Firefox/61.0";
                 httpWebRequest.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";
-                //httpWebRequest.Headers["Proxy-Authorization"] = "Digest username=\"54737357\", realm=\"anonymox.net\", nonce=\"rt86WwAAAABgQKLm21UAAAwL3yIAAAAA\", uri=\"www.facebook.com:443\", response=\"47dc76deffbdaef3fc92784579b19d65\", qop=auth, nc=0000021f, cnonce=\"d0a10718bc5ea4b9\"";
-                //httpWebRequest.ServicePoint.BindIPEndPointDelegate = delegate
-                //{
-                //    return new IPEndPoint(IPAddress.Parse("146.185.28.59"), 443);
-                //};
-                //httpWebRequest.Headers["Remote-Address"] = "146.185.28.59:443";
+
                 httpWebRequest.Timeout = 100000;
                 var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
                 using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
@@ -132,44 +127,53 @@ namespace CMS_Shared.Utilities
         {
             try
             {
-                var url = "https://www.facebook.com" + Url+ "";
-               // url = "https://www.facebook.com/lifewithsunshine/photos/a.1797478757133845.1073741829.1757631344451920/2063689897179395/?type=3&theater&fb_id=2063689920512726";
-                Uri uri = new Uri(url);
+                Url = "https://www.facebook.com" + Url+ "";
+                Uri uri = new Uri(Url);
                 var httpWebRequest = (HttpWebRequest)WebRequest.Create(uri);
 
-                httpWebRequest.Headers["Cookie"] = "fr=0g932KaBNIHkPNSHd.AWUyWBwpX4_A_YKA4NhvmupYBkk.BbMcZu.uD.Fs5.0.0.BbOtXK.AWXncoeT; sb=NmI3W-ffluEtyFHleEWSjhBl; wd=1920x943; datr=NmI3WwtbosYtTwDtslqJtXZd; c_user=100003727776485; xs=136%3Au6XG_yUasjTeFQ%3A2%3A1530356294%3A6091%3A726; pl=n; spin=r.4066192_b.trunk_t.1530495666_s.1_v.2_; act=1530582591458%2F0; presence=EDvF3EtimeF1530582595EuserFA21B03727776485A2EstateFDutF1530582595488CEchFDp_5f1B03727776485F2CC";
+                httpWebRequest.Headers["Cookie"] = "fr=00vWc1xIrs0snjSy5.AWVqFN0KE5XOIZP6R8_OtgSYx74.BbPZjk.hq.AAA.0.0.BbPZ55.AWWFnpj1; sb=5Jg9W17E6SfjFKl6ZZYbq1i8; locale=vi_VN; wd=1164x269; datr=dZ49W6NkZHIQV9dBM55VxhS0; c_user=100027081379227; xs=40%3AjigBdKAofOFqbQ%3A2%3A1530764921%3A-1%3A-1; pl=n; spin=r.4072592_b.trunk_t.1530764922_s.1_v.2_; act=1530764986937%2F1; presence=EDvF3EtimeF1530765226EuserFA21B27081379227A2EstateFDutF1530765226895CEchFDp_5f1B27081379227F2CC";
                 httpWebRequest.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:61.0) Gecko/20100101 Firefox/61.0";
                 httpWebRequest.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";
-                httpWebRequest.Headers["Proxy-Authorization"] = "Digest username=\"54737357\", realm=\"anonymox.net\", nonce=\"rt86WwAAAABgQKLm21UAAAwL3yIAAAAA\", uri=\"www.facebook.com:443\", response=\"47dc76deffbdaef3fc92784579b19d65\", qop=auth, nc=0000021f, cnonce=\"d0a10718bc5ea4b9\"";
-                //httpWebRequest.Headers["Remote-Address"] = "146.185.28.59:443";
+                
                 httpWebRequest.Timeout = 100000;
                 var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+
                 using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
                 {
                     var html = streamReader.ReadToEnd();
                     HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
                     doc.LoadHtml(html);
+
                     var script = doc.DocumentNode.Descendants()
                              .Where(n => n.Name == "script").ToList();
-                    if (script != null && script.Count > 10)
+
+                    var listScript = script.Where(o=> !string.IsNullOrEmpty(o.InnerText)).Select(o => o.InnerText).ToList();
+                    foreach (var innerScript in listScript)
                     {
-                        var nodeJson = script[10].InnerText;
-                        if (!string.IsNullOrEmpty(nodeJson))
+                        if (innerScript.Contains("feedbacktarget"))
                         {
-                             findNode(nodeJson, "feedbacktarget", 0, fb_id, ref pin);
+                            if (findNode(innerScript, "feedbacktarget", 0, fb_id, ref pin))
+                            {
+                                LogHelper.WriteLogs("CrawlerFBDetail Success: ", fb_id);
+                                break;
+                            }
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
+                LogHelper.WriteLogs("ErrorCrawlerFBDetail: ", JsonConvert.SerializeObject(ex));
+                
                 NSLog.Logger.Error("CrawlerFB Detail", ex);
             }
         }
 
-        public static void findNode(string input, string key, int start,string fb_id, ref PinsModels pin)
+        public static bool findNode(string input, string key, int start,string fb_id, ref PinsModels pin)
         {
             var jsonfeedbacktarget = findElement(input, "feedbacktarget", 0);
+            if (string.IsNullOrEmpty(jsonfeedbacktarget))
+                return false;
             JavaScriptSerializer jsonSerializer = new JavaScriptSerializer();
             dynamic dobj = jsonSerializer.Deserialize<dynamic>(jsonfeedbacktarget);
             var dictionary = dobj as Dictionary<string, dynamic>;
@@ -192,45 +196,125 @@ namespace CMS_Shared.Utilities
                     }
 
                     pin.ID = fb_id;
+                    return true;
                 }
                 else
                 {
                     jsonfeedbacktarget = "\"feedbacktarget\":" + jsonfeedbacktarget;
                     input = input.Replace(jsonfeedbacktarget, "");
-                    findNode(input, key, start, fb_id,ref pin);
+                    return findNode(input, key, start, fb_id,ref pin);
                 }
             }
+            return false;
         }
 
+        public static bool findNodeV2(string input, string key, int start, string fb_id, ref PinsModels pin)
+        {
+            LogHelper.WriteLogs("findNodeV2"+ fb_id, "");
+            var count = 0;
+
+            try
+            {
+                while (input.Contains("feedbacktarget"))
+                {
+                    count++;
+                    var jsonfeedbacktarget = findElement(input, "feedbacktarget", 0);
+                    LogHelper.WriteLogs("findNodeV2"+ fb_id, jsonfeedbacktarget);
+                    
+                    JavaScriptSerializer jsonSerializer = new JavaScriptSerializer();
+                    dynamic dobj = jsonSerializer.Deserialize<dynamic>(jsonfeedbacktarget);
+                    var dictionary = dobj as Dictionary<string, dynamic>;
+                    if (dictionary.ContainsKey("entidentifier"))
+                    {
+                        var _fb_id = dictionary["entidentifier"];
+                        if (fb_id.Equals(_fb_id))
+                        {
+                            if (dictionary.ContainsKey("commentTotalCount"))
+                            {
+                                pin.commentTotalCount = Convert.ToInt16(dictionary["commentTotalCount"]);
+                            }
+                            if (dictionary.ContainsKey("reactioncount"))
+                            {
+                                pin.reactioncount = Convert.ToInt16(dictionary["reactioncount"]);
+                            }
+                            if (dictionary.ContainsKey("sharecount"))
+                            {
+                                pin.sharecount = Convert.ToInt16(dictionary["sharecount"]);
+                            }
+
+                            pin.ID = fb_id;
+                            return true;
+                        }
+                        else
+                        {
+                            jsonfeedbacktarget = "\"feedbacktarget\":" + jsonfeedbacktarget;
+                            input = input.Replace(jsonfeedbacktarget, "");
+                        }
+                    }
+                };
+            }
+            catch(Exception ex)
+            {
+                LogHelper.WriteLogs("ErrorfindNodeV2: " + fb_id, JsonConvert.SerializeObject(ex));
+            };
+            LogHelper.WriteLogs("EndfindNodeV2"+ fb_id, count.ToString());
+
+            return false;
+            
+        }
+        
+           
         public static string findElement(string _input, string key, int start)
         {
             var ret = "";
-            start = _input.IndexOf(key);
-            if (start > 0)
+            try
             {
-                var countLeftBreak = 0;
-                var iEnd = 0;
-                start = _input.IndexOf('{', start);
-                for (int i = start; i < _input.Length; i++)
+                start = _input.IndexOf(key);
+                if (start > 0)
                 {
-                    char ch = _input[i];
-                    if (ch == '}')
+                    var countLeftBreak = 0;
+                    var iEnd = 0;
+                    start = _input.IndexOf('{', start);
+                    for (int i = start; i < _input.Length; i++)
                     {
-                        countLeftBreak--;
-                        if (countLeftBreak == 0)
+                        char ch = _input[i];
+                        if (ch == '}')
                         {
-                            iEnd = i;
-                            break;
+                            countLeftBreak--;
+                            if (countLeftBreak == 0)
+                            {
+                                iEnd = i;
+                                break;
+                            }
                         }
+                        else if (ch == '{')
+                            countLeftBreak++;
                     }
-                    else if (ch == '{')
-                        countLeftBreak++;
+
+                    if (iEnd > start)
+                        ret = _input.Substring(start, iEnd - start + 1);
                 }
-
-                if (iEnd > start)
-                    ret = _input.Substring(start, iEnd - start + 1);
             }
+            catch (Exception ex) { };
+            
 
+            return ret;
+        }
+
+        public static string findFbId(string input)
+        {
+            var ret = "";
+            try
+            {
+                var iStart = input.IndexOf("fbid");
+                var iEnd = input.IndexOf("&amp;", iStart);
+                if (iEnd > iStart)
+                {
+                    iStart += 5;
+                    ret = input.Substring(iStart, iEnd - iStart);
+                }
+            }
+            catch (Exception ex) { };
             return ret;
         }
     }
