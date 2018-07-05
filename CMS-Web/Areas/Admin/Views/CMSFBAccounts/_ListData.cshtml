@@ -11,9 +11,11 @@
     .linkchange {
         text-decoration: none !important;
     }
+
     .table .btn {
         margin-right: -5px !important;
     }
+
     .linkPins {
         padding: 2px 6px !important;
     }
@@ -34,7 +36,8 @@
                     <thead @*style="display: none !important; "*@>
                         <tr>
                             <th class="text-left">Name</th>
-                            <th class="text-left">Created date</th>
+                            <th class="text-center">Created date</th>
+                            <th class="text-center">Cookies</th>
                             <th class="text-center">Action</th>
                         </tr>
                     </thead>
@@ -43,26 +46,33 @@
                         {
                             foreach (var item in Model)
                             {
-                            <tr class="odd gradeX rowKey">
-                                <td class="text-left">
-                                    <a class="btn btn-link" href="" target="_blank"><b>@Html.Raw("[" + item.Sequence + "]" + " " + item.Account)</b></a>
-                                </td>
-                                <td class="text-left">
-                                    @string.Format("{0}", item.CreatedDate.HasValue ? item.CreatedDate.Value.ToString("dd/MM/yyyy") : "")
-                                </td>
-                                <td class="text-center linkchange">
-                                    @{ if (true)
-                                        {
-                                            <a class="btn btn-sm btn-default cls-@item.Id" style="color: #17a2b8 !important; border-color: #17a2b8 !important; ">@Html.Raw("STATUS suppend")</a>
+                                <tr class="odd gradeX rowKey">
+                                    <td class="text-left">
+                                        <a class="btn btn-link" href="" target="_blank"><b>@Html.Raw("[" + item.Sequence + "]" + " " + item.Account)</b></a>
+                                    </td>
+                                    <td class="text-center">
+                                        @string.Format("{0}", item.CreatedDate.HasValue ? item.CreatedDate.Value.ToString("dd/MM/yyyy") : "")
+                                    </td>
+                                    <td class="text-center">
+                                        <a id="" onclick="GetFBAccountID('@item.Id')" class="btn btn-primary btn-sm" style="background-color: #337ab7; color: #fff; " data-id="@item.Id"
+                                           data-toggle="modal" @*data-backdrop="static"*@ data-target=".bs-example-modal-change-cookies">
+                                            <i class="fa fa-edit" style="font-size:14px;"></i>
+                                            <span>Cookies</span>
+                                        </a>
+                                    </td>
+                                    <td class="text-center linkchange">
+                                        @{ if (true)
+                                            {
+                                                <a class="btn btn-sm btn-default cls-@item.Id" style="color: #17a2b8 !important; border-color: #17a2b8 !important; ">@Html.Raw("STATUS suppend")</a>
+                                            }
+                                            else
+                                            {
+                                                <a class="btn btn-sm btn-default cls-@item.Id" style="color: #17a2b8 !important; border-color: #17a2b8 !important; ">@Html.Raw("STATUS ok")</a>
+                                            }
                                         }
-                                        else
-                                        {
-                                            <a class="btn btn-sm btn-default cls-@item.Id" style="color: #17a2b8 !important; border-color: #17a2b8 !important; ">@Html.Raw("STATUS ok")</a>
-                                        }
-                                    }
-                                    <a class="btn btn-sm btn-danger" onclick="Delete(this, '@item.Id'); return false;">@Html.Raw("Delete")</a>
-                                </td>
-                            </tr>
+                                        <a class="btn btn-sm btn-danger" onclick="Delete(this, '@item.Id'); return false;">@Html.Raw("Delete")</a>
+                                    </td>
+                                </tr>
                             }
                         }
                     </tbody>
@@ -70,6 +80,39 @@
             </div>
         </div>
         <!-- END EXAMPLE TABLE PORTLET-->
+    </div>
+</div>
+
+@*Modal Cookies*@
+<div class="modal fade bs-example-modal-change-cookies" id="modal-change-cookies" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document" style="width: 45%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" style=" text-align: left;">My cookies</h4>
+            </div>
+            <div id="div-postal-code" class="modal-body scroll" style="padding-top: 10px; ">
+                <table class="table center-content">
+                    <thead style=" background-color: #34495e">
+                        <tr style="color: #fff; ">
+                            <th>Cookies</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr id="tr-add-more-tab-wallet">
+                            <td style="padding-top:12px; text-align:left" colspan="7">
+                                <div class="col-md-12 col-sm-12 col-xs-12 ">
+                                    <textarea id="strCookies" placeholder="Cookies" style="width: 100%; min-height: 180px; "></textarea>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="modal-footer" style="text-align:right;">
+                    <button class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="SaveCookies(this, $('#strCookies').val())" data-dismiss="modal">Save change</button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -113,8 +156,10 @@
         ],
         "pageLength": 100,
         "columnDefs": [
-            { "orderable": false, "targets": [2] },
-            { "width": "25%", "targets": [2] },
+            { "orderable": false, "targets": [2, 3] },
+            { "width": "12%", "targets": [1] },
+            { "width": "10%", "targets": [2] },
+            { "width": "20%", "targets": [3] },
         ],
         "order": [
             [1, "asc"]

@@ -119,5 +119,42 @@ namespace CMS_Shared.CMSAccount
             catch (Exception) { }
             return null;
         }
+
+        public string GetCookies(string accountID)
+        {
+            try
+            {
+                using (var cxt = new CMS_Context())
+                {
+                    var data = cxt.CMS_Account.Where(w=>w.Id.Equals(accountID)).Select(x => x.Cookies).FirstOrDefault();
+                    return data;
+                }
+            }
+            catch (Exception) { }
+            return null;
+        }
+        public bool SaveCookies(string Id, string Cookies, ref string msg)
+        {
+            var result = true;
+            try
+            {
+                using (var cxt = new CMS_Context())
+                {
+                    var e = cxt.CMS_Account.Find(Id);
+                    if (e != null)
+                    {
+                        e.Cookies = Cookies;
+                    }
+                    cxt.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                msg = "Can't update this cookies.";
+                result = false;
+            }
+            return result;
+        }
+
     }
 }

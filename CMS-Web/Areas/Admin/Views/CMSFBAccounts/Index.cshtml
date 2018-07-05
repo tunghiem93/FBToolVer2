@@ -48,7 +48,7 @@
 </div>
 
 <script type="text/javascript">
-    var keyID = "";
+    var AccountID = "";
 
     $(document).ready(function () {
         LoadGrid();
@@ -87,5 +87,98 @@
                 $('.se-pre-con').hide();
             }
         });
-    }    
+    } 
+
+    function GetFBAccountID(AccountId) {
+        AccountID = AccountId;
+        if (AccountID != null && AccountID.length > 0) {            
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetCookiesFBAccount", "CMSFBAccounts")',
+                traditional: true,
+                data: {
+                    AccountID: AccountID,
+                },
+                contentType: "application/json; charset=utf-8",
+                dataType: "html",
+                success: function (data) {
+                    data = JSON.parse(data);
+                    if (data.Cookies != null && data.Cookies != '') {
+                        $('#strCookies').html(data.Cookies);
+                    }  
+                },
+                beforeSend: function () {
+                    $('.se-pre-con').show();
+                },
+                complete: function () {
+                    $('.se-pre-con').hide();
+                },
+                error: function (e) {
+                    if (e.status == 400) {
+                        alert("Can not save Cookies!");
+                    }
+                    $('.se-pre-con').hide();
+                }
+            });
+        }   
+    }
+
+    function SaveCookies(btn, cookies) {
+        $.ajax(
+        {
+            url: '@Url.Action("SaveCookiesFBAccount", "CMSFBAccounts")',
+            type: 'get',
+            data: {
+                ID: AccountID,
+                Cookies: cookies,
+            },
+            dataType: 'html',
+            success: function (data) {
+                $('.se-pre-con').hide();
+            },
+            beforeSend: function () {
+                $('.se-pre-con').show();
+            },
+            complete: function () {
+                $('.se-pre-con').hide();
+            },
+            error: function (e) {
+                if (e.status == 400) {
+                    $(".detail-error").text("Unable to save this cookies!");
+                }
+                $('.se-pre-con').hide();
+            }
+        });
+    } 
+
+    function AddKeyToGroup(e) {
+        var Cookies = $('#strCookies').text();
+        if (keyID != null && keyID.length > 0) {
+            $.ajax(
+            {
+                url: '@Url.Action("AddKeyToGroup", "CMSKeywords")',
+                type: 'get',
+                data: {
+                    AccountID: keyID,
+                    Cookies: GroupKeyId
+                },
+                dataType: 'html',
+                success: function (data) {
+                },
+                beforeSend: function () {
+                    $('.se-pre-con').show();
+                },
+                    complete: function () {
+                        alert('Cookies save successful!')
+                    $('.se-pre-con').hide();
+                },
+                    error: function (e) {
+                        if (e.status == 400) {
+                            alert("Can not save Cookies!");
+                        }
+                    $('.se-pre-con').hide();
+                }
+            });
+        }        
+    }
 </script>

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 
 namespace CMS_Web.Areas.Admin.Controllers
 {
@@ -14,10 +15,12 @@ namespace CMS_Web.Areas.Admin.Controllers
     public class CMSFBAccountsController : BaseController
     {
         private CMSAccountFactory _factory;
+        private CMSAccountFactory _facFBAccount;
         private List<string> ListItem = null;
         public CMSFBAccountsController()
         {
             _factory = new CMSAccountFactory();
+            _facFBAccount = new CMSAccountFactory();
             ListItem = new List<string>();
             ListItem = _factory.GetList().Select(o => o.Account).ToList();
         }
@@ -64,10 +67,37 @@ namespace CMS_Web.Areas.Admin.Controllers
                 return new HttpStatusCodeResult(400, e.Message);
             }
         }
+
         public ActionResult Delete(string ID)
         {
             var msg = "";
             var result = _factory.Delete(ID, ref msg);
+            if (result)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.OK);
+            }
+            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        }
+
+        public ActionResult GetCookiesFBAccount(string AccountID)
+        {
+            string msg = "";
+            var cookies = _facFBAccount.GetCookies(AccountID);
+            if(cookies != null && cookies.Length > 0)
+            { 
+                string str = "{'Cookies':'" + cookies + "'}";
+                JavaScriptSerializer jsSer = new JavaScriptSerializer();
+                object obj = jsSer.Deserialize(str, typeof(object));
+                return Json(obj, JsonRequestBehavior.AllowGet);
+            }
+            else
+                return new HttpStatusCodeResult(400, msg);
+        }
+
+        public ActionResult SaveCookiesFBAccount(string ID, string Cookies)
+        {
+            var msg = "";
+            var result = _factory.SaveCookies(ID, Cookies, ref msg);
             if (result)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.OK);
