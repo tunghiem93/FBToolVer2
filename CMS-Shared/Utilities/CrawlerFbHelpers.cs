@@ -50,7 +50,7 @@ namespace CMS_Shared.Utilities
                     // fb_id
                     var nodeFb_Id = doc.DocumentNode.Descendants().Where
                                     (
-                                        x => (x.Name == "span" && x.Attributes["class"] != null && x.Attributes["class"].Value.Contains("_3-8s"))
+                                        x => (x.Name == "div" && x.Attributes["class"] != null && x.Attributes["class"].Value.Contains("_5pcp _5lel _2jyu _232_"))
                                     ).ToList();
                     List<string> fb_ids = new List<string>();
                     if(nodeFb_Id != null && nodeFb_Id.Count > 0)
@@ -60,7 +60,7 @@ namespace CMS_Shared.Utilities
                             var strfb_id = item.GetAttributeValue("id", "");
                             if(!string.IsNullOrEmpty(strfb_id))
                             {
-                                var split = strfb_id.Split('_').ToList();
+                                var split = strfb_id.Split(';').ToList();
                                 if(split != null && split.Count > 1)
                                 {
                                     var fb_id = split[1];
@@ -100,9 +100,9 @@ namespace CMS_Shared.Utilities
                                         if (Splits != null && Splits.Count >= 5)
                                             fb_id = Splits[4];
 
-
-                                        if (nodeChildImage.Count == 1)
+                                        if (fb_ids != null && fb_ids.Count >= index && nodeChildImage.Count == 1)
                                             fb_id = fb_ids[index];
+
                                         CrawlerFBDetail(_apiDetail, fb_id, ref Pin);
                                     }
                                     Pin.ImageURL = _image;
