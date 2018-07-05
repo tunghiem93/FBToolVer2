@@ -1,5 +1,6 @@
 ﻿using CMS_DTO.CMSCrawler;
 using HtmlAgilityPack;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -23,10 +24,11 @@ namespace CMS_Shared.Utilities
                 var httpWebRequest = (HttpWebRequest)WebRequest.Create(uri);
 
                 /* request need cookie & user agent */
-                httpWebRequest.Headers["Cookie"] = "fr=0g932KaBNIHkPNSHd.AWUyWBwpX4_A_YKA4NhvmupYBkk.BbMcZu.uD.Fs5.0.0.BbOtXK.AWXncoeT; sb=NmI3W-ffluEtyFHleEWSjhBl; wd=1920x943; datr=NmI3WwtbosYtTwDtslqJtXZd; c_user=100003727776485; xs=136%3Au6XG_yUasjTeFQ%3A2%3A1530356294%3A6091%3A726; pl=n; spin=r.4066192_b.trunk_t.1530495666_s.1_v.2_; act=1530582591458%2F0; presence=EDvF3EtimeF1530582595EuserFA21B03727776485A2EstateFDutF1530582595488CEchFDp_5f1B03727776485F2CC";
+                //httpWebRequest.Headers["Cookie"] = "fr=0g932KaBNIHkPNSHd.AWUyWBwpX4_A_YKA4NhvmupYBkk.BbMcZu.uD.Fs5.0.0.BbOtXK.AWXncoeT; sb=NmI3W-ffluEtyFHleEWSjhBl; wd=1920x943; datr=NmI3WwtbosYtTwDtslqJtXZd; c_user=100003727776485; xs=136%3Au6XG_yUasjTeFQ%3A2%3A1530356294%3A6091%3A726; pl=n; spin=r.4066192_b.trunk_t.1530495666_s.1_v.2_; act=1530582591458%2F0; presence=EDvF3EtimeF1530582595EuserFA21B03727776485A2EstateFDutF1530582595488CEchFDp_5f1B03727776485F2CC";
+                httpWebRequest.Headers["Cookie"] = "fr=00vWc1xIrs0snjSy5.AWVqFN0KE5XOIZP6R8_OtgSYx74.BbPZjk.hq.AAA.0.0.BbPZ55.AWWFnpj1; sb=5Jg9W17E6SfjFKl6ZZYbq1i8; locale=vi_VN; wd=1164x269; datr=dZ49W6NkZHIQV9dBM55VxhS0; c_user=100027081379227; xs=40%3AjigBdKAofOFqbQ%3A2%3A1530764921%3A-1%3A-1; pl=n; spin=r.4072592_b.trunk_t.1530764922_s.1_v.2_; act=1530764986937%2F1; presence=EDvF3EtimeF1530765226EuserFA21B27081379227A2EstateFDutF1530765226895CEchFDp_5f1B27081379227F2CC";
                 httpWebRequest.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:61.0) Gecko/20100101 Firefox/61.0";
                 httpWebRequest.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";
-                httpWebRequest.Headers["Proxy-Authorization"] = "Digest username=\"54737357\", realm=\"anonymox.net\", nonce=\"rt86WwAAAABgQKLm21UAAAwL3yIAAAAA\", uri=\"www.facebook.com:443\", response=\"47dc76deffbdaef3fc92784579b19d65\", qop=auth, nc=0000021f, cnonce=\"d0a10718bc5ea4b9\"";
+                //httpWebRequest.Headers["Proxy-Authorization"] = "Digest username=\"54737357\", realm=\"anonymox.net\", nonce=\"rt86WwAAAABgQKLm21UAAAwL3yIAAAAA\", uri=\"www.facebook.com:443\", response=\"47dc76deffbdaef3fc92784579b19d65\", qop=auth, nc=0000021f, cnonce=\"d0a10718bc5ea4b9\"";
                 //httpWebRequest.ServicePoint.BindIPEndPointDelegate = delegate
                 //{
                 //    return new IPEndPoint(IPAddress.Parse("146.185.28.59"), 443);
@@ -69,6 +71,7 @@ namespace CMS_Shared.Utilities
                             }
                         }
                     }
+                    LogHelper.WriteLogs("ListID: " , JsonConvert.SerializeObject(fb_ids));
 
                    // node html image 
                    List <HtmlNode> nodeHtmlImage = doc.DocumentNode.Descendants().Where
@@ -112,12 +115,17 @@ namespace CMS_Shared.Utilities
                             index++;
                         }
                     }
+
+                    LogHelper.WriteLogs("ListPin: ", JsonConvert.SerializeObject(pins));
                 }
             }
             catch (Exception ex)
             {
+                LogHelper.WriteLogs("ErrorCrawlerFB: "+ url, JsonConvert.SerializeObject(ex));
+
                 NSLog.Logger.Error("Crawler Fb: ", ex);
             }
+            LogHelper.WriteLogs("FinishCrawlerFB", url);
         }
 
         public static void CrawlerFBDetail(string Url, string fb_id, ref PinsModels pin)

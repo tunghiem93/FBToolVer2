@@ -326,9 +326,6 @@ namespace CMS_Shared.Keyword
 
         public bool CrawlData(string Id, string createdBy, ref string msg)
         {
-            NSLog.Logger.Info("CrawlData:", Id);
-            //CommonHelper.WriteLog("CrawlData: " + Id);
-            //CommonHelper.WriteLogs("CrawlerData : " + Id);
             LogHelper.WriteLogs("CrawlerData: " + Id, "");
             var result = true;
             try
@@ -353,10 +350,12 @@ namespace CMS_Shared.Keyword
                             var model = new CMS_CrawlerModels();
                             CMSPinFactory _fac = new CMSPinFactory();
                             CrawlerFbHelpers.CrawlerFb(keyWord.KeyWord, ref model);
-                          //  CrawlerHelperFB.Get_Tagged_Pins(ref model, keyWord.KeyWord, Commons.PinDefault);
 
-                            CommonHelper.WriteLogs("Crawler Success !!!");
-                            var res = _fac.CreateOrUpdate(model.Pins, keyWord.ID, createdBy, ref msg);
+                            var res = false;
+                            if (model.Pins.Count > 0)
+                            {
+                                res = _fac.CreateOrUpdate(model.Pins, keyWord.ID, createdBy, ref msg);
+                            }
 
                             if (res == false)
                             {
@@ -378,13 +377,9 @@ namespace CMS_Shared.Keyword
             {
                 msg = "Crawl data is unsuccessfully.";
                 result = false;
-
-                NSLog.Logger.Error("ErrorCrawlData: " + Id, ex);
-                //CommonHelper.WriteLog("ErrorCrawlData: " + Id + "\nException:"+ ex.ToString());
+                
                 LogHelper.WriteLogs("ErrorCrawlData: " + Id, JsonConvert.SerializeObject(ex));
             }
-            NSLog.Logger.Info("ResponseCrawlData: " + Id, result);
-            //CommonHelper.WriteLog("ResponseCrawlData: " + Id);
             LogHelper.WriteLogs("ResponseCrawlData: " + Id, result.ToString());
 
             return result;
