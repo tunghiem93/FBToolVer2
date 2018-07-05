@@ -3,14 +3,14 @@
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 @{ 
-    ViewBag.Title = "keyword - list data";
+    ViewBag.Title = "Fanpages - list data";
 }
 
 <div role="main">
     <div class="se-pre-con" style="display: none;"></div>
     <div class="page-title">
         <!-- BEGIN PAGE BAR -->
-        @Html.Partial("_breadcrumb", new Dictionary<string, string> { { "A", "Home page" }, { "B", "List data - Keywords" } })
+        @Html.Partial("_breadcrumb", new Dictionary<string, string> { { "A", "Home page" }, { "B", "List data - Fanpages" } })
         <!-- END PAGE BAR -->
     </div>
     <div class="page-main">
@@ -23,7 +23,7 @@
                         <div class="col-md-3 col-sm-3 col-xs-12">
                             <div class="input-prepend input-group">
                                 <span class="add-on input-group-addon"><i class="glyphicon fa fa-search"></i></span>
-                                <input type="text" name="KeySearch" value="@Model.KeySearch" class="form-control" id="idStrSerch" placeholder="Add keywords..." />
+                                <input type="text" name="KeySearch" value="@Model.KeySearch" class="form-control" id="idStrSerch" placeholder="Add fanpages..." />
                             </div>
                             @*<label class="label label-danger" style='@string.Format("display:{0}", (user.DuplicateKeyword.Length > 0) ? "block":"none")'>Duplicate Keyword. Please enter again!</label>*@
                         </div>
@@ -84,7 +84,7 @@
             },
             error: function (e) {
                 if (e.status == 400) {
-                    $(".detail-error").text("Unable to crawl this key!");
+                    $(".detail-error").text("Unable to crawl this Fanpage!");
                 }
                 //$('.se-pre-con').hide();
             }
@@ -109,7 +109,7 @@
             },
             error: function (e) {
                 if (e.status == 400) {
-                    $(".detail-error").text("Unable to delete this key!");
+                    $(".detail-error").text("Unable to delete this Fanpage!");
                 }
                 $('.se-pre-con').hide();
             }
@@ -134,7 +134,7 @@
             },
             error: function (e) {
                 if (e.status == 400) {
-                    $(".detail-error").text("Unable to delete this key!");
+                    $(".detail-error").text("Unable to delete this Fanpage!");
                 }
                 $('.se-pre-con').hide();
             }
@@ -164,7 +164,7 @@
             },
             error: function (e) {
                 if (e.status == 400) {
-                    $(".detail-error").text("Unable to crawl this key!");
+                    $(".detail-error").text("Unable to crawl this Fanpage!");
                 }
                 //$('.se-pre-con').hide();
             }
@@ -191,7 +191,7 @@
             },
             error: function (e) {
                 if (e.status == 400) {
-                    $(".detail-error").text("Unable to delete this key!");
+                    $(".detail-error").text("Unable to delete this Fanpage!");
                 }
                 $('.se-pre-con').hide();
             }
@@ -218,7 +218,7 @@
             },
             error: function (e) {
                 if (e.status == 400) {
-                    $(".detail-error").text("Unable to delete this key!");
+                    $(".detail-error").text("Unable to delete this Fanpage!");
                 }
                 $('.se-pre-con').hide();
             }
@@ -247,12 +247,12 @@
                     $('.se-pre-con').show();
                 },
                     complete: function () {
-                        alert('Keyword save successful!')
+                        alert('Fanpage save successful!')
                     $('.se-pre-con').hide();
                 },
                     error: function (e) {
                         if (e.status == 400) {
-                            alert("Can not save Keyword!");
+                            alert("Can not save Fanpage!");
                         }
                     $('.se-pre-con').hide();
                 }

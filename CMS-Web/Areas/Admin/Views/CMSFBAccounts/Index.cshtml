@@ -3,14 +3,14 @@
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 @{ 
-    ViewBag.Title = "FB Accounts - list accounts";
+    ViewBag.Title = "Accounts - list accounts";
 }
 
 <div role="main">
     <div class="se-pre-con" style="display: none;"></div>
     <div class="page-title">
         <!-- BEGIN PAGE BAR -->
-        @Html.Partial("_breadcrumb", new Dictionary<string, string> { { "A", "Home page" }, { "B", "FB Accounts - List accounts" } })
+        @Html.Partial("_breadcrumb", new Dictionary<string, string> { { "A", "Home page" }, { "B", "Accounts - List accounts" } })
         <!-- END PAGE BAR -->
     </div>
     <div class="page-main">
@@ -82,7 +82,7 @@
             },
             error: function (e) {
                 if (e.status == 400) {
-                    $(".detail-error").text("Unable to delete this key!");
+                    $(".detail-error").text("Unable to delete this account!");
                 }
                 $('.se-pre-con').hide();
             }

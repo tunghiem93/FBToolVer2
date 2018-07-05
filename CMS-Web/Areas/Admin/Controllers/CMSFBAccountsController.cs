@@ -50,7 +50,7 @@ namespace CMS_Web.Areas.Admin.Controllers
                     }
                     else
                     {
-                        ViewBag.DuplicateKeyword = "Duplicate Keyword!";
+                        ViewBag.DuplicateKeyword = "Duplicate account!";
                     }
                 }
                 if (isCheck)

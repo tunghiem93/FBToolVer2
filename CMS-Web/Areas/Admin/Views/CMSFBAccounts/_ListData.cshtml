@@ -63,11 +63,11 @@
                                     <td class="text-center linkchange">
                                         @{ if (true)
                                             {
-                                                <a class="btn btn-sm btn-default cls-@item.Id" style="color: #17a2b8 !important; border-color: #17a2b8 !important; ">@Html.Raw("STATUS suppend")</a>
+                                                <a class="btn btn-sm btn-default cls-@item.Id" style="color: #17a2b8 !important; border-color: #17a2b8 !important; ">@Html.Raw("STATUS ok")</a>
                                             }
                                             else
                                             {
-                                                <a class="btn btn-sm btn-default cls-@item.Id" style="color: #17a2b8 !important; border-color: #17a2b8 !important; ">@Html.Raw("STATUS ok")</a>
+                                                <a class="btn btn-sm btn-default cls-@item.Id" style="color: #17a2b8 !important; border-color: #17a2b8 !important; ">@Html.Raw("STATUS suppend")</a>
                                             }
                                         }
                                         <a class="btn btn-sm btn-danger" onclick="Delete(this, '@item.Id'); return false;">@Html.Raw("Delete")</a>
@@ -168,7 +168,7 @@
 
     $(document).ready(function () {
         if ('@Duplicate' != '') {
-            alert('Duplicate Keyword. Please enter again!');
+            alert('Duplicate account. Please enter again!');
         }
         _tableEmployee = $('#sample_3').DataTable($.extend(true, {}, _settingsOptionTableEmployee));
 

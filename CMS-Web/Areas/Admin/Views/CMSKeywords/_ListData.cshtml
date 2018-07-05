@@ -26,7 +26,7 @@
         <div class="portlet box red">
             <div class="portlet-title">
                 <div class="caption">
-                    <i class="fa fa-cogs"></i>All Keywords
+                    <i class="fa fa-cogs"></i>All Fanpages
                 </div>
             </div>
             <div class="portlet-body">
@@ -58,7 +58,7 @@
                                     <td>
                                         @*<b>@Html.Raw("Total post got:")</b>*@
                                         <a class="btn btn-link linkPins" style="background-color: #007bff !important; color: #fff !important; " href="@Url.Action("Index", "CMSProducts", new { keywordID = item.Id})" target="_blank">@item.Quantity</a>
-                                        <b>&nbsp;&nbsp;@Html.Raw("Pins")</b>
+                                        <b>&nbsp;&nbsp;@Html.Raw("Posts")</b>
                                     </td>
                                     <td>@string.Format("{0}", item.CreatedDate.HasValue ? item.CreatedDate.Value.ToString("dd/MM/yyyy") : "")</td>
                                     <td class="text-center linkchange">
@@ -87,13 +87,13 @@
     <div class="modal-dialog" role="document" style="width: 25%;">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" style=" text-align: left;">Add group Keyword</h4>
+                <h4 class="modal-title" style=" text-align: left;">Add group Fanpage</h4>
             </div>
             <div id="div-postal-code" class="modal-body scroll" style="padding-top: 10px; ">
                 <table class="table center-content">
                     <thead style=" background-color: #34495e">
                         <tr style="color: #fff; ">
-                            <th>Group keyword</th>
+                            <th>Group Fanpage</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -172,7 +172,7 @@
 
     $(document).ready(function () {
         if ('@Duplicate' != '') {
-            alert('Duplicate Keyword. Please enter again!');
+            alert('Duplicate Fanpage. Please enter again!');
         }
         _tableEmployee = $('#sample_3').DataTable($.extend(true, {}, _settingsOptionTableEmployee));
 

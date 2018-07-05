@@ -4,7 +4,7 @@
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 @{
-    ViewBag.Title = "Pin data";
+    ViewBag.Title = "Posts data";
 }
 <style>
     body {
@@ -30,14 +30,14 @@
     <div class="_gridview">
         <div class="page-title">
             <!-- BEGIN PAGE BAR -->
-            @Html.Partial("_breadcrumb", new Dictionary<string, string> { { "A", "Home page" }, { "B", "Pin data" } })
+            @Html.Partial("_breadcrumb", new Dictionary<string, string> { { "A", "Home page" }, { "B", "Post data" } })
             <!-- END PAGE BAR -->
         </div>
         <div class="page-main">
             @using (Html.BeginForm("Search", "CMSProducts", FormMethod.Get, new { @class = "form-horizontal search-form", @id = "form-search" }))
             {
                 <fieldset>
-                    <legend>Filter Pin data by: </legend>
+                    <legend>Filter post data by: </legend>
                 </fieldset>
                 <div class="form-group">
                     <div class="col-md-3 col-sm-8 col-xs-12">
@@ -197,7 +197,7 @@
         })
 
         $("#KeywordsDdl").select2({
-            placeholder: "Keyword",
+            placeholder: "Fanpage",
             multiple: true,
         });
         var selectedValues = [];
