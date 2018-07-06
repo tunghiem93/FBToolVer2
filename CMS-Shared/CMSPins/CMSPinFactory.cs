@@ -43,7 +43,7 @@ namespace CMS_Shared.CMSEmployees
                         if (checkPin != null)
                         {
                             /* update days count */
-                            if (DbFunctions.TruncateTime(uPin.UpdatedDate) != DbFunctions.TruncateTime(DateTime.Now))
+                            if (uPin.UpdatedDate.Value.Day !=DateTime.Now.Day)
                                 uPin.DayCount++;
 
                             /* update other info */
