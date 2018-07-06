@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 
@@ -25,7 +26,7 @@ namespace CMS_Shared.Utilities
 
                 /* request need cookie & user agent */
                 //httpWebRequest.Headers["Cookie"] = "fr=0g932KaBNIHkPNSHd.AWUyWBwpX4_A_YKA4NhvmupYBkk.BbMcZu.uD.Fs5.0.0.BbOtXK.AWXncoeT; sb=NmI3W-ffluEtyFHleEWSjhBl; wd=1920x943; datr=NmI3WwtbosYtTwDtslqJtXZd; c_user=100003727776485; xs=136%3Au6XG_yUasjTeFQ%3A2%3A1530356294%3A6091%3A726; pl=n; spin=r.4066192_b.trunk_t.1530495666_s.1_v.2_; act=1530582591458%2F0; presence=EDvF3EtimeF1530582595EuserFA21B03727776485A2EstateFDutF1530582595488CEchFDp_5f1B03727776485F2CC";
-                httpWebRequest.Headers["Cookie"] = "fr=00vWc1xIrs0snjSy5.AWVqFN0KE5XOIZP6R8_OtgSYx74.BbPZjk.hq.AAA.0.0.BbPZ55.AWWFnpj1; sb=5Jg9W17E6SfjFKl6ZZYbq1i8; locale=vi_VN; wd=1164x269; datr=dZ49W6NkZHIQV9dBM55VxhS0; c_user=100027081379227; xs=40%3AjigBdKAofOFqbQ%3A2%3A1530764921%3A-1%3A-1; pl=n; spin=r.4072592_b.trunk_t.1530764922_s.1_v.2_; act=1530764986937%2F1; presence=EDvF3EtimeF1530765226EuserFA21B27081379227A2EstateFDutF1530765226895CEchFDp_5f1B27081379227F2CC";
+                httpWebRequest.Headers["Cookie"] = "fr=0g932KaBNIHkPNSHd.AWXxf95lRMddtf2MRVvraujAkc0.BbMcZu.uD.Fs5.0.0.BbPiEI.AWVEgjKc; sb=NmI3W-ffluEtyFHleEWSjhBl; wd=1366x631; datr=NmI3WwtbosYtTwDtslqJtXZd; c_user=100003727776485; xs=136%3Au6XG_yUasjTeFQ%3A2%3A1530356294%3A6091%3A726; pl=n; spin=r.4072650_b.trunk_t.1530773112_s.1_v.2_; presence=EDvF3EtimeF1530798371EuserFA21B03727776485A2EstateFDutF1530798371621Et3F_5b_5dElm3FA2user_3a150588258893142A2Eutc3F1530798370407CEchFDp_5f1B03727776485F2CC; act=1530798384170%2F5";
                 httpWebRequest.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:61.0) Gecko/20100101 Firefox/61.0";
                 httpWebRequest.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";
 
@@ -63,6 +64,10 @@ namespace CMS_Shared.Utilities
                                     var fb_id = split[1];
                                     fb_ids.Add(fb_id);
                                 }
+                                else
+                                {
+                                    fb_ids.Add("");
+                                }
                             }
                         }
                     }
@@ -78,7 +83,7 @@ namespace CMS_Shared.Utilities
                         var index = 0;
                         foreach (var item in nodeHtmlImage)
                         {
-                            string fb_id = "";//fb_ids[index];
+                            List<string> fb_id = new List<string>();
                             var nodeChildImage = item.Descendants("a").ToList();
                             if (nodeChildImage != null && nodeChildImage.Count > 0)
                             {
@@ -92,25 +97,28 @@ namespace CMS_Shared.Utilities
                                     }
 
                                     var Pin = new PinsModels();
-                                    if (!string.IsNullOrEmpty(_apiDetail))
+                                    if (!string.IsNullOrEmpty(_image) && !string.IsNullOrEmpty(_apiDetail))
                                     {
                                         var Splits = _apiDetail.Split('/').ToList();
                                         if (Splits != null && Splits.Count >= 5)
-                                            fb_id = Splits[4];
+                                            fb_id.Add(Splits[4]);
 
-                                        if (fb_ids != null && fb_ids.Count >= index && nodeChildImage.Count == 1)
-                                            fb_id = fb_ids[index];
-
+                                        if (fb_ids != null && fb_ids.Count >= index /*&& nodeChildImage.Count == 1*/)
+                                        {
+                                            if(!string.IsNullOrEmpty(fb_ids[index]))
+                                            {
+                                                fb_id.Add(fb_ids[index]);
+                                            }
+                                        }
                                         CrawlerFBDetail(_apiDetail, fb_id, ref Pin);
+                                        Pin.ImageURL = _image;
+                                        pins.Pins.Add(Pin);
                                     }
-                                    Pin.ImageURL = _image;
-                                    pins.Pins.Add(Pin);
                                 }
                             }
                             index++;
                         }
                     }
-
                     LogHelper.WriteLogs("ListPin: ", JsonConvert.SerializeObject(pins));
                 }
             }
@@ -123,7 +131,7 @@ namespace CMS_Shared.Utilities
             LogHelper.WriteLogs("FinishCrawlerFB", url);
         }
 
-        public static void CrawlerFBDetail(string Url, string fb_id, ref PinsModels pin)
+        public static void CrawlerFBDetail(string Url, List<string> fb_id, ref PinsModels pin)
         {
             try
             {
@@ -131,7 +139,7 @@ namespace CMS_Shared.Utilities
                 Uri uri = new Uri(Url);
                 var httpWebRequest = (HttpWebRequest)WebRequest.Create(uri);
 
-                httpWebRequest.Headers["Cookie"] = "fr=00vWc1xIrs0snjSy5.AWVqFN0KE5XOIZP6R8_OtgSYx74.BbPZjk.hq.AAA.0.0.BbPZ55.AWWFnpj1; sb=5Jg9W17E6SfjFKl6ZZYbq1i8; locale=vi_VN; wd=1164x269; datr=dZ49W6NkZHIQV9dBM55VxhS0; c_user=100027081379227; xs=40%3AjigBdKAofOFqbQ%3A2%3A1530764921%3A-1%3A-1; pl=n; spin=r.4072592_b.trunk_t.1530764922_s.1_v.2_; act=1530764986937%2F1; presence=EDvF3EtimeF1530765226EuserFA21B27081379227A2EstateFDutF1530765226895CEchFDp_5f1B27081379227F2CC";
+                httpWebRequest.Headers["Cookie"] = "fr=0g932KaBNIHkPNSHd.AWXxf95lRMddtf2MRVvraujAkc0.BbMcZu.uD.Fs5.0.0.BbPiEI.AWVEgjKc; sb=NmI3W-ffluEtyFHleEWSjhBl; wd=1366x631; datr=NmI3WwtbosYtTwDtslqJtXZd; c_user=100003727776485; xs=136%3Au6XG_yUasjTeFQ%3A2%3A1530356294%3A6091%3A726; pl=n; spin=r.4072650_b.trunk_t.1530773112_s.1_v.2_; presence=EDvF3EtimeF1530798371EuserFA21B03727776485A2EstateFDutF1530798371621Et3F_5b_5dElm3FA2user_3a150588258893142A2Eutc3F1530798370407CEchFDp_5f1B03727776485F2CC; act=1530798384170%2F5";
                 httpWebRequest.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:61.0) Gecko/20100101 Firefox/61.0";
                 httpWebRequest.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";
                 
@@ -147,14 +155,14 @@ namespace CMS_Shared.Utilities
                     var script = doc.DocumentNode.Descendants()
                              .Where(n => n.Name == "script").ToList();
 
-                    var listScript = script.Where(o=> !string.IsNullOrEmpty(o.InnerText)).Select(o => o.InnerText).ToList();
+                    var listScript = script.Where(o=> !string.IsNullOrEmpty(o.InnerText) && o.InnerText.Contains("require") && o.InnerText.Contains("UFIController")).Select(o => o.InnerText).ToList();
                     foreach (var innerScript in listScript)
                     {
                         if (innerScript.Contains("feedbacktarget"))
                         {
                             if (findNode(innerScript, "feedbacktarget", 0, fb_id, ref pin))
                             {
-                                LogHelper.WriteLogs("CrawlerFBDetail Success: ", fb_id);
+                                LogHelper.WriteLogs("CrawlerFBDetail Success: ", JsonConvert.SerializeObject(fb_id));
                                 break;
                             }
                         }
@@ -169,41 +177,36 @@ namespace CMS_Shared.Utilities
             }
         }
 
-        public static bool findNode(string input, string key, int start,string fb_id, ref PinsModels pin)
+        public static bool findNode(string input, string key, int start,List<string> fb_id, ref PinsModels pin)
         {
             var jsonfeedbacktarget = findElement(input, "feedbacktarget", 0);
             if (string.IsNullOrEmpty(jsonfeedbacktarget))
                 return false;
-            JavaScriptSerializer jsonSerializer = new JavaScriptSerializer();
-            dynamic dobj = jsonSerializer.Deserialize<dynamic>(jsonfeedbacktarget);
-            var dictionary = dobj as Dictionary<string, dynamic>;
-            if (dictionary.ContainsKey("entidentifier"))
+            try
             {
-                var _fb_id = dictionary["entidentifier"];
-                if (fb_id.Equals(_fb_id))
+                var dobj = JsonConvert.DeserializeObject<JsonObject>(jsonfeedbacktarget);
+                if (dobj != null)
                 {
-                    if (dictionary.ContainsKey("commentTotalCount"))
+                    if (fb_id.Contains(dobj.entidentifier))
                     {
-                         pin.commentTotalCount = Convert.ToInt16(dictionary["commentTotalCount"]);
-                    }
-                    if (dictionary.ContainsKey("reactioncount"))
-                    {
-                        pin.reactioncount = Convert.ToInt16(dictionary["reactioncount"]);
-                    }
-                    if (dictionary.ContainsKey("sharecount"))
-                    {
-                        pin.sharecount = Convert.ToInt16(dictionary["sharecount"]);
-                    }
+                        pin.commentTotalCount = dobj.commentcount;
+                        pin.sharecount = dobj.sharecount;
+                        pin.reactioncount = dobj.reactioncount;
+                        pin.ID = dobj.entidentifier;
 
-                    pin.ID = fb_id;
-                    return true;
+                        return true;
+                    }
+                    else
+                    {
+                        jsonfeedbacktarget = "\"feedbacktarget\":" + jsonfeedbacktarget;
+                        input = input.Replace(jsonfeedbacktarget, "");
+                        return findNode(input, key, start, fb_id, ref pin);
+                    }
                 }
-                else
-                {
-                    jsonfeedbacktarget = "\"feedbacktarget\":" + jsonfeedbacktarget;
-                    input = input.Replace(jsonfeedbacktarget, "");
-                    return findNode(input, key, start, fb_id,ref pin);
-                }
+            }
+            catch(Exception ex)
+            {
+
             }
             return false;
         }
@@ -317,5 +320,13 @@ namespace CMS_Shared.Utilities
             catch (Exception ex) { };
             return ret;
         }
+    }
+
+    public class JsonObject
+    {
+        public Int16 commentcount { get; set; }
+        public Int16 reactioncount { get; set; }
+        public Int16 sharecount { get; set; }
+        public string entidentifier { get; set; }
     }
 }
