@@ -30,7 +30,7 @@
                                 </table>
                             </div>
                             <div class="info-domain" style="background-color:#cce5ff;border-radius:5px !important;min-height:50px; margin-bottom: -5px !important; vertical-align: middle; overflow: auto">
-                                &nbsp;&nbsp;<a href="@string.Format("{0}",string.IsNullOrEmpty(item.Link) ? "javascript:void(0)" : item.Link)" style="color:#004085;font-weight:bold" target="_blank" title="@item.Link">@string.Format("{0}", !string.IsNullOrEmpty(item.Domain) && item.Domain.Length > 20 ? item.Domain.Substring(0, 20) + "..." : item.Domain)<span style="vertical-align: super;"><br />&nbsp;&nbsp; @item.Created_At.ToString("dd/MM/yyyy")</span></a>
+                                &nbsp;&nbsp;<a href="@string.Format("{0}",string.IsNullOrEmpty(item.Link) ? "javascript:void(0)" : item.Link)" style="color:#004085;font-weight:bold" target="_blank" title="@item.Link">@string.Format("{0}", !string.IsNullOrEmpty(item.OwnerName) && item.OwnerName.Length > 20 ? item.OwnerName.Substring(0, 20) + "..." : item.OwnerName)<span style="vertical-align: super;"><br />&nbsp;&nbsp; @item.Created_At.ToString("dd/MM/yyyy")</span></a>
 
                             </div>
                             @if (item.Description != null && item.Description.Length > 0)
