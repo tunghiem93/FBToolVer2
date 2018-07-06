@@ -47,7 +47,7 @@
                             {
                                 <tr class="odd gradeX rowKey">
                                     <td class="text-left">
-                                        <a class="btn btn-link" href="@Url.Action("Index", "CMSProducts", new { keywordID = item.Id})" target="_blank" style="font-size: 10px; "><b>@Html.Raw("[" + item.Sequence + "]" + " " + '"' + string.Format("{0}", (item.KeySearch.Length > 40) ? (item.KeySearch.Substring(0, 40) + "...") : item.KeySearch) + '"')</b></a>
+                                        <a class="btn btn-link" href="@Url.Action("Index", "CMSProducts", new { keywordID = item.Id})" target="_blank" title="@item.KeySearch" style="font-size: 10px; "><b>@Html.Raw("[" + item.Sequence + "]" + " " + '"' + string.Format("{0}", (item.KeySearch.Length > 40) ? (item.KeySearch.Substring(0, 40) + "...") : item.KeySearch) + '"')</b></a>
                                     </td>
                                     <td>
                                         <a class="btn btn-link linkchange" href="@Url.Action("Index", "CMSProducts", new { keywordID = item.Id})" target="_blank" style="color: #000 !important; ">
