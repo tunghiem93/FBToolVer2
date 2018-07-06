@@ -349,8 +349,25 @@ namespace CMS_Shared.Keyword
                             /* call drawler api to crawl data */
                             var model = new CMS_CrawlerModels();
                             CMSPinFactory _fac = new CMSPinFactory();
-                            CrawlerFbHelpers.CrawlerFb(keyWord.KeyWord, ref model);
 
+                            var listAcc = _db.CMS_Account.Where(o => o.Status == (byte)Commons.EStatus.Active && o.IsActive).ToList();
+                            foreach(var acc in listAcc)
+                            {
+                                CrawlerFbHelpers.Cookies = acc.Cookies;
+                                CrawlerFbHelpers.CrawlerFb(keyWord.KeyWord, ref model);
+                                
+                                if (model.Pins.Count > 0) /* crawl success */
+                                    break;
+                                else if (model.ErrorStatus == (byte)Commons.EErrorStatus.PendingAcc) /* Error account pending */
+                                {
+                                    acc.Status = (byte)Commons.EStatus.Pending;
+                                    acc.UpdatedBy = createdBy;
+                                    acc.UpdatedDate = DateTime.Now;
+                                }
+                                else /* page dont have post or unknow error */
+                                    break;
+                            }
+                            
                             var res = false;
                             if (model.Pins.Count > 0)
                             {

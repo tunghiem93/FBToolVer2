@@ -16,6 +16,7 @@ namespace CMS_Shared.Utilities
 {
     public class CrawlerFbHelpers
     {
+        public static string Cookies { get; set; }
         public static void CrawlerFb(string url, ref CMS_CrawlerModels pins)
         {
             try
@@ -26,7 +27,8 @@ namespace CMS_Shared.Utilities
 
                 /* request need cookie & user agent */
                 //httpWebRequest.Headers["Cookie"] = "fr=0g932KaBNIHkPNSHd.AWUyWBwpX4_A_YKA4NhvmupYBkk.BbMcZu.uD.Fs5.0.0.BbOtXK.AWXncoeT; sb=NmI3W-ffluEtyFHleEWSjhBl; wd=1920x943; datr=NmI3WwtbosYtTwDtslqJtXZd; c_user=100003727776485; xs=136%3Au6XG_yUasjTeFQ%3A2%3A1530356294%3A6091%3A726; pl=n; spin=r.4066192_b.trunk_t.1530495666_s.1_v.2_; act=1530582591458%2F0; presence=EDvF3EtimeF1530582595EuserFA21B03727776485A2EstateFDutF1530582595488CEchFDp_5f1B03727776485F2CC";
-                httpWebRequest.Headers["Cookie"] = "fr=0g932KaBNIHkPNSHd.AWXxf95lRMddtf2MRVvraujAkc0.BbMcZu.uD.Fs5.0.0.BbPiEI.AWVEgjKc; sb=NmI3W-ffluEtyFHleEWSjhBl; wd=1366x631; datr=NmI3WwtbosYtTwDtslqJtXZd; c_user=100003727776485; xs=136%3Au6XG_yUasjTeFQ%3A2%3A1530356294%3A6091%3A726; pl=n; spin=r.4072650_b.trunk_t.1530773112_s.1_v.2_; presence=EDvF3EtimeF1530798371EuserFA21B03727776485A2EstateFDutF1530798371621Et3F_5b_5dElm3FA2user_3a150588258893142A2Eutc3F1530798370407CEchFDp_5f1B03727776485F2CC; act=1530798384170%2F5";
+                //httpWebRequest.Headers["Cookie"] = "fr=0g932KaBNIHkPNSHd.AWXxf95lRMddtf2MRVvraujAkc0.BbMcZu.uD.Fs5.0.0.BbPiEI.AWVEgjKc; sb=NmI3W-ffluEtyFHleEWSjhBl; wd=1366x631; datr=NmI3WwtbosYtTwDtslqJtXZd; c_user=100003727776485; xs=136%3Au6XG_yUasjTeFQ%3A2%3A1530356294%3A6091%3A726; pl=n; spin=r.4072650_b.trunk_t.1530773112_s.1_v.2_; presence=EDvF3EtimeF1530798371EuserFA21B03727776485A2EstateFDutF1530798371621Et3F_5b_5dElm3FA2user_3a150588258893142A2Eutc3F1530798370407CEchFDp_5f1B03727776485F2CC; act=1530798384170%2F5";
+                httpWebRequest.Headers["Cookie"] = Cookies;
                 httpWebRequest.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:61.0) Gecko/20100101 Firefox/61.0";
                 httpWebRequest.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";
 
@@ -139,7 +141,8 @@ namespace CMS_Shared.Utilities
                 Uri uri = new Uri(Url);
                 var httpWebRequest = (HttpWebRequest)WebRequest.Create(uri);
 
-                httpWebRequest.Headers["Cookie"] = "fr=0g932KaBNIHkPNSHd.AWXxf95lRMddtf2MRVvraujAkc0.BbMcZu.uD.Fs5.0.0.BbPiEI.AWVEgjKc; sb=NmI3W-ffluEtyFHleEWSjhBl; wd=1366x631; datr=NmI3WwtbosYtTwDtslqJtXZd; c_user=100003727776485; xs=136%3Au6XG_yUasjTeFQ%3A2%3A1530356294%3A6091%3A726; pl=n; spin=r.4072650_b.trunk_t.1530773112_s.1_v.2_; presence=EDvF3EtimeF1530798371EuserFA21B03727776485A2EstateFDutF1530798371621Et3F_5b_5dElm3FA2user_3a150588258893142A2Eutc3F1530798370407CEchFDp_5f1B03727776485F2CC; act=1530798384170%2F5";
+                //httpWebRequest.Headers["Cookie"] = "fr=0g932KaBNIHkPNSHd.AWXxf95lRMddtf2MRVvraujAkc0.BbMcZu.uD.Fs5.0.0.BbPiEI.AWVEgjKc; sb=NmI3W-ffluEtyFHleEWSjhBl; wd=1366x631; datr=NmI3WwtbosYtTwDtslqJtXZd; c_user=100003727776485; xs=136%3Au6XG_yUasjTeFQ%3A2%3A1530356294%3A6091%3A726; pl=n; spin=r.4072650_b.trunk_t.1530773112_s.1_v.2_; presence=EDvF3EtimeF1530798371EuserFA21B03727776485A2EstateFDutF1530798371621Et3F_5b_5dElm3FA2user_3a150588258893142A2Eutc3F1530798370407CEchFDp_5f1B03727776485F2CC; act=1530798384170%2F5";
+                httpWebRequest.Headers["Cookie"] = Cookies;
                 httpWebRequest.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:61.0) Gecko/20100101 Firefox/61.0";
                 httpWebRequest.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";
                 
