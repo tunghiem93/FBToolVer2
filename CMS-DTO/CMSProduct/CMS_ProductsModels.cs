@@ -24,12 +24,14 @@ namespace CMS_DTO.CMSProduct
 
         public int TypeTime { get; set; }
         public int TypePin { get; set; }
+        public int Index { get; set; }
         public List<SelectListItem> ListTime { get; set; }
         public List<string> listKeywords { get; set; }
         public List<string> listGroups { get; set; }
         public int TypeQuantity { get; set; }
         public List<SelectListItem> ListQuantity { get; set; }
         public List<SelectListItem> ListRePin { get; set; }
+        public List<SelectListItem> ListIndex { get; set; }
         public HttpPostedFileBase[] PictureUpload { get; set; }
         public byte[] PictureByte { get; set; }
         public string ImageURL { get; set; }

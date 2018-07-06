@@ -5,7 +5,7 @@
 }
 <style>
     .rowKey td b {
-        font-size: 15px !important;
+        font-size: 12px !important;
     }
 
     .linkchange {
@@ -47,7 +47,7 @@
                             {
                                 <tr class="odd gradeX rowKey">
                                     <td class="text-left">
-                                        <a class="btn btn-link" href="@Url.Action("Index", "CMSProducts", new { keywordID = item.Id})" target="_blank"><b>@Html.Raw("[" + item.Sequence + "]" + " " + '"' + string.Format("{0}", (item.KeySearch.Length > 25) ? (item.KeySearch.Substring(0, 12) + "...") : item.KeySearch) + '"')</b></a>
+                                        <a class="btn btn-link" href="@Url.Action("Index", "CMSProducts", new { keywordID = item.Id})" target="_blank" style="font-size: 10px; "><b>@Html.Raw("[" + item.Sequence + "]" + " " + '"' + string.Format("{0}", (item.KeySearch.Length > 40) ? (item.KeySearch.Substring(0, 40) + "...") : item.KeySearch) + '"')</b></a>
                                     </td>
                                     <td>
                                         <a class="btn btn-link linkchange" href="@Url.Action("Index", "CMSProducts", new { keywordID = item.Id})" target="_blank" style="color: #000 !important; ">
@@ -163,7 +163,10 @@
         "pageLength": 100,
         "columnDefs": [
             { "orderable": false, "targets": [0, 1, 2, 4] },
-            { "width": "33%", "targets": [4] },
+            { "width": "6%", "targets": [1] },
+            { "width": "4%", "targets": [2] },
+            { "width": "5%", "targets": [3] },
+            { "width": "37%", "targets": [4] },
         ],
         "order": [
             [3, "asc"]

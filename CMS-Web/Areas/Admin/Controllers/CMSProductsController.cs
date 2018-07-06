@@ -33,7 +33,9 @@ namespace CMS_Web.Areas.Admin.Controllers
                 FilterModel.PageIndex = Commons.PageIndex;
                 FilterModel.PageSize = Commons.PageSize;
                 FilterModel.TypeTime = Commons.ETimeType.TimeReduce.ToString("d");
-                # region "Comment"
+                model.TypeTime = int.Parse(Commons.ETimeType.TimeReduce.ToString("d"));
+                model.Index = int.Parse(Commons.EIndex.LikeReduce.ToString("d"));
+                #region "Comment"
                 //if (Request.Cookies["FromDate"] != null)
                 //{
                 //    var _FromDate = Convert.ToDateTime(Request.Cookies["FromDate"].Value);
@@ -100,9 +102,10 @@ namespace CMS_Web.Areas.Admin.Controllers
                 //    FilterModel.lstKeyWordID = ListKeyword;
                 //    model.listKeywords = ListKeyword;
                 //}
-#endregion
+                #endregion
                 model.ListTime = getListTime();
                 model.ListQuantity = getListQuantity();
+                model.ListIndex = getListIndex();
                // model.ListRePin = getListRepinCount();
                 ViewBag.Keywords = getListKeyword();
                 if(!string.IsNullOrEmpty(_Key))

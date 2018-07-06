@@ -47,6 +47,13 @@ namespace CMS_Shared
             Inactive = 2,
             Deleted = 9,
         }
+
+        public enum EIndex
+        {
+            LikeReduce = 1,
+            CommentReduce = 2,
+            ShareReduce = 3,
+        }
         #endregion
 
         public static int WidthProduct = Convert.ToInt16(ConfigurationManager.AppSettings["WidthProduct"]);
