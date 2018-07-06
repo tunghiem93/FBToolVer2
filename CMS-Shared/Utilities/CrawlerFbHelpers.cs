@@ -57,7 +57,11 @@ namespace CMS_Shared.Utilities
                     }
                     page_Id = url.Substring(start + 1, (end - start - 1));
                 }
+
+                /* crawl first page */
                 CrawlerFb(url, ref pins);
+
+                /* check next page */
                 if (!string.IsNullOrEmpty(page_Id) && !string.IsNullOrEmpty(user_Id))
                 {
                     CrawlerNextPage(page_Id, user_Id, 8, url, ref pins);
@@ -135,6 +139,11 @@ namespace CMS_Shared.Utilities
                             }
                         }
                     }
+                    else
+                    {
+                        /* */
+                        pins.ErrorStatus = (byte)Commons.EErrorStatus.AccBlocked;
+                    }
 
                     // fb_id
                     var nodeFb_Id = doc.DocumentNode.Descendants().Where
@@ -162,6 +171,8 @@ namespace CMS_Shared.Utilities
                             }
                         }
                     }
+
+                    LogHelper.WriteLogs("fb_ids: " + url, JsonConvert.SerializeObject(fb_ids));
 
                     // node html image 
                     List<HtmlNode> nodeHtmlImage = doc.DocumentNode.Descendants().Where

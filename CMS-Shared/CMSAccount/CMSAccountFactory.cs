@@ -33,7 +33,7 @@ namespace CMS_Shared.CMSAccount
                                     Id = Guid.NewGuid().ToString(),
                                     Account = model.Account,
                                     Password = model.Password,
-                                    Status = (byte)Commons.EStatus.Pending,
+                                    Status = (byte)Commons.EErrorStatus.AccPending,
                                     CreatedBy = model.CreatedBy,
                                     CreatedDate = dateTimeNow,
                                     UpdatedBy = model.CreatedBy,
@@ -44,7 +44,7 @@ namespace CMS_Shared.CMSAccount
                             }
                             else if (checkDup.Status != (byte)Commons.EStatus.Active) 
                             {
-                                checkDup.Status = (byte)Commons.EStatus.Active;
+                                checkDup.Status = (byte)Commons.EErrorStatus.AccPending;
                                 checkDup.UpdatedBy = model.CreatedBy;
                                 checkDup.UpdatedDate = DateTime.Now;
                             }

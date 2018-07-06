@@ -183,14 +183,14 @@ namespace CMS_Shared.Keyword
                     _db.CMS_R_GroupKey_KeyWord.RemoveRange(listGroupKey);
                     _db.CMS_R_KeyWord_Pin.RemoveRange(listKeyPin);
                     _db.SaveChanges();
-                    
+
                     /* remove list pin */
                     var listPinID = _db.CMS_R_KeyWord_Pin.Select(o => o.PinID).ToList();
                     var listPin = _db.CMS_Pin.Where(o => !listPinID.Contains(o.ID)).ToList();
 
                     /* remove key */
                     var key = _db.CMS_KeyWord.Where(o => o.ID == Id).FirstOrDefault();
-                    
+
                     _db.CMS_Pin.RemoveRange(listPin);
                     _db.CMS_KeyWord.Remove(key);
                     _db.SaveChanges();
@@ -351,23 +351,23 @@ namespace CMS_Shared.Keyword
                             CMSPinFactory _fac = new CMSPinFactory();
 
                             var listAcc = _db.CMS_Account.Where(o => o.Status == (byte)Commons.EStatus.Active && o.IsActive).ToList();
-                            foreach(var acc in listAcc)
+                            foreach (var acc in listAcc)
                             {
                                 CrawlerFbHelpers.Cookies = acc.Cookies;
                                 CrawlerFbHelpers.CrawlerAllFb(keyWord.KeyWord, ref model);
-                                
+
                                 if (model.Pins.Count > 0) /* crawl success */
                                     break;
-                                else if (model.ErrorStatus == (byte)Commons.EErrorStatus.PendingAcc) /* Error account pending */
+                                else if (model.ErrorStatus > 1) /* Error account pending */
                                 {
-                                    acc.Status = (byte)Commons.EStatus.Pending;
+                                    acc.Status = model.ErrorStatus;
                                     acc.UpdatedBy = createdBy;
                                     acc.UpdatedDate = DateTime.Now;
                                 }
                                 else /* page dont have post or unknow error */
                                     break;
                             }
-                            
+
                             var res = false;
                             if (model.Pins.Count > 0)
                             {
@@ -394,7 +394,7 @@ namespace CMS_Shared.Keyword
             {
                 msg = "Crawl data is unsuccessfully.";
                 result = false;
-                
+
                 LogHelper.WriteLogs("ErrorCrawlData: " + Id, JsonConvert.SerializeObject(ex));
             }
             LogHelper.WriteLogs("ResponseCrawlData: " + Id, result.ToString());

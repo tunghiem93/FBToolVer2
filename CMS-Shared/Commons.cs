@@ -44,7 +44,6 @@ namespace CMS_Shared
         public enum EStatus
         {
             Active = 1,
-            Pending = 2,
             Deleted = 9,
         }
 
@@ -58,7 +57,8 @@ namespace CMS_Shared
         public enum EErrorStatus
         {
             Exception = 0,
-            PendingAcc = 1,
+            AccPending = 2,
+            AccBlocked = 3,
         }
         #endregion
 
