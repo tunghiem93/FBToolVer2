@@ -19,14 +19,28 @@
                             </a>
                         </div>
                         <div class="info">
-                            <div class="info-domain" style="background-color:#cce5ff;border-radius:5px !important;height:70px; margin-bottom: -5px !important;">
-                                &nbsp;&nbsp;<a href="@string.Format("{0}",string.IsNullOrEmpty(item.Link) ? "javascript:void(0)" : item.Link)" style="color:#004085;font-weight:bold" target="_blank" title="@item.Link">@string.Format("{0}", !string.IsNullOrEmpty(item.Domain) && item.Domain.Length > 20 ? item.Domain.Substring(0, 20) + "..." : item.Domain)</a>
-                                <p>&nbsp;&nbsp; @item.Created_At.ToString("dd/MM/yyyy")</p>
+                            <div style="text-align: center;">
+                                <table style="background-color:#e9ebee;height:35px;line-height:35px;border-radius:5px !important; margin-bottom: 5px !important; width: 100% ">
+                                    <tr>
+                                        <td><span style="text-align: left !important; ">@item.reactioncount <i class="fa fa-heart-o" style="font-size:14px;"></i></span></td>
+                                        <td><span style="text-align: center !important; ">@item.commentTotalCount <i class="fa fa-commenting-o" style="font-size:14px;"></i></span></td>
+                                        <td><span style="text-align: right !important; ">@item.sharecount <i class="fa fa-share-square-o" style="font-size:14px;"></i></span></td>
+                                    </tr>
+                                </table>
                             </div>
-                            @*<p><span>Ngày crawler</span>&nbsp;&nbsp; @DateTime.Now.ToString("dd/MM/yyyy")</p>*@
-                            <p style="background-color:#d4edda;height:35px;line-height:35px;border-radius:5px !important; margin-bottom: -5px !important; ">&nbsp;&nbsp; About @CommonHelper.GetDurationFromNow(item.CreatedDate)</p>
-                            <p style="background-color:#f8d7da;height:35px;line-height:35px;border-radius:5px !important">&nbsp;&nbsp;<span>RePin:</span> &nbsp;&nbsp;<span style="color:#721c24;font-weight:bold">@item.Repin_count</span> </p>
-                            
+                            <div class="info-domain" style="background-color:#cce5ff;border-radius:5px !important;min-height:50px; margin-bottom: -5px !important; vertical-align: middle; overflow: auto">
+                                &nbsp;&nbsp;<a href="@string.Format("{0}",string.IsNullOrEmpty(item.Link) ? "javascript:void(0)" : item.Link)" style="color:#004085;font-weight:bold" target="_blank" title="@item.Link">@string.Format("{0}", !string.IsNullOrEmpty(item.Domain) && item.Domain.Length > 20 ? item.Domain.Substring(0, 20) + "..." : item.Domain)<span style="vertical-align: super;"><br />&nbsp;&nbsp; @item.Created_At.ToString("dd/MM/yyyy")</span></a>
+
+                            </div>
+                            @if (item.Description != null && item.Description.Length > 0)
+                            {
+                                <div style=" background-color:#d4edda;border-radius:5px !important; margin-bottom: -5px !important; padding-left: 5px; padding-right: 5px;">
+                                    <p>@string.Format("{0}", !string.IsNullOrEmpty(item.Description) && item.Description.Length > 40 ? item.Description.Substring(0, 40) + "..." : item.Description)</p>
+                                </div>
+                            }
+
+                            <p style="background-color:#f8d7da;height:35px;line-height:35px;border-radius:5px !important">&nbsp;&nbsp;<span style="color:#721c24;font-weight:bold">@item.UpdateDate.ToString("dd/MM/yyyy") &nbsp; @Html.Raw('-')&nbsp;</span> </p>
+
                         </div>
                     </div>
         }
