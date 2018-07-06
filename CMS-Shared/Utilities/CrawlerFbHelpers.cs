@@ -162,7 +162,6 @@ namespace CMS_Shared.Utilities
                             }
                         }
                     }
-                    LogHelper.WriteLogs("ListID: ", JsonConvert.SerializeObject(fb_ids));
 
                     // node html image 
                     List<HtmlNode> nodeHtmlImage = doc.DocumentNode.Descendants().Where
@@ -217,16 +216,13 @@ namespace CMS_Shared.Utilities
                             index++;
                         }
                     }
-                    LogHelper.WriteLogs("ListPin: ", JsonConvert.SerializeObject(pins));
                 }
             }
             catch (Exception ex)
             {
                 LogHelper.WriteLogs("ErrorCrawlerFB: " + url, JsonConvert.SerializeObject(ex));
-
                 NSLog.Logger.Error("Crawler Fb: ", ex);
             }
-            LogHelper.WriteLogs("FinishCrawlerFB", url);
         }
 
         public static void CrawlerFBDetail(string Url, List<string> fb_id, ref PinsModels pin)
@@ -250,29 +246,47 @@ namespace CMS_Shared.Utilities
                     HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
                     doc.LoadHtml(html);
 
-                    var script = doc.DocumentNode.Descendants()
-                             .Where(n => n.Name == "script").ToList();
+                    /* FIND FB CREATED DATE (created_at) */
+                    var tagA = doc.DocumentNode.Descendants("a").Where(n => n.GetAttributeValue("rel", "") == "theater").FirstOrDefault();
+                    findCreateAt(fb_id, ref tagA, ref pin);
 
-                    var listScript = script.Where(o => !string.IsNullOrEmpty(o.InnerText) && o.InnerText.Contains("require") && o.InnerText.Contains("UFIController")).Select(o => o.InnerText).ToList();
-                    foreach (var innerScript in listScript)
-                    {
-                        if (innerScript.Contains("feedbacktarget"))
-                        {
-                            if (findNode(innerScript, "feedbacktarget", 0, fb_id, ref pin))
-                            {
-                                LogHelper.WriteLogs("CrawlerFBDetail Success: ", JsonConvert.SerializeObject(fb_id));
-                                break;
-                            }
-                        }
-                    }
+                    /* FIND FEEDBACK_TARGET */
+                    var script = doc.DocumentNode.Descendants().Where(n => n.Name == "script").ToList();
+                    var innerScript  = script.Where(o => !string.IsNullOrEmpty(o.InnerText) && o.InnerText.Contains("require(\"TimeSlice\").guard(function() {require(\"ServerJSDefine\")")).Select(o => o.InnerText).FirstOrDefault();
+                    findNode(innerScript, "feedbacktarget", 0, fb_id, ref pin);
                 }
             }
             catch (Exception ex)
             {
                 LogHelper.WriteLogs("ErrorCrawlerFBDetail: ", JsonConvert.SerializeObject(ex));
-
                 NSLog.Logger.Error("CrawlerFB Detail", ex);
             }
+        }
+
+        public static bool findCreateAt(List<string> listFbId, ref HtmlNode node, ref PinsModels pin)
+        {
+            var ret = false;
+            try
+            {
+                var ajaxify = node.GetAttributeValue("ajaxify", "");
+                var fbID = findFbId(ajaxify);
+                if (listFbId.Contains(fbID)) /* check fb id */
+                {
+                    var abbr = node.Descendants("abbr").FirstOrDefault();
+                    if (abbr != null)
+                    {
+                        /* pares datetime */
+                        DateTime created_at = Commons.MinDate;
+                        if (DateTime.TryParse(abbr.GetAttributeValue("title", ""), out created_at))
+                        {
+                            pin.Created_At = created_at;
+                            ret = true;
+                        }
+                    }
+                }
+            }
+            catch(Exception ex) { };
+            return ret;
         }
 
         public static bool findNode(string input, string key, int start, List<string> fb_id, ref PinsModels pin)
@@ -302,69 +316,11 @@ namespace CMS_Shared.Utilities
                     }
                 }
             }
-            catch (Exception ex)
-            {
-
-            }
+            catch (Exception ex){}
             return false;
         }
 
-        public static bool findNodeV2(string input, string key, int start, string fb_id, ref PinsModels pin)
-        {
-            LogHelper.WriteLogs("findNodeV2" + fb_id, "");
-            var count = 0;
-
-            try
-            {
-                while (input.Contains("feedbacktarget"))
-                {
-                    count++;
-                    var jsonfeedbacktarget = findElement(input, "feedbacktarget", 0);
-                    LogHelper.WriteLogs("findNodeV2" + fb_id, jsonfeedbacktarget);
-
-                    JavaScriptSerializer jsonSerializer = new JavaScriptSerializer();
-                    dynamic dobj = jsonSerializer.Deserialize<dynamic>(jsonfeedbacktarget);
-                    var dictionary = dobj as Dictionary<string, dynamic>;
-                    if (dictionary.ContainsKey("entidentifier"))
-                    {
-                        var _fb_id = dictionary["entidentifier"];
-                        if (fb_id.Equals(_fb_id))
-                        {
-                            if (dictionary.ContainsKey("commentTotalCount"))
-                            {
-                                pin.commentTotalCount = Convert.ToInt16(dictionary["commentTotalCount"]);
-                            }
-                            if (dictionary.ContainsKey("reactioncount"))
-                            {
-                                pin.reactioncount = Convert.ToInt16(dictionary["reactioncount"]);
-                            }
-                            if (dictionary.ContainsKey("sharecount"))
-                            {
-                                pin.sharecount = Convert.ToInt16(dictionary["sharecount"]);
-                            }
-
-                            pin.ID = fb_id;
-                            return true;
-                        }
-                        else
-                        {
-                            jsonfeedbacktarget = "\"feedbacktarget\":" + jsonfeedbacktarget;
-                            input = input.Replace(jsonfeedbacktarget, "");
-                        }
-                    }
-                };
-            }
-            catch (Exception ex)
-            {
-                LogHelper.WriteLogs("ErrorfindNodeV2: " + fb_id, JsonConvert.SerializeObject(ex));
-            };
-            LogHelper.WriteLogs("EndfindNodeV2" + fb_id, count.ToString());
-
-            return false;
-
-        }
-
-
+        
         public static string findElement(string _input, string key, int start)
         {
             var ret = "";

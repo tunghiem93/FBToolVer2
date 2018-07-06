@@ -22,9 +22,9 @@ namespace CMS_Shared.Utilities
                     var logData = new CMS_Log()
                     {
                         ID = Guid.NewGuid().ToString(),
-                        Decription = description,
+                        Decription = description.Substring(0, Math.Min(95, description.Length)) +"\n...",
                         CreatedDate = DateTime.Now,
-                        JsonContent = jsonContent.Substring(0, Math.Min(3900, jsonContent.Length)),
+                        JsonContent = jsonContent.Substring(0, Math.Min(3995, jsonContent.Length))+"\n...",
                     };
                     _db.CMS_Log.Add(logData);
                     _db.SaveChanges();

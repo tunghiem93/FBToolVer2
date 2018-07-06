@@ -47,6 +47,7 @@ namespace CMS_Shared.CMSEmployees
                                 uPin.DayCount++;
 
                             /* update other info */
+                            uPin.Created_At = checkPin.Created_At;
                             uPin.Repin_count = checkPin.Repin_count;
                             uPin.ReactionCount = checkPin.reactioncount;
                             uPin.ShareCount = checkPin.sharecount;
@@ -113,7 +114,7 @@ namespace CMS_Shared.CMSEmployees
             {
                 msg = "CreateOrUpdate Pin with exception.";
                 result = false;
-                LogHelper.WriteLogs("ErrorCreateOrUpdatePin: " + KeyWordID, JsonConvert.SerializeObject(ex));
+                LogHelper.WriteLogs("ErrorCreateOrUpdatePin: ", JsonConvert.SerializeObject(ex));
             }
 
             finally
