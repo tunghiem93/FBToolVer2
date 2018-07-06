@@ -104,5 +104,16 @@ namespace CMS_Web.Areas.Admin.Controllers
             }
             return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
         }
+
+        public ActionResult ChangeStatus(string AccountID)
+        {
+            var msg = "";
+            var result = _factory.ChangeStatus(AccountID, ref msg);
+            if (result)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.OK);
+            }
+            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        }
     }
 }

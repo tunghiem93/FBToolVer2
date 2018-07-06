@@ -123,6 +123,34 @@
         }   
     }
 
+    function ChangeStatus(AccountId) {
+        AccountID = AccountId;
+        if (AccountID != null && AccountID.length > 0) {            
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("ChangeStatus", "CMSFBAccounts")',
+                traditional: true,
+                data: {
+                    AccountID: AccountID,
+                },
+                contentType: "application/json; charset=utf-8",
+                dataType: "html",
+                success: function (data) {
+                    location.reload();
+                },
+                beforeSend: function () {
+                    $('.se-pre-con').show();
+                },
+                complete: function () {
+                    $('.se-pre-con').hide();
+                },
+                error: function (e) {
+                    $('.se-pre-con').hide();
+                }
+            });
+        }   
+    }
+
     function SaveCookies(btn, cookies) {
         $.ajax(
         {
@@ -134,7 +162,7 @@
             },
             dataType: 'html',
             success: function (data) {
-                $('.se-pre-con').hide();
+                location.reload();
             },
             beforeSend: function () {
                 $('.se-pre-con').show();

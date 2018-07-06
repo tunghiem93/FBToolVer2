@@ -33,7 +33,7 @@ namespace CMS_Shared.CMSAccount
                                     Id = Guid.NewGuid().ToString(),
                                     Account = model.Account,
                                     Password = model.Password,
-                                    Status = (byte)Commons.EStatus.Active,
+                                    Status = (byte)Commons.EStatus.Pending,
                                     CreatedBy = model.CreatedBy,
                                     CreatedDate = dateTimeNow,
                                     UpdatedBy = model.CreatedBy,
@@ -108,6 +108,7 @@ namespace CMS_Shared.CMSAccount
                         CreatedDate = x.CreatedDate ?? DateTime.Now,
                         IsActive = x.IsActive,
                         Sequence = x.Sequence,
+                        Status = x.Status,
                         Account = x.Account,
                         Password = x.Password,
                         UpdatedBy = x.UpdatedBy,
@@ -144,6 +145,7 @@ namespace CMS_Shared.CMSAccount
                     if (e != null)
                     {
                         e.Cookies = Cookies;
+                        e.Status = (byte)Commons.EStatus.Active;
                     }
                     cxt.SaveChanges();
                 }
@@ -156,5 +158,38 @@ namespace CMS_Shared.CMSAccount
             return result;
         }
 
+        public bool ChangeStatus(string ID, ref string msg)
+        {
+            var result = true;
+            try
+            {
+                using (var cxt = new CMS_Context())
+                {
+                    var e = cxt.CMS_Account.Find(ID);
+                    if (e != null)
+                    {
+                        if (!e.IsActive)
+                        {
+                            var active = cxt.CMS_Account.Where(o=> o.IsActive).FirstOrDefault();
+                            if (active != null)
+                            {
+                                active.IsActive = false;
+                            }                            
+                            e.IsActive = !e.IsActive;
+                        }
+                        
+                            
+                    }
+
+                    cxt.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                msg = "Can't update status this account.";
+                result = false;
+            }
+            return result;
+        }
     }
 }

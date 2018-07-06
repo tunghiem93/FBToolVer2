@@ -1,8 +1,10 @@
-﻿@{
+﻿@using CMS_Shared
+@{
     Layout = null;
     var IsAdmin = @ViewBag.IsAdmin;
     var Duplicate = @ViewBag.DuplicateKeyword;
 }
+
 <style>
     .rowKey td b {
         font-size: 15px !important;
@@ -38,6 +40,7 @@
                             <th class="text-left">Name</th>
                             <th class="text-center">Created date</th>
                             <th class="text-center">Cookies</th>
+                            <th class="text-center">Active</th>
                             <th class="text-center">Action</th>
                         </tr>
                     </thead>
@@ -60,8 +63,21 @@
                                             <span>Cookies</span>
                                         </a>
                                     </td>
+                                    <td class="text-center">
+                                        @{ if (item.IsActive)
+                                            {
+                                                <span class="label label-sm label-success"> @Html.Raw("Active") </span>
+                                            }
+                                            else
+                                            {
+                                                <a onclick="ChangeStatus('@item.Id')" style="text-decoration: none; "><span class="label label-sm label-danger"> @Html.Raw("InActive") </span></a>
+
+                                            }
+                                        }
+
+                                    </td>
                                     <td class="text-center linkchange">
-                                        @{ if (true)
+                                        @{ if (item.Status == (byte)Commons.EStatus.Active)
                                             {
                                                 <a class="btn btn-sm btn-default cls-@item.Id" style="color: #17a2b8 !important; border-color: #17a2b8 !important; ">@Html.Raw("STATUS ok")</a>
                                             }
@@ -156,13 +172,14 @@
         ],
         "pageLength": 100,
         "columnDefs": [
-            { "orderable": false, "targets": [2, 3] },
-            { "width": "12%", "targets": [1] },
+            { "orderable": false, "targets": [2, 3, 4] },
+            { "width": "10%", "targets": [1] },
             { "width": "10%", "targets": [2] },
-            { "width": "20%", "targets": [3] },
+            { "width": "10%", "targets": [3] },
+            { "width": "20%", "targets": [4] },
         ],
         "order": [
-            [1, "asc"]
+            //[1, "asc"]
         ]
     };
 
