@@ -27,6 +27,7 @@ namespace CMS_DTO.CMSCrawler
         public int commentTotalCount { get; set; }
         public int reactioncount { get; set; }
         public int sharecount { get; set; }
+        public int DayCount { get; set; }
         public string ID { get; set; }
         public string OwnerID { get; set; }
         public string OwnerName { get; set; }

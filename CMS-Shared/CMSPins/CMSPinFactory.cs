@@ -42,6 +42,11 @@ namespace CMS_Shared.CMSEmployees
                         var checkPin = lstPin.Where(o => o.ID == uPin.ID).FirstOrDefault();
                         if (checkPin != null)
                         {
+                            /* update days count */
+                            if (DbFunctions.TruncateTime(uPin.UpdatedDate) != DbFunctions.TruncateTime(DateTime.Now))
+                                uPin.DayCount++;
+
+                            /* update other info */
                             uPin.Repin_count = checkPin.Repin_count;
                             uPin.ReactionCount = checkPin.reactioncount;
                             uPin.ShareCount = checkPin.sharecount;
@@ -68,13 +73,14 @@ namespace CMS_Shared.CMSEmployees
                             OwnerName = pin.OwnerName,
                             Description = pin.Description,
                             ImageUrl = pin.ImageURL,
-                            Created_At = pin.Created_At < Commons.MinDate ? Commons.MinDate: pin.Created_At,
+                            Created_At = pin.Created_At < Commons.MinDate ? Commons.MinDate : pin.Created_At,
                             Domain = pin.Domain,
                             Status = (byte)Commons.EStatus.Active,
                             CreatedBy = createdBy,
                             CreatedDate = DateTime.Now,
                             UpdatedBy = createdBy,
                             UpdatedDate = DateTime.Now,
+                            DayCount = 1,
                         });
 
                     }
@@ -234,7 +240,8 @@ namespace CMS_Shared.CMSEmployees
                         commentTotalCount = o.CommentCount,
                         reactioncount = o.ReactionCount,
                         sharecount = o.ShareCount,
-                        Description = o.Description
+                        Description = o.Description,
+                        DayCount = o.DayCount,
                         //LastTime = CommonHelper.GetDurationFromNow(o.UpdatedDate),
                     }).ToList();
                 }

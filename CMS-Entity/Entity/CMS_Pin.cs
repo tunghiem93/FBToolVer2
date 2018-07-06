@@ -35,6 +35,7 @@ namespace CMS_Entity.Entity
         public int ReactionCount { get; set; }
         public int ShareCount { get; set; }
         public int CommentCount { get; set; }
+        public int DayCount { get; set; }
 
         [StringLength(2000)]
         public string Description { get; set; }
