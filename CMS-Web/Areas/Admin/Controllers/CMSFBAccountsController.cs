@@ -83,7 +83,7 @@ namespace CMS_Web.Areas.Admin.Controllers
         {
             string msg = "";
             var cookies = _facFBAccount.GetCookies(AccountID);
-            if(cookies != null && cookies.Length > 0)
+            if(cookies != null)
             { 
                 string str = "{'Cookies':'" + cookies + "'}";
                 JavaScriptSerializer jsSer = new JavaScriptSerializer();
