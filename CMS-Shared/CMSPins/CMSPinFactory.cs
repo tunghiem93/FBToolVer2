@@ -242,6 +242,7 @@ namespace CMS_Shared.CMSEmployees
                         sharecount = o.ShareCount,
                         Description = o.Description,
                         DayCount = o.DayCount,
+                        OwnerName = o.OwnerName
                         //LastTime = CommonHelper.GetDurationFromNow(o.UpdatedDate),
                     }).ToList();
                 }

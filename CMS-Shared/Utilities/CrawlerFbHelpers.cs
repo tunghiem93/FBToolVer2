@@ -111,6 +111,31 @@ namespace CMS_Shared.Utilities
                         }
                     }
 
+                    //Name
+                    List<HtmlNode> nodehtmlName = doc.DocumentNode.Descendants().Where
+                            (x => (x.Name == "div" && x.Attributes["class"] != null &&
+                               x.Attributes["class"].Value.Contains("_6a _5u5j _6b"))).ToList();
+
+                    var ListName = new List<string>();
+                    if (nodehtmlName != null && nodehtmlName.Count > 0)
+                    {
+                        foreach (var item in nodehtmlName)
+                        {
+                            var NodeName = item.Descendants("a").ToList();
+                            if (NodeName != null)
+                            {
+                                var name = NodeName[0].InnerText;
+                                if (!string.IsNullOrEmpty(name))
+                                    name = name.Replace("&quot;", "");
+                                ListName.Add(name);
+                            }
+                            else
+                            {
+                                ListName.Add("");
+                            }
+                        }
+                    }
+
                     // fb_id
                     var nodeFb_Id = doc.DocumentNode.Descendants().Where
                                     (
@@ -180,6 +205,11 @@ namespace CMS_Shared.Utilities
                                         Pin.ImageURL = _image;
                                         if(ListDescription != null && ListDescription.Count >= index)
                                             Pin.Description = ListDescription[index];
+
+                                        if (ListName != null && ListName.Count >= index)
+                                        {
+                                            Pin.OwnerName = ListName[index];
+                                        }
                                         pins.Pins.Add(Pin);
                                     }
                                 }
@@ -446,6 +476,31 @@ namespace CMS_Shared.Utilities
                                     }
                                 }
 
+                                //Name
+                                List<HtmlNode> nodehtmlName = htmlDoc.DocumentNode.Descendants().Where
+                                        (x => (x.Name == "div" && x.Attributes["class"] != null &&
+                                           x.Attributes["class"].Value.Contains("_6a _5u5j _6b"))).ToList();
+
+                                var ListName = new List<string>();
+                                if (nodehtmlName != null && nodehtmlName.Count > 0)
+                                {
+                                    foreach (var item in nodehtmlName)
+                                    {
+                                        var NodeName = item.Descendants("a").ToList();
+                                        if (NodeName != null)
+                                        {
+                                            var name = NodeName[0].InnerText;
+                                            if (!string.IsNullOrEmpty(name))
+                                                name = name.Replace("&quot;", "");
+                                            ListName.Add(name);
+                                        }
+                                        else
+                                        {
+                                            ListName.Add("");
+                                        }
+                                    }
+                                }
+
                                 // fb_id
                                 var nodeFb_Id = htmlDoc.DocumentNode.Descendants().Where
                                                 (
@@ -514,6 +569,11 @@ namespace CMS_Shared.Utilities
                                                     Pin.ImageURL = _image;
                                                     if (ListDescription != null && ListDescription.Count >= index)
                                                         Pin.Description = ListDescription[index];
+
+                                                    if(ListName != null && ListName.Count >= index)
+                                                    {
+                                                        Pin.OwnerName = ListName[index];
+                                                    }
                                                     pins.Pins.Add(Pin);
                                                 }
                                             }
