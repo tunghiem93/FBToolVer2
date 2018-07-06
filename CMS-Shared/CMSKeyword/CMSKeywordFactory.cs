@@ -354,7 +354,7 @@ namespace CMS_Shared.Keyword
                             foreach(var acc in listAcc)
                             {
                                 CrawlerFbHelpers.Cookies = acc.Cookies;
-                                CrawlerFbHelpers.CrawlerFb(keyWord.KeyWord, ref model);
+                                CrawlerFbHelpers.CrawlerAllFb(keyWord.KeyWord, ref model);
                                 
                                 if (model.Pins.Count > 0) /* crawl success */
                                     break;
