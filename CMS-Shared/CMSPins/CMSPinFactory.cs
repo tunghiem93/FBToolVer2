@@ -234,6 +234,7 @@ namespace CMS_Shared.CMSEmployees
                         commentTotalCount = o.CommentCount,
                         reactioncount = o.ReactionCount,
                         sharecount = o.ShareCount,
+                        Description = o.Description
                         //LastTime = CommonHelper.GetDurationFromNow(o.UpdatedDate),
                     }).ToList();
                 }

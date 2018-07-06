@@ -89,10 +89,26 @@ namespace CMS_Shared.Utilities
                     doc.LoadHtml(html);
                     List<HtmlNode> nodeHtml = doc.DocumentNode.Descendants().Where
                                                 (x => (x.Name == "div" && x.Attributes["class"] != null &&
-                                                   x.Attributes["class"].Value.Contains("_5pbx"))).ToList();
+                                                   x.Attributes["class"].Value.Contains("_5pbx userContent _3576"))).ToList();
+
+                    var ListDescription = new List<string>();
                     if (nodeHtml != null && nodeHtml.Count > 0)
                     {
-
+                        foreach(var item in nodeHtml)
+                        {
+                            var NodeDescription = item.Descendants("p").ToList();
+                            if(NodeDescription != null)
+                            {
+                                var description = NodeDescription[0].InnerText;
+                                if (!string.IsNullOrEmpty(description))
+                                    description = description.Replace("&quot;", "");
+                                ListDescription.Add(description);
+                            }
+                            else
+                            {
+                                ListDescription.Add("");
+                            }
+                        }
                     }
 
                     // fb_id
@@ -162,6 +178,8 @@ namespace CMS_Shared.Utilities
                                         }
                                         CrawlerFBDetail(_apiDetail, fb_id, ref Pin);
                                         Pin.ImageURL = _image;
+                                        if(ListDescription != null && ListDescription.Count >= index)
+                                            Pin.Description = ListDescription[index];
                                         pins.Pins.Add(Pin);
                                     }
                                 }
@@ -403,6 +421,31 @@ namespace CMS_Shared.Utilities
                             {
                                 var htmlDoc = new HtmlDocument();
                                 htmlDoc.LoadHtml(_html);
+
+                                List<HtmlNode> nodeHtml = htmlDoc.DocumentNode.Descendants().Where
+                                                (x => (x.Name == "div" && x.Attributes["class"] != null &&
+                                                   x.Attributes["class"].Value.Contains("_5pbx userContent _3576"))).ToList();
+
+                                var ListDescription = new List<string>();
+                                if (nodeHtml != null && nodeHtml.Count > 0)
+                                {
+                                    foreach (var item in nodeHtml)
+                                    {
+                                        var NodeDescription = item.Descendants("p").ToList();
+                                        if (NodeDescription != null)
+                                        {
+                                            var description = NodeDescription[0].InnerText;
+                                            if (!string.IsNullOrEmpty(description))
+                                                description = description.Replace("&quot;", "");
+                                            ListDescription.Add(description);
+                                        }
+                                        else
+                                        {
+                                            ListDescription.Add("");
+                                        }
+                                    }
+                                }
+
                                 // fb_id
                                 var nodeFb_Id = htmlDoc.DocumentNode.Descendants().Where
                                                 (
@@ -469,6 +512,8 @@ namespace CMS_Shared.Utilities
                                                     }
                                                     CrawlerFBDetail(_apiDetail, fb_id, ref Pin);
                                                     Pin.ImageURL = _image;
+                                                    if (ListDescription != null && ListDescription.Count >= index)
+                                                        Pin.Description = ListDescription[index];
                                                     pins.Pins.Add(Pin);
                                                 }
                                             }

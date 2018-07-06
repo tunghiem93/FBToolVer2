@@ -35,7 +35,7 @@
                             @if (item.Description != null && item.Description.Length > 0)
                             {
                                 <div style=" background-color:#d4edda;border-radius:5px !important; margin-bottom: -5px !important; padding-left: 5px; padding-right: 5px;">
-                                    <p>@string.Format("{0}", !string.IsNullOrEmpty(item.Description) && item.Description.Length > 40 ? item.Description.Substring(0, 40) + "..." : item.Description)</p>
+                                    <p>@string.Format("{0}", !string.IsNullOrEmpty(item.Description) && item.Description.Length > 70 ? item.Description.Substring(0, 70) + "..." : item.Description)</p>
                                 </div>
                             }
 
