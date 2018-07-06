@@ -25,6 +25,7 @@ namespace CMS_DTO.CMSProduct
         public int TypeTime { get; set; }
         public int TypePin { get; set; }
         public int Index { get; set; }
+        public string GroupID { get; set; }
         public List<SelectListItem> ListTime { get; set; }
         public List<string> listKeywords { get; set; }
         public List<string> listGroups { get; set; }

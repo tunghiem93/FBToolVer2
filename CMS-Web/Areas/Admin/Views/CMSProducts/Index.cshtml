@@ -109,8 +109,8 @@
                     @*Filter to group Fanpage*@
                     <div class="col-md-6 col-sm-6 col-xs-12" style="">
                         <div class="input-prepend input-group" style="width:100%">
-                            @Html.DropDownListFor(model => model.listKeywords,
-                    new SelectList(@ViewBag.Keywords, "Value", "Text", Model.listKeywords), "Please select group fanpage",
+                            @Html.DropDownListFor(model => model.GroupID,
+                    new SelectList(@ViewBag.ListGroupFanpage, "Value", "Text", Model.GroupID), "Please select group fanpage",
                     new
                     {
                         @class = "form-control select2_multiple",
@@ -118,11 +118,11 @@
                         @style = "width : 100%;",
                         //@multiple = "multiple",
                     })
-                            @Html.ValidationMessageFor(model => model.listKeywords, null, new { @class = "label label-danger" })
+                            @Html.ValidationMessageFor(model => model.GroupID, null, new { @class = "label label-danger" })
                         </div>
                     </div>
 
-                    <div class="col-md-2 col-sm-2 col-xs-12 " style="width:13% !important">
+                    <div class="col-md-2 col-sm-2 col-xs-12 " style="">
                         <div class="input-prepend input-group" style="width:100%">
                             @Html.DropDownListFor(model => model.Index,
                                 new SelectList(Model.ListIndex, "Value", "Text", Model.Index), "",
@@ -207,13 +207,13 @@
         cb(start, end);
 
         $("#storeDdlViewQuantity").select2({
-            placeholder: "Repin count",
+            placeholder: "Favorite",
             allowClear: true
         });
 
         $("#storeDdlView").select2({
             placeholder: "Sort data by",
-            //allowClear: true
+            allowClear: true
         });
 
         $("#storeDdlViewPin").select2({

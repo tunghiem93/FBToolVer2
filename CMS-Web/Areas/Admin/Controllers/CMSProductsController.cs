@@ -108,7 +108,8 @@ namespace CMS_Web.Areas.Admin.Controllers
                 model.ListIndex = getListIndex();
                // model.ListRePin = getListRepinCount();
                 ViewBag.Keywords = getListKeyword();
-                if(!string.IsNullOrEmpty(_Key))
+                ViewBag.ListGroupFanpage = getListGroupKeyword();
+                if (!string.IsNullOrEmpty(_Key))
                 {
                     FilterModel.LstKeyWordID.Add(_Key);
                     model.listKeywords.Add(_Key);
