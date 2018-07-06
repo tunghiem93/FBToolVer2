@@ -25,12 +25,11 @@
                                         <td><span style="text-align: left !important; ">@item.reactioncount <i class="fa fa-heart-o" style="font-size:14px;"></i></span></td>
                                         <td><span style="text-align: center !important; ">@item.commentTotalCount <i class="fa fa-commenting-o" style="font-size:14px;"></i></span></td>
                                         <td><span style="text-align: right !important; ">@item.sharecount <i class="fa fa-share-square-o" style="font-size:14px;"></i></span></td>
-                                        <td><span style="text-align: right !important; ">@item.DayCount <i class="fa fa-clock-o" style="font-size:14px;"></i></span></td>
                                     </tr>
                                 </table>
                             </div>
                             <div class="info-domain" style="background-color:#cce5ff;border-radius:5px !important;min-height:50px; margin-bottom: -5px !important; vertical-align: middle; overflow: auto">
-                                &nbsp;&nbsp;<a href="@string.Format("{0}",string.IsNullOrEmpty(item.Link) ? "javascript:void(0)" : item.Link)" style="color:#004085;font-weight:bold" target="_blank" title="@item.Link">@string.Format("{0}", !string.IsNullOrEmpty(item.OwnerName) && item.OwnerName.Length > 20 ? item.OwnerName.Substring(0, 20) + "..." : item.OwnerName)<span style="vertical-align: super;"><br />&nbsp;&nbsp; @item.Created_At.ToString("dd/MM/yyyy")</span></a>
+                                &nbsp;&nbsp;<a href="@string.Format("{0}",string.IsNullOrEmpty(item.Link) ? "javascript:void(0)" : item.Link)" style="color:#004085;font-weight:bold; text-decoration: none" target="_blank" title="@item.Link">@string.Format("{0}", !string.IsNullOrEmpty(item.OwnerName) && item.OwnerName.Length > 20 ? item.OwnerName.Substring(0, 20) + "..." : item.OwnerName)<span style="vertical-align: super;"><br />&nbsp;&nbsp; @item.Created_At.ToString("dd/MM/yyyy")</span></a>
 
                             </div>
                             @if (item.Description != null && item.Description.Length > 0)
@@ -40,7 +39,7 @@
                                 </div>
                             }
 
-                            <p style="background-color:#f8d7da;height:35px;line-height:35px;border-radius:5px !important">&nbsp;&nbsp;<span style="color:#721c24;font-weight:bold">@item.UpdateDate.ToString("dd/MM/yyyy") &nbsp; @Html.Raw('-')&nbsp; @item.DayCount</span> </p>
+                            <p style="background-color:#f8d7da;height:35px;line-height:35px;border-radius:5px !important">&nbsp;&nbsp;<span style="color:#721c24;font-weight:bold">@item.UpdateDate.ToString("dd/MM/yyyy") &nbsp; @Html.Raw('-')&nbsp; @item.DayCount <i class="fa fa-clock-o" style="font-size:14px;"></i></span> </p>
 
                         </div>
                     </div>
