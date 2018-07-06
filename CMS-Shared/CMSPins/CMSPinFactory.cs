@@ -231,6 +231,9 @@ namespace CMS_Shared.CMSEmployees
                         Created_At = o.Created_At,
                         CreatedDate = o.CreatedDate ?? DateTime.MinValue,
                         UpdateDate = o.UpdatedDate ?? DateTime.MinValue,
+                        commentTotalCount = o.CommentCount,
+                        reactioncount = o.ReactionCount,
+                        sharecount = o.ShareCount,
                         //LastTime = CommonHelper.GetDurationFromNow(o.UpdatedDate),
                     }).ToList();
                 }
