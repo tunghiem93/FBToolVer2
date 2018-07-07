@@ -81,9 +81,17 @@
                                             {
                                                 <a class="btn btn-sm btn-default cls-@item.Id" style="color: #17a2b8 !important; border-color: #17a2b8 !important; ">@Html.Raw("STATUS ok")</a>
                                             }
-                                            else
+                                            else if (item.Status == (byte)Commons.EErrorStatus.AccPending)
                                             {
                                                 <a class="btn btn-sm btn-default cls-@item.Id" style="color: #17a2b8 !important; border-color: #17a2b8 !important; ">@Html.Raw("STATUS suppend")</a>
+                                            }
+                                            else if (item.Status == (byte)Commons.EErrorStatus.AccBlocked)
+                                            {
+                                                <a class="btn btn-sm btn-default cls-@item.Id" style="color: #17a2b8 !important; border-color: #17a2b8 !important; ">@Html.Raw("STATUS blocked")</a>
+                                            }
+                                            else
+                                            {
+                                                <a class="btn btn-sm btn-default cls-@item.Id" style="color: #17a2b8 !important; border-color: #17a2b8 !important; ">@Html.Raw("STATUS UnknownError")</a>
                                             }
                                         }
                                         <a class="btn btn-sm btn-danger" onclick="Delete(this, '@item.Id'); return false;">@Html.Raw("Delete")</a>

@@ -165,6 +165,44 @@ namespace CMS_Shared.Keyword
             return result;
         }
 
+        public bool DeleteAll(string createdBy, ref string msg)
+        {
+            var result = true;
+            try
+            {
+                using (var _db = new CMS_Context())
+                {
+                    var keys = _db.CMS_KeyWord.Where(o => o.Status == (byte)Commons.EStatus.Active).ToList();
+                    var keyIDs = keys.Select(o => o.ID).ToList();
+                    var keyGroupKeyDB = _db.CMS_R_GroupKey_KeyWord.Where(o => keyIDs.Contains(o.KeyWordID)).ToList();
+
+                    /* delete key */
+                    keys.ForEach(key =>
+                    {
+                        key.Status = (byte)Commons.EStatus.Deleted;
+                        key.UpdatedDate = DateTime.Now;
+                        key.UpdatedBy = createdBy;
+                    });
+
+                    /* delete group key */
+                    keyGroupKeyDB.ForEach(o =>
+                    {
+                        o.Status = (byte)Commons.EStatus.Deleted;
+                        o.UpdatedDate = DateTime.Now;
+                        o.UpdatedBy = createdBy;
+                    });
+
+                    _db.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                msg = "Can't delete this key words.";
+                result = false;
+            }
+            return result;
+        }
+        
         public bool DeleteAndRemoveDB(string Id, ref string msg)
         {
             var result = true;
@@ -241,6 +279,29 @@ namespace CMS_Shared.Keyword
             }
             return result;
         }
+
+        public bool DeleteAndRemoveDBAll(ref string msg)
+        {
+            var result = true;
+            try
+            {
+                using (var _db = new CMS_Context())
+                {
+                    var keys = _db.CMS_KeyWord.Select(o => o.ID).ToList();
+                    foreach(var keyID in keys)
+                    {
+                        DeleteAndRemoveDBCommand(keyID, ref msg);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                msg = "Can't delete data.";
+                result = false;
+            }
+            return result;
+        }
+
 
         public bool AddKeyToGroup(string KeyId, string GroupKeyID, ref string msg)
         {
@@ -338,7 +399,7 @@ namespace CMS_Shared.Keyword
                     {
                         /* check time span crawl */
                         var timeSpanCrawl = DateTime.Now - keyWord.UpdatedDate;
-                        //if(timeSpanCrawl.Value.TotalMinutes > 5 || keyWord.UpdatedDate == keyWord.CreatedDate) /* 5min to crawl data again */
+                        if (timeSpanCrawl.Value.TotalMinutes > 5 || keyWord.UpdatedDate == keyWord.CreatedDate) /* 5min to crawl data again */
                         {
                             /* update crawer date */
                             var bkTime = keyWord.UpdatedDate;
@@ -401,5 +462,35 @@ namespace CMS_Shared.Keyword
 
             return result;
         }
+
+        public bool CrawlAllKeyWords(string createdBy, ref string msg)
+        {
+            LogHelper.WriteLogs("CrawlAllKeyWords", "");
+            var result = true;
+            try
+            {
+                using (var _db = new CMS_Context())
+                {
+                    var keyWords = _db.CMS_KeyWord.Where(o => o.Status == (byte)Commons.EStatus.Active).ToList();
+                    foreach (var key in keyWords)
+                    {
+                        if (!CrawlData(key.ID, createdBy, ref msg))
+                            result = false;
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                msg = "Crawl data is unsuccessfully.";
+                result = false;
+
+                LogHelper.WriteLogs("ErrorCrawlAllKeyWords:", JsonConvert.SerializeObject(ex));
+            }
+            LogHelper.WriteLogs("ResponseCrawlAllKeyWords", result.ToString());
+
+            return result;
+        }
+
     }
 }

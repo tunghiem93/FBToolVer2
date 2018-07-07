@@ -2,9 +2,16 @@
 @{
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
-@{ 
+@{
     ViewBag.Title = "Fanpages - list data";
 }
+
+<style>
+    .btn-sm {
+        margin-right: -5px !important;
+    }
+
+</style>
 
 <div role="main">
     <div class="se-pre-con" style="display: none;"></div>
@@ -27,14 +34,14 @@
                             </div>
                             @*<label class="label label-danger" style='@string.Format("display:{0}", (user.DuplicateKeyword.Length > 0) ? "block":"none")'>Duplicate Keyword. Please enter again!</label>*@
                         </div>
-                        <div class="col-md-4 col-sm-4 col-xs-12">                            
+                        <div class="col-md-4 col-sm-4 col-xs-12">
                             <table>
                                 <tr>
-                                    <td>
+                                    <td class="text-center linkchange">
                                         <button type="submit" class="btn btn-primary"><i class="fa fa-plus-square" style="font-size:14px;"></i><span>&nbsp; Add</span></button>
-                                        @*<a class="btn btn-sm btn-default cls-" style="color: #17a2b8 !important; border-color: #17a2b8 !important; " onclick="CrawlerKeywordAll(this); return false;">@Html.Raw("Crawl all now")</a>
+                                        <a class="btn btn-sm btn-default cls-CrawlAll" style="color: #17a2b8 !important; border-color: #17a2b8 !important; " onclick="KeywordCrawlAll(this); return false;">@Html.Raw("Crawl all now")</a>
                                         <a class="btn btn-sm btn-default" style="color: #fff !important; background-color: #6c757d !important; border-color: #6c757d !important; " onclick="DeleteAll(this); return false;">@Html.Raw("Delete all")</a>
-                                        <a class="btn btn-sm btn-danger" onclick="DeleteAndClearPostAll(this); return false;">@Html.Raw("Delete and clear all posts")</a>*@
+                                        <a class="btn btn-sm btn-danger" onclick="DeleteAndClearPostAll(this); return false;">@Html.Raw("Delete and clear all posts")</a>
                                     </td>
                                 </tr>
                             </table>
@@ -60,16 +67,16 @@
     $(".search-form").submit(function (e) {
         var key = $("#idStrSerch").val();
         if (key !== "")
-            LoadGrid();        
+            LoadGrid();
         return false;
     });
 
-    function CrawlerKeywordAll(btn) {
-        $('.cls-' + Id).text('Crawling...');
-        $('.cls-' + Id).css({ "background-color": "wheat", "border-color": "wheat" });
+    function KeywordCrawlAll(btn) {
+        $('.cls-CrawlAll').text('Crawling...');
+        $('.cls-CrawlAll').css({ "background-color": "wheat", "border-color": "wheat" });
         $.ajax(
         {
-            url: '@Url.Action("CrawlerKeywordAll", "CMSKeywords")',
+            url: '@Url.Action("KeywordCrawlAll", "CMSKeywords")',
             type: 'get',
             data: { },
             dataType: 'html',
@@ -226,7 +233,7 @@
     }
 
     function GetKeyID(KeyId) {
-        keyID = KeyId;         
+        keyID = KeyId;
     }
 
     function AddKeyToGroup(e) {
@@ -257,6 +264,6 @@
                     $('.se-pre-con').hide();
                 }
             });
-        }        
+        }
     }
 </script>

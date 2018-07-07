@@ -12,19 +12,23 @@ using CMS_Entity.Entity;
 namespace CMS_Shared.Utilities
 {
     public class LogHelper
-    {  
+    {
         public static void WriteLogs(string description, string jsonContent)
         {
             try
             {
                 using (var _db = new CMS_Context())
                 {
+
+                    description = description.Length > 98 ? description.Substring(0, 95) + "\n..." : description;
+                    jsonContent = jsonContent.Length > 98 ? description.Substring(0, 3995) + "\n..." : jsonContent;
+
                     var logData = new CMS_Log()
                     {
                         ID = Guid.NewGuid().ToString(),
-                        Decription = description.Substring(0, Math.Min(95, description.Length)) +"\n...",
+                        Decription = description,
                         CreatedDate = DateTime.Now,
-                        JsonContent = jsonContent.Substring(0, Math.Min(3995, jsonContent.Length))+"\n...",
+                        JsonContent = jsonContent,
                     };
                     _db.CMS_Log.Add(logData);
                     _db.SaveChanges();
