@@ -60,7 +60,7 @@
                                         <a class="btn btn-link linkPins" style="background-color: #007bff !important; color: #fff !important; " href="@Url.Action("Index", "CMSProducts", new { keywordID = item.Id})" target="_blank">@item.Quantity</a>
                                         <b>&nbsp;&nbsp;@Html.Raw("Posts")</b>
                                     </td>
-                                    <td>@string.Format("{0}", item.CreatedDate.HasValue ? item.CreatedDate.Value.ToString("dd/MM/yyyy") : "")</td>
+                                    <td>@string.Format("{0}", item.CreatedDate.HasValue ? item.CreatedDate.Value.ToString("dd/MM/yyyy HH:mm") : "")</td>
                                     <td class="text-center linkchange">
                                         <a id="" onclick="GetKeyID('@item.Id')" class="btn btn-primary btn-sm" style="background-color: #337ab7; color: #fff; " data-id="@item.Id"
                                            data-toggle="modal" @*data-backdrop="static"*@ data-target=".bs-example-modal-order-form-Keyword">
@@ -162,7 +162,7 @@
         ],
         "pageLength": 100,
         "columnDefs": [
-            { "orderable": false, "targets": [0, 1, 2, 4] },
+            { "orderable": false, "targets": [4] },
             { "width": "6%", "targets": [1] },
             { "width": "4%", "targets": [2] },
             { "width": "5%", "targets": [3] },
