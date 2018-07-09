@@ -468,6 +468,16 @@ namespace CMS_Web.Areas.Admin.Controllers
 #endregion
                 FilterModel.CreatedAtFrom = _FromDate;
                 FilterModel.CreatedAtTo = _ToDate;
+
+                var _Group = Request["GroupID"] ?? "";
+                if (!string.IsNullOrEmpty(_Group))
+                {
+                    FilterModel.LstGroupID.Add(_Group);
+
+                    var _lstKeywords = getListKeyWordByGroup(_Group);
+                    FilterModel.LstKeyWordID.AddRange(_lstKeywords);
+                }
+
                 if (TypeQuantity.ToString() == Commons.EQuantityType.ZeroToOne.ToString("d"))
                 {
                     FilterModel.PinCountFrom = 0;
