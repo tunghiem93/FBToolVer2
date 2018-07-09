@@ -172,7 +172,7 @@ namespace CMS_Shared.CMSEmployees
                         }
 
                         /* filter by create at */
-                        if (filter.CreatedAtFrom != filter.CreatedAtTo && filter.CreatedAtTo != null)
+                        if (filter.CreatedAtFrom != null && filter.CreatedAtTo != null)
                         {
                             query = query.Where(o => DbFunctions.TruncateTime(o.Created_At) >= DbFunctions.TruncateTime(filter.CreatedAtFrom)
                                                 && DbFunctions.TruncateTime(o.Created_At) <= DbFunctions.TruncateTime(filter.CreatedAtTo));
