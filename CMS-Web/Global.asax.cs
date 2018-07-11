@@ -1,4 +1,5 @@
 ﻿using CMS_DTO.CMSSession;
+using CMS_Shared.Utilities;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -21,6 +22,8 @@ namespace CMS_Web
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            var auto = AutoSingleton.Instance;
+            LogHelper.WriteLogs("Application_Start", "");
         }
 
         protected void Application_BeginRequest(Object sender, EventArgs e)
