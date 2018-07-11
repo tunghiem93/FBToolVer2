@@ -168,17 +168,17 @@ namespace CMS_Shared.CMSAccount
                     var e = cxt.CMS_Account.Find(ID);
                     if (e != null)
                     {
-                        if (!e.IsActive)
-                        {
-                            var active = cxt.CMS_Account.Where(o=> o.IsActive).FirstOrDefault();
-                            if (active != null)
-                            {
-                                active.IsActive = false;
-                            }                            
-                            e.IsActive = !e.IsActive;
-                        }
-                        
-                            
+                        //if (!e.IsActive)
+                        //{
+                        //    var active = cxt.CMS_Account.Where(o=> o.IsActive).FirstOrDefault();
+                        //    if (active != null)
+                        //    {
+                        //        active.IsActive = false;
+                        //    }                            
+                        //    e.IsActive = !e.IsActive;
+                        //}
+
+                        e.IsActive = !e.IsActive;
                     }
 
                     cxt.SaveChanges();

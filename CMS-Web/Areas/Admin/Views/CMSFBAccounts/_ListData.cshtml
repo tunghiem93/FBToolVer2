@@ -66,12 +66,12 @@
                                     <td class="text-center">
                                         @{ if (item.IsActive)
                                             {
-                                                <span class="label label-sm label-success"> @Html.Raw("Active") </span>
+                                                @*<span class="label label-sm label-success"> @Html.Raw("Active") </span>*@
+                                                <a onclick="ChangeStatus('@item.Id')" style="text-decoration: none; "><span class="label label-sm label-success"> @Html.Raw("Active") </span></a>
                                             }
                                             else
                                             {
                                                 <a onclick="ChangeStatus('@item.Id')" style="text-decoration: none; "><span class="label label-sm label-danger"> @Html.Raw("InActive") </span></a>
-
                                             }
                                         }
 

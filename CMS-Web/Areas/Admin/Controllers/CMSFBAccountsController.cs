@@ -22,7 +22,10 @@ namespace CMS_Web.Areas.Admin.Controllers
             _factory = new CMSAccountFactory();
             _facFBAccount = new CMSAccountFactory();
             ListItem = new List<string>();
-            ListItem = _factory.GetList().Select(o => o.Account).ToList();
+            //ListItem = _factory.GetList().Select(o => o.Account).ToList();
+            var lstAcc = _factory.GetList();
+            if (lstAcc != null)
+                ListItem = lstAcc.Select(o => o.Account).ToList();
         }
 
         // GET: Admin/CMSFBAccounts

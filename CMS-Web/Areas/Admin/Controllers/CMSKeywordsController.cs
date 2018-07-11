@@ -25,8 +25,12 @@ namespace CMS_Web.Areas.Admin.Controllers
         {
             _factory = new CMSKeywordFactory();
             ListItem = new List<string>();
-            ListItem = _factory.GetList().Select(o=>o.KeySearch).ToList();
-            ViewBag.ListGroupKey = getListGroupKeyword();
+            //ListItem = _factory.GetList().Select(o=>o.KeySearch).ToList();
+            var lstItem = _factory.GetList();
+            if (lstItem != null)
+                ListItem = lstItem.Select(o=>o.KeySearch).ToList();
+
+                ViewBag.ListGroupKey = getListGroupKeyword();
         }
 
         public ActionResult Index()
