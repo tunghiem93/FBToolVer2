@@ -352,19 +352,24 @@ namespace CMS_Shared.Utilities
                     if (abbr != null)
                     {
                         /* pares datetime */
-                        DateTime created_at = Commons.MinDate;
-                        if (DateTime.TryParse(abbr.GetAttributeValue("title", ""), out created_at))
-                        {
-                            pin.Created_At = created_at;
-                            ret = true;
-                        }
+                        //DateTime created_at = Commons.MinDate;
+                        //var timeTitle = abbr.GetAttributeValue("title", "");
+                        //if (DateTime.TryParse(timeTitle, out created_at))
+                        //{
+                        //    pin.Created_At = created_at;
+                        //    ret = true;
+                        //}
+
+                        var timeStamp = abbr.GetAttributeValue("data-utime", "");
+                        System.DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
+                        pin.Created_At = dtDateTime.AddSeconds(double.Parse(timeStamp)).ToLocalTime();
                     }
                 }
             }
-            catch(Exception ex) { };
+            catch (Exception ex) { };
             return ret;
         }
-
+        
         public static bool findNode(string input, string key, int start, List<string> fb_id, ref PinsModels pin)
         {
             var jsonfeedbacktarget = findElement(input, "feedbacktarget", 0);
