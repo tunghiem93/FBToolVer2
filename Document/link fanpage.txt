@@ -1,0 +1,39 @@
+https://www.facebook.com/Nice-shirts-733319560081319/
+https://www.facebook.com/Awesome-T-shirt-150588258893142/
+https://www.facebook.com/Vikingususlt/
+https://www.facebook.com/lifewithsunshine/
+https://www.facebook.com/pg/lifewithsunshine/ads/?country=1&ref=page_internal
+
+https://www.facebook.com/JulyBestMothEver/
+https://www.facebook.com/INTOTHEAM/								có nhiều country
+https://www.facebook.com/Black-and-Boujee-284623355314812/
+https://www.facebook.com/I-Love-Hockey-407447736305129/
+https://www.facebook.com/weapongun/
+https://www.facebook.com/Teachers-Do-It-Better-281276808938791/
+https://www.facebook.com/Awesome-People-Are-Born-In-September-863456000490709/
+https://www.facebook.com/Amazing-November-419329768507395/
+https://www.facebook.com/The-Wonderful-Things-558485254545633/
+https://www.facebook.com/LoveCoffeeus/
+
+Cloud:
+   Cookie: fr=00vWc1xIrs0snjSy5.AWVqFN0KE5XOIZP6R8_OtgSYx74.BbPZjk.hq.AAA.0.0.BbPZ55.AWWFnpj1; sb=5Jg9W17E6SfjFKl6ZZYbq1i8; locale=vi_VN; wd=1164x269; datr=dZ49W6NkZHIQV9dBM55VxhS0; c_user=100027081379227; xs=40%3AjigBdKAofOFqbQ%3A2%3A1530764921%3A-1%3A-1; pl=n; spin=r.4072592_b.trunk_t.1530764922_s.1_v.2_; act=1530764986937%2F1; presence=EDvF3EtimeF1530765226EuserFA21B27081379227A2EstateFDutF1530765226895CEchFDp_5f1B27081379227F2CC
+Local:
+   httpWebRequest.Headers["Cookie"] = "fr=0g932KaBNIHkPNSHd.AWUyWBwpX4_A_YKA4NhvmupYBkk.BbMcZu.uD.Fs5.0.0.BbOtXK.AWXncoeT; sb=NmI3W-ffluEtyFHleEWSjhBl; wd=1920x943; datr=NmI3WwtbosYtTwDtslqJtXZd; c_user=100003727776485; xs=136%3Au6XG_yUasjTeFQ%3A2%3A1530356294%3A6091%3A726; pl=n; spin=r.4066192_b.trunk_t.1530495666_s.1_v.2_; act=1530582591458%2F0; presence=EDvF3EtimeF1530582595EuserFA21B03727776485A2EstateFDutF1530582595488CEchFDp_5f1B03727776485F2CC";   
+   
+
+   
+2. Created_at
+4. account status
+
+if login.status_code == 302 and self._fbuser_id:
+	self._fbaccount.update_cookie(cookies=dict(self.r.cookies))
+	return True
+self._fbaccount.suppend()
+return False
+
+
+				
+if json_data.get('payload') is None or json_data.get('payload') == []:
+	self._fbaccount.suppend()
+	print ('response-data-error')
+	return

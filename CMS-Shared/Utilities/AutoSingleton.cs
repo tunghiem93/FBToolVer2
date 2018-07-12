@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CMS_Shared.Keyword;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -46,13 +47,31 @@ namespace CMS_Shared.Utilities
             aTimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
             aTimer.Interval = Commons.TimerInterval*1000; /* (second*1000) = milisecond */
             aTimer.Enabled = true;
-            
         }
 
         // Specify what you want to happen when the Elapsed event is raised.
         private static void OnTimedEvent(object source, ElapsedEventArgs e)
         {
-            LogHelper.WriteLogs("Timer", DateTime.Now.ToString());
+            try
+            {
+                /* crawl data */
+                AutoCrawlAll();
+            }
+            catch(Exception ex) { };
+
+            /* log data */
+            LogHelper.WriteLogs("Timer", "");
+        }
+
+        private static void AutoCrawlAll()
+        {
+            try
+            {
+                var keyFac = new CMSKeywordFactory();
+                var msg = "";
+                keyFac.CrawlAllKeyWords("AutoCrawl", ref msg);
+            }
+            catch (Exception ex) { };
         }
     }
 }

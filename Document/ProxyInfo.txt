@@ -1,0 +1,20 @@
+InstantProxies.com admin panel:
+- URL: http://admin.instantproxies.com
+- Username: 97741
+- Password: n9uG2M8UR
+- Shortcut: http://admin.instantproxies.com/login.php?user=97741&pass=n9uG2M8UR
+
+To get started, please follow steps below: 
+
+1. Login: http://admin.instantproxies.com/login.php?user=97741&pass=n9uG2M8UR
+
+2. Under "Your Authorized IPs", click [Add Below] and [Submit Update].
+
+3. Use the resources here to test your proxies in a browser:
+    Tutorials: http://instantproxies.com/resources/
+    Knowledgebase: http://instantproxies.com/billing/knowledgebase.php
+
+Please let us know how we can help you get started.
+
+The InstantProxies.com Admin Team
+support@instantproxies.com
