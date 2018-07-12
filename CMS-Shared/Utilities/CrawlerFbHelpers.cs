@@ -76,9 +76,11 @@ namespace CMS_Shared.Utilities
         {
             try
             {
+                int _port = 0;
+                string _proxy = CommonHelper.RamdomProxy(ref _port);
                 Uri uri = new Uri(url);
                 var httpWebRequest = (HttpWebRequest)WebRequest.Create(uri);
-
+                httpWebRequest.Proxy = new WebProxy(_proxy,_port);
                 /* request need cookie & user agent */
                 httpWebRequest.Headers["Cookie"] = Cookies ;
                 httpWebRequest.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:61.0) Gecko/20100101 Firefox/61.0";
@@ -158,16 +160,21 @@ namespace CMS_Shared.Utilities
                             var strfb_id = item.GetAttributeValue("id", "");
                             if (!string.IsNullOrEmpty(strfb_id))
                             {
-                                var split = strfb_id.Split(';').ToList();
-                                if (split != null && split.Count > 1)
-                                {
-                                    var fb_id = split[1];
+                                //var split = strfb_id.Split(';').ToList();
+                                //if (split != null && split.Count > 1)
+                                //{
+                                //    var fb_id = split[1];
+                                //    fb_ids.Add(fb_id);
+                                //}
+                                //else
+                                //{
+                                //    fb_ids.Add("");
+                                //}
+                                var fb_id = findFbId_v2(strfb_id);
+                                if (!string.IsNullOrEmpty(fb_id))
                                     fb_ids.Add(fb_id);
-                                }
                                 else
-                                {
                                     fb_ids.Add("");
-                                }
                             }
                         }
                     }
@@ -185,6 +192,7 @@ namespace CMS_Shared.Utilities
                         foreach (var item in nodeHtmlImage)
                         {
                             List<string> fb_id = new List<string>();
+                            // post normal
                             var nodeChildImage = item.Descendants("a").ToList();
                             if (nodeChildImage != null && nodeChildImage.Count > 0)
                             {
@@ -224,6 +232,48 @@ namespace CMS_Shared.Utilities
                                     }
                                 }
                             }
+                            //post dynamic
+                            var nodeChildDynamic = item.Descendants("ul").ToList();
+                            if (nodeChildDynamic != null && nodeChildDynamic.Count > 0)
+                            {
+                                
+                                var _doc = new HtmlDocument();
+                                _doc.LoadHtml(nodeChildDynamic[0].InnerHtml);
+                                var nodeLI = _doc.DocumentNode.Descendants().Where(
+                                                     x => (x.Name == "li" && x.Attributes["class"] != null && x.Attributes["class"].Value.Contains("_5ya"))).ToList();
+                                if (nodeLI != null && nodeLI.Count > 0)
+                                {
+                                    foreach (var itemLI in nodeLI)
+                                    {
+                                        var Pin = new PinsModels();
+                                        var nodeLIImage = itemLI.Descendants("img").ToList();
+                                        if (nodeLIImage != null && nodeLIImage.Count > 0)
+                                        {
+                                            var _image = nodeLIImage[0].GetAttributeValue("src", "");
+                                            if (!string.IsNullOrEmpty(_image))
+                                            {
+                                                _image = _image.Replace("amp;", "");
+                                                Pin.ImageURL = _image;
+                                                var PinId = findFbOh(_image);
+                                                Pin.ID = PinId + "_"+ fb_ids[index];
+                                            }
+                                        }
+
+                                        var nodeLink = itemLI.Descendants("a").ToList();
+                                        if (nodeLink != null && nodeLink.Count > 0)
+                                        {
+                                            var _link = nodeLink[0].GetAttributeValue("href", "");
+                                            Pin.Link = _link;
+                                        }
+
+                                        if (!string.IsNullOrEmpty(Pin.ID))
+                                        {
+                                            pins.Pins.Add(Pin);
+                                        }
+                                    }
+                                }
+
+                            }
                             index++;
                         }
                     }
@@ -240,10 +290,12 @@ namespace CMS_Shared.Utilities
         {
             try
             {
+                int _port = 0;
+                string _proxy = CommonHelper.RamdomProxy(ref _port);
                 Url = "https://www.facebook.com" + Url + "";
                 Uri uri = new Uri(Url);
                 var httpWebRequest = (HttpWebRequest)WebRequest.Create(uri);
-
+                httpWebRequest.Proxy = new WebProxy(_proxy, _port);
                 httpWebRequest.Headers["Cookie"] = Cookies;
                 httpWebRequest.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:61.0) Gecko/20100101 Firefox/61.0";
                 httpWebRequest.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";
@@ -369,6 +421,29 @@ namespace CMS_Shared.Utilities
             return ret;
         }
 
+        public static string findFbId_v2(string input)
+        {
+            var ret = "";
+            try
+            {
+                var iStart = input.IndexOf("subtitle_");
+                var iEnd = 0;
+                iStart = input.IndexOf("_", iStart);
+                for (int i = iStart; i < input.Length; i++)
+                {
+                    char key = input[i];
+                    if (key == ':')
+                    {
+                        iEnd = i;
+                        break;
+                    }
+                }
+                ret = input.Substring(iStart + 1, (iEnd - iStart) - 1);
+            }
+            catch (Exception ex) { }
+            return ret;
+        }
+
         public static string findFbId(string input)
         {
             var ret = "";
@@ -386,11 +461,37 @@ namespace CMS_Shared.Utilities
             return ret;
         }
 
+        public static string findFbOh(string input)
+        {
+            var ret = "";
+            try
+            {
+                var iEnd= input.IndexOf("_n.");
+                var iStart = 0;
+                iEnd = input.IndexOf("_", iEnd);
+                for (int i = iEnd -1 ; i > 0; i--)
+                {
+                    char key = input[i];
+                    if (key == '_')
+                    {
+                        iStart = i;
+                        break;
+                    }
+                }
+                ret = input.Substring(iStart + 1, (iEnd - iStart) - 1);
+            }
+            catch(Exception ex) { }
+            return ret;
+        }
+
         public static void CrawlerNextPage(string pageId, string userId, int cursor, string referer, ref CMS_CrawlerModels pins)
         {
+            int _port = 0;
+            string _proxy = CommonHelper.RamdomProxy(ref _port);
             var url = "https://www.facebook.com/pages/ads/more/?cursor=" + cursor + "&surface=www_page_ads&unit_count=" + cursor + "&country=1&dpr=1&__user=" + userId + "&__a=1&__req=v&__be=1&__pc=PHASED%3ADEFAULT&__rev=4075583&__spin_r=4075583&__spin_b=trunk&__spin_t=1530846023&page_id=" + pageId + "";
             Uri uri = new Uri(url);
             var httpWebRequest = (HttpWebRequest)WebRequest.Create(uri);
+            httpWebRequest.Proxy = new WebProxy(_proxy, _port);
             /* request need cookie & user agent */
             httpWebRequest.Headers["Cookie"] = Cookies;
             httpWebRequest.Referer = referer;
@@ -482,16 +583,22 @@ namespace CMS_Shared.Utilities
                                         var strfb_id = item.GetAttributeValue("id", "");
                                         if (!string.IsNullOrEmpty(strfb_id))
                                         {
-                                            var split = strfb_id.Split(';').ToList();
-                                            if (split != null && split.Count > 1)
-                                            {
-                                                var fb_id = split[1];
+                                            //var split = strfb_id.Split(';').ToList();
+                                            //if (split != null && split.Count > 1)
+                                            //{
+                                            //    var fb_id = split[1];
+                                            //    fb_ids.Add(fb_id);
+                                            //}
+                                            //else
+                                            //{
+                                            //    fb_ids.Add("");
+                                            //}
+
+                                            var fb_id = findFbId_v2(strfb_id);
+                                            if (!string.IsNullOrEmpty(fb_id))
                                                 fb_ids.Add(fb_id);
-                                            }
                                             else
-                                            {
                                                 fb_ids.Add("");
-                                            }
                                         }
                                     }
                                 }
@@ -542,6 +649,48 @@ namespace CMS_Shared.Utilities
                                                         Pin.OwnerName = ListName[index];
                                                     }
                                                     pins.Pins.Add(Pin);
+                                                }
+                                            }
+                                        }
+
+                                        //post dynamic
+                                        var nodeChildDynamic = item.Descendants("ul").ToList();
+                                        if (nodeChildDynamic != null && nodeChildDynamic.Count > 0)
+                                        {
+                                            
+                                            var _doc = new HtmlDocument();
+                                            _doc.LoadHtml(nodeChildDynamic[0].InnerHtml);
+                                            var nodeLI = _doc.DocumentNode.Descendants().Where(
+                                                                 x => (x.Name == "li" && x.Attributes["class"] != null && x.Attributes["class"].Value.Contains("_5ya"))).ToList();
+                                            if (nodeLI != null && nodeLI.Count > 0)
+                                            {
+                                                foreach (var itemLI in nodeLI)
+                                                {
+                                                    var Pin = new PinsModels();
+                                                    var nodeLIImage = itemLI.Descendants("img").ToList();
+                                                    if (nodeLIImage != null && nodeLIImage.Count > 0)
+                                                    {
+                                                        var _image = nodeLIImage[0].GetAttributeValue("src", "");
+                                                        if (!string.IsNullOrEmpty(_image))
+                                                        {
+                                                            _image = _image.Replace("amp;", "");
+                                                            Pin.ImageURL = _image;
+                                                            var PinId = findFbOh(_image);
+                                                            Pin.ID = PinId + "_"+ fb_ids[index];
+                                                        }
+                                                    }
+
+                                                    var nodeLink = itemLI.Descendants("a").ToList();
+                                                    if (nodeLink != null && nodeLink.Count > 0)
+                                                    {
+                                                        var _link = nodeLink[0].GetAttributeValue("href", "");
+                                                        Pin.Link = _link;
+                                                    }
+
+                                                    if (!string.IsNullOrEmpty(Pin.ID))
+                                                    {
+                                                        pins.Pins.Add(Pin);
+                                                    }
                                                 }
                                             }
                                         }

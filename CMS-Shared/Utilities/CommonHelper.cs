@@ -187,5 +187,20 @@ namespace CMS_Shared.Utilities
             }
             catch(Exception ex) { }
         }
+
+        public static string RamdomProxy(ref int port)
+        {
+            var random = new Random();
+            int index = random.Next(Commons.Proxys.Count);
+            var _proxy = Commons.Proxys[index];
+            var result = "";
+            if(!string.IsNullOrEmpty(_proxy))
+            {
+                var _split = _proxy.Split(':');
+                port = Convert.ToInt16(_split[1]);
+                result = _split[0].ToString();
+            }
+            return result;
+        }
     }
 }
