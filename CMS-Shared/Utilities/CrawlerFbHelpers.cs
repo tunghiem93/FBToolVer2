@@ -266,6 +266,19 @@ namespace CMS_Shared.Utilities
                                             Pin.Link = _link;
                                         }
 
+                                        //description
+                                        var nodeLIDescription = itemLI.Descendants("div").ToList();
+                                        if (nodeLIDescription != null && nodeLIDescription.Count > 0)
+                                        {
+                                            var _description = nodeLIDescription.Where(x => x.LastChild.Name.Equals("#text")).FirstOrDefault();
+                                            if (_description != null)
+                                                Pin.Description = _description.InnerText;
+                                        }
+                                        if (ListName != null && ListName.Count >= index)
+                                        {
+                                            Pin.OwnerName = ListName[index];
+                                        }
+
                                         if (!string.IsNullOrEmpty(Pin.ID))
                                         {
                                             pins.Pins.Add(Pin);
@@ -687,6 +700,18 @@ namespace CMS_Shared.Utilities
                                                         Pin.Link = _link;
                                                     }
 
+                                                    //description
+                                                    var nodeLIDescription = itemLI.Descendants("div").ToList();
+                                                    if(nodeLIDescription != null && nodeLIDescription.Count > 0)
+                                                    {
+                                                        var _description = nodeLIDescription.Where(x => x.LastChild.Name.Equals("#text")).FirstOrDefault();
+                                                        if (_description != null)
+                                                            Pin.Description = _description.InnerText;
+                                                    }
+                                                    if (ListName != null && ListName.Count >= index)
+                                                    {
+                                                        Pin.OwnerName = ListName[index];
+                                                    }
                                                     if (!string.IsNullOrEmpty(Pin.ID))
                                                     {
                                                         pins.Pins.Add(Pin);
