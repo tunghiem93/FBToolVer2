@@ -239,7 +239,7 @@
 
     function AddKeyToGroup(e) {
         var GroupKeyId = $('#groupDdlView').val();
-        if (keyID != null && keyID.length > 0) {
+        if (keyID != null && keyID.length > 0 && GroupKeyId != null && GroupKeyId.length > 0) {
             $.ajax(
             {
                 url: '@Url.Action("AddKeyToGroup", "CMSKeywords")',
@@ -254,15 +254,15 @@
                 beforeSend: function () {
                     $('.se-pre-con').show();
                 },
-                    complete: function () {
-                        alert('Fanpage save successful!')
-                    $('.se-pre-con').hide();
+                complete: function () {
+                    alert('Fanpage save successful!')
+                $('.se-pre-con').hide();
                 },
-                    error: function (e) {
-                        if (e.status == 400) {
-                            alert("Can not save Fanpage!");
-                        }
-                    $('.se-pre-con').hide();
+                error: function (e) {
+                    if (e.status == 400) {
+                        alert("Can not save Fanpage!");
+                    }
+                $('.se-pre-con').hide();
                 }
             });
         }

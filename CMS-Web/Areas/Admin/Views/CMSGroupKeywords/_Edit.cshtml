@@ -53,8 +53,8 @@
                                             foreach (var item in Model.ListKeyOnGroup)
                                             {
                                                 <tr class="odd gradeX rowKey">
-                                                    <td class="text-left">
-                                                        <a class="btn btn-link" href="@Url.Action("Index", "CMSProducts" , new { keywordID=item.Id})" target="_blank"><b>@Html.Raw("[" + item.Sequence + "]" + " " + '"' + string.Format("{0}", (item.KeySearch.Length > 25) ? (item.KeySearch.Substring(0, 12) + "...") : item.KeySearch) + '"')</b></a>
+                                                    <td class="text-left" style="width: 40% !important; ">
+                                                        <a class="btn btn-link" style="font-size: 11px; " href="@Url.Action("Index", "CMSProducts" , new { keywordID=item.Id})" target="_blank"><b>@Html.Raw("[" + item.Sequence + "]" + " " + '"' + string.Format("{0}", (item.KeySearch.Length > 40) ? (item.KeySearch.Substring(0, 40) + "...") : item.KeySearch) + '"')</b></a>
                                                     </td>
                                                     <td>
                                                         <a class="btn btn-link linkchange" href="@Url.Action(" Index", "CMSProducts" , new { keywordID=item.Id})" target="_blank" style="color: #000 !important; ">
@@ -137,7 +137,7 @@
             "pageLength": 6,
             "columnDefs": [
                 { "orderable": false, "targets": [0, 1, 2, 4] },
-                { "width": "8%", "targets": [4] },
+                { "width": "35%", "targets": [0] },
             ],
             "order": [
                 [3, "asc"]
