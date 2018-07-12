@@ -18,6 +18,7 @@ namespace CMS_Shared.Keyword
     {
 
         private static Semaphore m_Semaphore = new Semaphore(1, 1); /* semaphore for create key, craw data */
+        private static Semaphore m_SemaphoreCrawlAll = new Semaphore(1, 1); /* semaphore for create key, craw data */
 
         public List<CMS_KeywordModels> GetList(string groupID = "")
         {
@@ -202,7 +203,7 @@ namespace CMS_Shared.Keyword
             }
             return result;
         }
-        
+
         public bool DeleteAndRemoveDB(string Id, ref string msg)
         {
             var result = true;
@@ -288,7 +289,7 @@ namespace CMS_Shared.Keyword
                 using (var _db = new CMS_Context())
                 {
                     var keys = _db.CMS_KeyWord.Select(o => o.ID).ToList();
-                    foreach(var keyID in keys)
+                    foreach (var keyID in keys)
                     {
                         DeleteAndRemoveDBCommand(keyID, ref msg);
                     }
@@ -469,6 +470,7 @@ namespace CMS_Shared.Keyword
             var result = true;
             try
             {
+                m_SemaphoreCrawlAll.WaitOne();
                 using (var _db = new CMS_Context())
                 {
                     var keyWords = _db.CMS_KeyWord.Where(o => o.Status == (byte)Commons.EStatus.Active).ToList();
@@ -487,6 +489,10 @@ namespace CMS_Shared.Keyword
 
                 LogHelper.WriteLogs("ErrorCrawlAllKeyWords:", JsonConvert.SerializeObject(ex));
             }
+            finally
+            {
+                m_SemaphoreCrawlAll.Release();
+            };
             LogHelper.WriteLogs("ResponseCrawlAllKeyWords", result.ToString());
 
             return result;

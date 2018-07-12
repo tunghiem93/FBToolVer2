@@ -47,7 +47,7 @@ namespace CMS_Shared.CMSEmployees
                                 uPin.DayCount++;
 
                             /* update other info */
-                            uPin.Created_At = checkPin.Created_At;
+                            uPin.Created_At = checkPin.Created_At < Commons.MinDate ? uPin.Created_At : checkPin.Created_At;
                             uPin.Repin_count = checkPin.Repin_count;
                             uPin.ReactionCount = checkPin.reactioncount;
                             uPin.ShareCount = checkPin.sharecount;
