@@ -52,20 +52,19 @@ namespace CMS_Shared.Utilities
                 var dateTimeNow = DateTime.UtcNow;
 
                 /* time in VN: GMT+7*/
-                dateTimeNow.AddHours(7);
-
-                /* time span from begin date */
-                var timeSpan = dateTimeNow - dateTimeNow.Date;
-
-                /* time wait for next date */
-                var timeWaitForNextDate = (24 * 60 * 60 - timeSpan.TotalSeconds) ;// insecond 
-
-                /* time start at next date */
-                var nextHour = Commons.TimerStartAt;
-                timeWaitForNextDate += (nextHour * 60 * 60);
+                dateTimeNow = dateTimeNow.AddHours(7);
                 
-                /* wait for next day */
-                Thread.Sleep((int)timeWaitForNextDate* 1000); 
+                /* get time start timer */
+                var timeStart = Commons.TimerStartAt;
+                var dateStart = dateTimeNow.Date.AddHours(timeStart);
+                if (dateStart < dateTimeNow)/* start at next date */
+                {
+                    dateStart = dateStart.AddDays(1); /* */
+                }
+                
+                /* time span to sleep */
+                var timeSpan = dateStart - dateTimeNow;
+                Thread.Sleep((int)timeSpan.TotalMilliseconds); 
             }
             catch(Exception ex) { };
         }
