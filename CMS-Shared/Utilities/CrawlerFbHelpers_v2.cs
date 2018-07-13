@@ -312,33 +312,41 @@ namespace CMS_Shared.Utilities
 
         public static void CrawlerFb(string url, ref CMS_CrawlerModels pins, ref string _pageId)
         {
-            try
-            {
-                int _port = 0;
-                string _proxy = CommonHelper.RamdomProxy(ref _port);
-                Uri uri = new Uri(url);
-                var httpWebRequest = (HttpWebRequest)WebRequest.Create(uri);
-                httpWebRequest.Proxy = new WebProxy(_proxy, _port);
-                /* request need cookie & user agent */
-                httpWebRequest.Headers["Cookie"] = Cookies;
-                httpWebRequest.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:61.0) Gecko/20100101 Firefox/61.0";
-                httpWebRequest.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";
+            int _port = 0;
+            string _proxy = CommonHelper.RamdomProxy(ref _port);
+            Uri uri = new Uri(url);
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create(uri);
+            httpWebRequest.Proxy = new WebProxy(_proxy, _port);
+            /* request need cookie & user agent */
+            httpWebRequest.Headers["Cookie"] = Cookies;
+            httpWebRequest.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:61.0) Gecko/20100101 Firefox/61.0";
+            httpWebRequest.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";
 
-                httpWebRequest.Timeout = 9000000;
-                using (HttpWebResponse httpResponse = (HttpWebResponse)httpWebRequest.GetResponse())
+            httpWebRequest.Timeout = 9000000;
+            using (HttpWebResponse httpResponse = (HttpWebResponse)httpWebRequest.GetResponse())
+            {
+                try
                 {
-                    using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+                    if (httpResponse.StatusCode == HttpStatusCode.OK)
                     {
-                        var html = streamReader.ReadToEnd();
-                        CrawlerDataFacebook(html, false, ref pins, ref _pageId);
+                        using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+                        {
+                            var html = streamReader.ReadToEnd();
+                            CrawlerDataFacebook(html, false, ref pins, ref _pageId);
+                            streamReader.Close();
+                            streamReader.Dispose();
+                        }
                     }
                 }
+                catch(Exception ex)
+                {
+                    if (httpResponse.StatusCode == HttpStatusCode.NotFound)
+                        CrawlerFb(url, ref pins, ref _pageId);
 
-            }
-            catch (Exception ex)
-            {
-                LogHelper.WriteLogs("ErrorCrawlerFB: " + url, JsonConvert.SerializeObject(ex));
-                NSLog.Logger.Error("Crawler Fb: ", ex);
+                    LogHelper.WriteLogs("ErrorCrawlerFB: " + url, JsonConvert.SerializeObject(ex));
+                    NSLog.Logger.Error("Crawler Fb: ", ex);
+                }
+
             }
         }
 
@@ -359,32 +367,45 @@ namespace CMS_Shared.Utilities
             httpWebRequest.Timeout = 9000000;
             using (HttpWebResponse httpResponse = (HttpWebResponse)httpWebRequest.GetResponse())
             {
-                using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+                try
                 {
-                    var html = streamReader.ReadToEnd();
-                    if (!string.IsNullOrEmpty(html))
+                    if(httpResponse.StatusCode == HttpStatusCode.OK)
                     {
-                        html = html.Replace("for (;;);", "");
-                        JavaScriptSerializer jsonSerializer = new JavaScriptSerializer();
-                        dynamic dobj = jsonSerializer.Deserialize<dynamic>(html);
-                        var domops = dobj["domops"];
-                        if (domops != null)
+                        using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
                         {
-                            var _objhtmt = domops[0][3];
-                            if (_objhtmt != null)
+                            var html = streamReader.ReadToEnd();
+                            if (!string.IsNullOrEmpty(html))
                             {
-                                var _html = _objhtmt["__html"];
-                                if (!string.IsNullOrEmpty(_html))
+                                html = html.Replace("for (;;);", "");
+                                JavaScriptSerializer jsonSerializer = new JavaScriptSerializer();
+                                dynamic dobj = jsonSerializer.Deserialize<dynamic>(html);
+                                var domops = dobj["domops"];
+                                if (domops != null)
                                 {
-                                    CrawlerDataFacebook(_html, true, ref pins, ref pageId);
-                                }
-                                else
-                                {
-                                    return;
+                                    var _objhtmt = domops[0][3];
+                                    if (_objhtmt != null)
+                                    {
+                                        var _html = _objhtmt["__html"];
+                                        if (!string.IsNullOrEmpty(_html))
+                                        {
+                                            CrawlerDataFacebook(_html, true, ref pins, ref pageId);
+                                        }
+                                        else
+                                        {
+                                            return;
+                                        }
+                                    }
                                 }
                             }
+                            streamReader.Close();
+                            streamReader.Dispose();
                         }
                     }
+                }
+                catch(Exception ex)
+                {
+                    if (httpResponse.StatusCode == HttpStatusCode.NotFound)
+                        CrawlerNextPage(pageId, userId, cursor, referer, ref pins);
                 }
             }
             // đệ quy craweler next page
@@ -452,43 +473,56 @@ namespace CMS_Shared.Utilities
 
         public static void CrawlerFBDetail(string Url, List<string> fb_id, ref PinsModels pin)
         {
-            try
+            int _port = 0;
+            string _proxy = CommonHelper.RamdomProxy(ref _port);
+            Url = "https://www.facebook.com" + Url + "";
+            Uri uri = new Uri(Url);
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create(uri);
+            httpWebRequest.Proxy = new WebProxy(_proxy, _port);
+            httpWebRequest.Headers["Cookie"] = Cookies;
+            httpWebRequest.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:61.0) Gecko/20100101 Firefox/61.0";
+            httpWebRequest.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";
+            httpWebRequest.Timeout = 9000000;
+            httpWebRequest.KeepAlive = true;
+            using (HttpWebResponse httpResponse = (HttpWebResponse)httpWebRequest.GetResponse())
             {
-                int _port = 0;
-                string _proxy = CommonHelper.RamdomProxy(ref _port);
-                Url = "https://www.facebook.com" + Url + "";
-                Uri uri = new Uri(Url);
-                var httpWebRequest = (HttpWebRequest)WebRequest.Create(uri);
-                httpWebRequest.Proxy = new WebProxy(_proxy, _port);
-                httpWebRequest.Headers["Cookie"] = Cookies;
-                httpWebRequest.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:61.0) Gecko/20100101 Firefox/61.0";
-                httpWebRequest.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";
-                httpWebRequest.Timeout = 9000000;
-                httpWebRequest.KeepAlive = true;
-                using (HttpWebResponse httpResponse = (HttpWebResponse)httpWebRequest.GetResponse())
+                try
                 {
-                    // Do your processings here....
-                    using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+                    if (httpResponse.StatusCode == HttpStatusCode.OK)
                     {
-                        var html = streamReader.ReadToEnd();
-                        HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
-                        doc.LoadHtml(html);
+                        using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+                        {
+                            var html = streamReader.ReadToEnd();
+                            HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
+                            doc.LoadHtml(html);
 
-                        /* FIND FB CREATED DATE (created_at) */
-                        var tagA = doc.DocumentNode.Descendants("a").Where(n => n.GetAttributeValue("rel", "") == "theater").FirstOrDefault();
-                        findCreateAt(fb_id, ref tagA, ref pin);
+                            /* FIND FB CREATED DATE (created_at) */
+                            var tagA = doc.DocumentNode.Descendants("a").Where(n => n.GetAttributeValue("rel", "") == "theater").FirstOrDefault();
+                            findCreateAt(fb_id, ref tagA, ref pin);
 
-                        /* FIND FEEDBACK_TARGET */
-                        var script = doc.DocumentNode.Descendants().Where(n => n.Name == "script").ToList();
-                        var innerScript = script.Where(o => !string.IsNullOrEmpty(o.InnerText) && o.InnerText.Contains("require(\"TimeSlice\").guard(function() {require(\"ServerJSDefine\")")).Select(o => o.InnerText).FirstOrDefault();
-                        findNode(innerScript, "feedbacktarget", 0, fb_id, ref pin);
+                            /* FIND FEEDBACK_TARGET */
+                            var script = doc.DocumentNode.Descendants().Where(n => n.Name == "script").ToList();
+                            var innerScript = script.Where(o => !string.IsNullOrEmpty(o.InnerText) && o.InnerText.Contains("require(\"TimeSlice\").guard(function() {require(\"ServerJSDefine\")")).Select(o => o.InnerText).FirstOrDefault();
+                            findNode(innerScript, "feedbacktarget", 0, fb_id, ref pin);
+                            streamReader.Close();
+                            streamReader.Dispose();
+                        }
+                    }
+                    else
+                    {
+                        CrawlerFBDetail(Url, fb_id, ref pin);
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                LogHelper.WriteLogs("ErrorCrawlerFBDetail: ", JsonConvert.SerializeObject(ex));
-                NSLog.Logger.Error("CrawlerFB Detail", ex);
+                catch(Exception ex)
+                {
+                    if(httpResponse.StatusCode == HttpStatusCode.NotFound)
+                        CrawlerFBDetail(Url, fb_id, ref pin);
+
+                    LogHelper.WriteLogs("ErrorCrawlerFBDetail: ", JsonConvert.SerializeObject(ex));
+                    NSLog.Logger.Error("CrawlerFB Detail", ex);
+                }
+                // Do your processings here....
+
             }
         }
 
@@ -612,9 +646,9 @@ namespace CMS_Shared.Utilities
 
     public class JsonObject_v2
     {
-        public Int16 commentcount { get; set; }
-        public Int16 reactioncount { get; set; }
-        public Int16 sharecount { get; set; }
+        public int commentcount { get; set; }
+        public int reactioncount { get; set; }
+        public int sharecount { get; set; }
         public string entidentifier { get; set; }
     }
 }
