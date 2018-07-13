@@ -64,6 +64,7 @@ namespace CMS_Shared.Utilities
 
                 /* time span to sleep */
                 var timeSpan = dateStart - dateTimeNow;
+                LogHelper.WriteLogs("WaitForNextDate", dateStart.ToString());
                 Thread.Sleep((int)timeSpan.TotalMilliseconds);
             }
             catch (Exception ex) { };
