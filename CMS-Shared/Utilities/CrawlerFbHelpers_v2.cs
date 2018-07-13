@@ -167,12 +167,12 @@ namespace CMS_Shared.Utilities
                                                 OwnerName = NodeName[0].InnerText;
                                                 if (!string.IsNullOrEmpty(OwnerName))
                                                     OwnerName = OwnerName.Replace("&quot;", "");
+                                                else
+                                                {
+                                                    pins.ErrorStatus = (byte)Commons.EErrorStatus.AccBlocked;
+                                                }
                                             }
                                         }
-                                    }
-                                    else
-                                    {
-                                        pins.ErrorStatus = (byte)Commons.EErrorStatus.AccBlocked;
                                     }
 
                                     // fb_id
@@ -417,6 +417,28 @@ namespace CMS_Shared.Utilities
                 /* crawl first page */
                 string _pageId = "";
                 CrawlerFb(url, ref pins, ref _pageId);
+
+                if(string.IsNullOrEmpty(_pageId))
+                {
+                    if (!string.IsNullOrEmpty(url))
+                    {
+                        var end = url.IndexOf("/ads/");
+                        end = url.IndexOf("/", end);
+                        var start = 0;
+                        for (int i = end; i > 0; i--)
+                        {
+                            char key = url[i];
+                            if (key == '-')
+                            {
+                                start = i;
+                                break;
+                            }
+                        }
+                        _pageId = url.Substring(start + 1, (end - start - 1));
+                        if (!string.IsNullOrEmpty(_pageId) && _pageId.Length > 15)
+                            _pageId = "";
+                    }
+                }
 
                 /* check next page */
                 if (!string.IsNullOrEmpty(_pageId) && !string.IsNullOrEmpty(user_Id))
