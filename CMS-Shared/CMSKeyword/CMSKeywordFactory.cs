@@ -473,7 +473,7 @@ namespace CMS_Shared.Keyword
                 m_SemaphoreCrawlAll.WaitOne();
                 using (var _db = new CMS_Context())
                 {
-                    var keyWords = _db.CMS_KeyWord.Where(o => o.Status == (byte)Commons.EStatus.Active).ToList();
+                    var keyWords = _db.CMS_KeyWord.Where(o => o.Status == (byte)Commons.EStatus.Active).OrderBy(o=> o.KeyWord).ToList();
                     foreach (var key in keyWords)
                     {
                         if (!CrawlData(key.ID, createdBy, ref msg))
