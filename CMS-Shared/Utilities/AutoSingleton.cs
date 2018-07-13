@@ -17,7 +17,7 @@ namespace CMS_Shared.Utilities
     {
         private static AutoSingleton instance = null;
         private static readonly object padlock = new object();
-        
+
         AutoSingleton()
         {
         }
@@ -53,7 +53,7 @@ namespace CMS_Shared.Utilities
 
                 /* time in VN: GMT+7*/
                 dateTimeNow = dateTimeNow.AddHours(7);
-                
+
                 /* get time start timer */
                 var timeStart = Commons.TimerStartAt;
                 var dateStart = dateTimeNow.Date.AddHours(timeStart);
@@ -61,19 +61,23 @@ namespace CMS_Shared.Utilities
                 {
                     dateStart = dateStart.AddDays(1); /* */
                 }
-                
+
                 /* time span to sleep */
                 var timeSpan = dateStart - dateTimeNow;
-                Thread.Sleep((int)timeSpan.TotalMilliseconds); 
+                Thread.Sleep((int)timeSpan.TotalMilliseconds);
             }
-            catch(Exception ex) { };
+            catch (Exception ex) { };
         }
         public static void AutoFunction()
         {
+            /* set timer event */
             System.Timers.Timer aTimer = new System.Timers.Timer();
             aTimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
-            aTimer.Interval = Commons.TimerInterval*1000; /* (second*1000) = milisecond */
+            aTimer.Interval = Commons.TimerInterval * 1000; /* (second*1000) = milisecond */
             aTimer.Enabled = true;
+
+            /* run first time */
+            AutoRun();
         }
 
         // Specify what you want to happen when the Elapsed event is raised.
@@ -81,13 +85,24 @@ namespace CMS_Shared.Utilities
         {
             try
             {
-                /* crawl data */
-                AutoCrawlAll();
+                AutoRun();
             }
-            catch(Exception ex) { };
+            catch (Exception ex) { };
 
             /* log data */
             LogHelper.WriteLogs("Timer", "");
+        }
+
+        private static void AutoRun()
+        {
+            try
+            {
+                /* crawl data */
+                AutoCrawlAll();
+            }
+            catch (Exception ex) { };
+
+            LogHelper.WriteLogs("AutoRun", "");
         }
 
         private static void AutoCrawlAll()
@@ -96,7 +111,7 @@ namespace CMS_Shared.Utilities
             {
                 var keyFac = new CMSKeywordFactory();
                 var msg = "";
-                keyFac.CrawlAllKeyWords("AutoCrawl", ref msg);
+                keyFac.CrawlAllKeyWords("AutoCrawlAll", ref msg);
             }
             catch (Exception ex) { };
         }
