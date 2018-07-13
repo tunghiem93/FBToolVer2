@@ -87,6 +87,7 @@ namespace CMS_Shared
         public static int PageIndex = Convert.ToInt16(ConfigurationManager.AppSettings["PageIndex"]);
         public static int PageSize = Convert.ToInt16(ConfigurationManager.AppSettings["PageSize"]);
         public static int TimerInterval = Convert.ToInt32(ConfigurationManager.AppSettings["TimerInterval"]);
+        public static double TimerStartAt = Convert.ToDouble(ConfigurationManager.AppSettings["TimerStartAt"]);
 
         public static DateTime MinDate = new DateTime(1900, 01, 01, 00, 00, 00, DateTimeKind.Unspecified);
         public static DateTime MaxDate = new DateTime(9999, 12, 31, 23, 59, 59, DateTimeKind.Unspecified);

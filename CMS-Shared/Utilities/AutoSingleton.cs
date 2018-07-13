@@ -33,6 +33,11 @@ namespace CMS_Shared.Utilities
                         if (instance == null)
                         {
                             instance = new AutoSingleton();
+
+                            /* wait for next date */
+                            WaitForNextDate();
+
+                            /* auto run with timer */
                             AutoFunction();
                         }
                     }
@@ -40,7 +45,30 @@ namespace CMS_Shared.Utilities
                 return instance;
             }
         }
+        public static void WaitForNextDate()
+        {
+            try
+            {
+                var dateTimeNow = DateTime.UtcNow;
 
+                /* time in VN: GMT+7*/
+                dateTimeNow.AddHours(7);
+
+                /* time span from begin date */
+                var timeSpan = dateTimeNow - dateTimeNow.Date;
+
+                /* time wait for next date */
+                var timeWaitForNextDate = (24 * 60 * 60 - timeSpan.TotalSeconds) ;// insecond 
+
+                /* time start at next date */
+                var nextHour = Commons.TimerStartAt;
+                timeWaitForNextDate += (nextHour * 60 * 60);
+                
+                /* wait for next day */
+                Thread.Sleep((int)timeWaitForNextDate* 1000); 
+            }
+            catch(Exception ex) { };
+        }
         public static void AutoFunction()
         {
             System.Timers.Timer aTimer = new System.Timers.Timer();
