@@ -22,7 +22,7 @@ namespace CMS_Web
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-            var auto = AutoSingleton.Instance;
+            new Thread(() => { var auto = AutoSingleton.Instance; }).Start();
             LogHelper.WriteLogs("Application_Start", "");
         }
 
