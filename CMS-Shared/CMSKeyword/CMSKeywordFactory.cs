@@ -415,8 +415,8 @@ namespace CMS_Shared.Keyword
                             var listAcc = _db.CMS_Account.Where(o => o.Status == (byte)Commons.EStatus.Active && o.IsActive).ToList();
                             foreach (var acc in listAcc)
                             {
-                                CrawlerFbHelpers.Cookies = acc.Cookies;
-                                CrawlerFbHelpers.CrawlerAllFb(keyWord.KeyWord, ref model);
+                                CrawlerFbHelpers_v2.Cookies = acc.Cookies;
+                                CrawlerFbHelpers_v2.CrawlerAllFb(keyWord.KeyWord, ref model);
 
                                 if (model.Pins.Count > 0) /* crawl success */
                                     break;
