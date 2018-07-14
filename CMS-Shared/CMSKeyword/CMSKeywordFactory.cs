@@ -484,8 +484,7 @@ namespace CMS_Shared.Keyword
                     var keyWords = _db.CMS_KeyWord.Where(o => o.Status == (byte)Commons.EStatus.Active).OrderBy(o=> o.CreatedDate).ToList();
                     foreach (var key in keyWords)
                     {
-                        if (!CrawlData(key.ID, createdBy, ref msg))
-                            result = false;
+                        CrawlData(key.ID, createdBy, ref msg);
                     }
 
                 }
