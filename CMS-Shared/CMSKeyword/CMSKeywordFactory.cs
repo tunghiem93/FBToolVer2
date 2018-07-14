@@ -76,7 +76,13 @@ namespace CMS_Shared.Keyword
                         if (string.IsNullOrEmpty(model.Id))
                         {
                             /* check dup old key */
-                            var checkDup = _db.CMS_KeyWord.Where(o => o.KeyWord == model.KeySearch).FirstOrDefault();
+                            var key = model.KeySearch;
+                            var key2 = "";
+                            if (key[key.Length - 1] == '/')
+                                key2 = key.Substring(0, key.Length - 1);
+                            else
+                                key2 = key + "/";
+                            var checkDup = _db.CMS_KeyWord.Where(o => o.KeyWord == key || o.KeyWord == key2).FirstOrDefault();
 
                             if (checkDup == null)
                             {
@@ -106,6 +112,7 @@ namespace CMS_Shared.Keyword
                             }
                             else /* duplicate key word */
                             {
+                                result = false;
                                 msg = "Duplicate key word.";
                             }
 
@@ -114,6 +121,7 @@ namespace CMS_Shared.Keyword
                         }
                         else
                         {
+                            result = false;
                             msg = "Unable to edit key word.";
                         }
                     }

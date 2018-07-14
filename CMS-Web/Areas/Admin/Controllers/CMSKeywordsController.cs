@@ -53,7 +53,10 @@ namespace CMS_Web.Areas.Admin.Controllers
                         var result = _factory.CreateOrUpdate(item, ref msg);
                         if (!result)
                         {
-                            isCheck = false;
+                            if (!string.IsNullOrEmpty(msg))
+                                ViewBag.DuplicateKeyword = msg;
+                            else
+                                isCheck = false;
                         }                        
                     }
                     else

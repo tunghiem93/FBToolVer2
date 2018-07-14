@@ -110,7 +110,7 @@ namespace CMS_Shared.Utilities
                     htmlDoc.LoadHtml(strHtml);
 
                     //find page id of fan page
-                    if(!IsNextPage)
+                    if (!IsNextPage)
                     {
                         var nodePageId = htmlDoc.DocumentNode.Descendants().Where
                                                                        (x => (x.Name == "div" && x.Attributes["class"] != null &&
@@ -270,7 +270,7 @@ namespace CMS_Shared.Utilities
                                                                     else
                                                                         Pin.ID = Guid.NewGuid().ToString();
                                                                 }
-                                                                    
+
                                                             }
                                                         }
                                                         var nodeLink = itemLI.Descendants("a").ToList();
@@ -338,7 +338,7 @@ namespace CMS_Shared.Utilities
                         }
                     }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     if (httpResponse.StatusCode == HttpStatusCode.NotFound)
                         CrawlerFb(url, ref pins, ref _pageId);
@@ -369,7 +369,7 @@ namespace CMS_Shared.Utilities
             {
                 try
                 {
-                    if(httpResponse.StatusCode == HttpStatusCode.OK)
+                    if (httpResponse.StatusCode == HttpStatusCode.OK)
                     {
                         using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
                         {
@@ -402,7 +402,7 @@ namespace CMS_Shared.Utilities
                         }
                     }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     if (httpResponse.StatusCode == HttpStatusCode.NotFound)
                         CrawlerNextPage(pageId, userId, cursor, referer, ref pins);
@@ -417,51 +417,18 @@ namespace CMS_Shared.Utilities
         {
             try
             {
-                var user_Id = "";
-                url = url + "ads/?country=1&ref=page_internal";
-                if (!string.IsNullOrEmpty(Cookies))
-                {
-                    var start = Cookies.IndexOf("c_user=");
-                    var end = Cookies.Length;
-                    start = Cookies.IndexOf("=", start) + 1;
-                    for (int i = start; i < Cookies.Length; i++)
-                    {
-                        char key = Cookies[i];
-                        if (key == ';')
-                        {
-                            end = i;
-                            break;
-                        }
-                    }
-                    user_Id = Cookies.Substring(start, (end - start));
-                }
+                /* pre-processing */
+                var user_Id = GetUserIDFromCookies(Cookies);
+                url = CheckUrl(url);
+
                 /* crawl first page */
                 string _pageId = "";
                 CrawlerFb(url, ref pins, ref _pageId);
 
-                if(string.IsNullOrEmpty(_pageId))
-                {
-                    if (!string.IsNullOrEmpty(url))
-                    {
-                        var end = url.IndexOf("/ads/");
-                        end = url.IndexOf("/", end);
-                        var start = 0;
-                        for (int i = end; i > 0; i--)
-                        {
-                            char key = url[i];
-                            if (key == '-')
-                            {
-                                start = i;
-                                break;
-                            }
-                        }
-                        _pageId = url.Substring(start + 1, (end - start - 1));
-                        if (!string.IsNullOrEmpty(_pageId) && _pageId.Length > 15)
-                            _pageId = "";
-                    }
-                }
+                /* check next page ID */
+                _pageId = string.IsNullOrEmpty(_pageId) ? GetNextPageID(url) : _pageId;
 
-                /* check next page */
+                /* crawl next page */
                 if (!string.IsNullOrEmpty(_pageId) && !string.IsNullOrEmpty(user_Id))
                 {
                     CrawlerNextPage(_pageId, user_Id, 8, url, ref pins);
@@ -471,6 +438,65 @@ namespace CMS_Shared.Utilities
 
         }
 
+        /* make url to info & ads */
+        private static string CheckUrl(string url)
+        {
+            var ret = url;
+
+            if (url[url.Length - 1] != '/')
+                ret += "/";
+            ret += "ads/?country=1&ref=page_internal";
+
+            return ret;
+        }
+
+        /* get user ID from cookies */
+        private static string GetUserIDFromCookies(string cookie)
+        {
+            var ret = "";
+            if (!string.IsNullOrEmpty(cookie))
+            {
+                var start = cookie.IndexOf("c_user=");
+                var end = cookie.Length;
+                start = cookie.IndexOf("=", start) + 1;
+                for (int i = start; i < cookie.Length; i++)
+                {
+                    char key = cookie[i];
+                    if (key == ';')
+                    {
+                        end = i;
+                        break;
+                    }
+                }
+                ret = cookie.Substring(start, (end - start));
+            }
+            return ret;
+        }
+
+        /* get next page ID from url */
+        private static string GetNextPageID(string url)
+        {
+            var ret = "";
+            if (!string.IsNullOrEmpty(url))
+            {
+                var end = url.IndexOf("/ads/");
+                end = url.IndexOf("/", end);
+                var start = 0;
+                for (int i = end; i > 0; i--)
+                {
+                    char key = url[i];
+                    if (key == '-')
+                    {
+                        start = i;
+                        break;
+                    }
+                }
+                ret = url.Substring(start + 1, (end - start - 1));
+                if (!string.IsNullOrEmpty(ret) && ret.Length > 15)
+                    ret = "";
+            }
+            return ret;
+        }
         public static void CrawlerFBDetail(string Url, List<string> fb_id, ref PinsModels pin)
         {
             int _port = 0;
@@ -513,9 +539,9 @@ namespace CMS_Shared.Utilities
                         CrawlerFBDetail(Url, fb_id, ref pin);
                     }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
-                    if(httpResponse.StatusCode == HttpStatusCode.NotFound)
+                    if (httpResponse.StatusCode == HttpStatusCode.NotFound)
                         CrawlerFBDetail(Url, fb_id, ref pin);
 
                     LogHelper.WriteLogs("ErrorCrawlerFBDetail: ", JsonConvert.SerializeObject(ex));

@@ -96,14 +96,13 @@ namespace CMS_Shared.Utilities
 
         private static void AutoRun()
         {
+            LogHelper.WriteLogs("AutoRun", "");
             try
             {
                 /* crawl data */
                 AutoCrawlAll();
             }
             catch (Exception ex) { };
-
-            LogHelper.WriteLogs("AutoRun", "");
         }
 
         private static void AutoCrawlAll()
