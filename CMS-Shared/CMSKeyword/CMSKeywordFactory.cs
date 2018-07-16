@@ -434,8 +434,6 @@ namespace CMS_Shared.Keyword
                                     acc.UpdatedBy = createdBy;
                                     acc.UpdatedDate = DateTime.Now;
                                 }
-                                else /* page dont have post or unknow error */
-                                    break;
                             }
 
                             var res = false;
