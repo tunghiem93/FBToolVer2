@@ -21,7 +21,7 @@ namespace CMS_Shared.Utilities
                 {
 
                     description = description.Length > 98 ? description.Substring(0, 95) + "\n..." : description;
-                    jsonContent = jsonContent.Length > 98 ? description.Substring(0, 3995) + "\n..." : jsonContent;
+                    jsonContent = jsonContent.Length > 3999 ? jsonContent.Substring(0, 3995) + "\n..." : jsonContent;
 
                     var logData = new CMS_Log()
                     {
