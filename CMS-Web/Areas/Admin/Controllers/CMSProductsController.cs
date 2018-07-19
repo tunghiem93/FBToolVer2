@@ -33,8 +33,8 @@ namespace CMS_Web.Areas.Admin.Controllers
                 var FilterModel = new PinFilterDTO();
                 FilterModel.PageIndex = Commons.PageIndex;
                 FilterModel.PageSize = Commons.PageSize;
-                FilterModel.TypeTime = Commons.ETimeType.TimeReduce.ToString("d");
-                model.TypeTime = int.Parse(Commons.ETimeType.TimeReduce.ToString("d"));
+                FilterModel.TypeTime = Commons.ESortType1.TimeCreatedAtDecrease.ToString("d");
+                model.TypeTime = int.Parse(Commons.ESortType1.TimeCreatedAtDecrease.ToString("d"));
                 FilterModel.Sort1 = (byte)Commons.ESortType1.TimeCreatedAtDecrease;
                 model.Sort1 = (byte)Commons.ESortType1.TimeCreatedAtDecrease;
                 FilterModel.Sort2 = (byte)Commons.ESortType2.ReactionDecrease;
@@ -544,8 +544,11 @@ namespace CMS_Web.Areas.Admin.Controllers
                 }
 
                 FilterModel.TypeTime = TypeTime;
-                FilterModel.Sort1 = Convert.ToByte(TypeTime);
-                FilterModel.Sort2 = Convert.ToByte(Sort2);
+                var tmp = 0;
+                int.TryParse(TypeTime, out tmp);
+                FilterModel.Sort1 = tmp;
+                int.TryParse(Sort2, out tmp);
+                FilterModel.Sort2 = tmp;
 
                 var modelCrawler = new CMS_CrawlerModels();
                 var _pinModels = new List<PinsModels>();

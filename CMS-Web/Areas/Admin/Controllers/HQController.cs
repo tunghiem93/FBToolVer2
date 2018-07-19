@@ -82,12 +82,12 @@ namespace CMS_Web.Areas.Admin.Controllers
         public List<SelectListItem> getListSort2()
         {
             var _lstIndex = new List<SelectListItem>() {
-                new SelectListItem() { Text = "Share Increase", Value = Commons.ESortType2.ShareIncrease.ToString("d") },
-                new SelectListItem() { Text = "Share Decrease", Value = Commons.ESortType2.ShareDecrease.ToString("d") },
-                new SelectListItem() { Text = "Reaction Increase", Value = Commons.ESortType2.ReactionIncrease.ToString("d") },
                 new SelectListItem() { Text = "Reaction Decrease", Value = Commons.ESortType2.ReactionDecrease.ToString("d") },
-                new SelectListItem() { Text = "Comment Increase", Value = Commons.ESortType2.CommentIncrease.ToString("d") },
+                new SelectListItem() { Text = "Share Decrease", Value = Commons.ESortType2.ShareDecrease.ToString("d") },
                 new SelectListItem() { Text = "Comment Decrease", Value = Commons.ESortType2.CommentDecrease.ToString("d") },
+                new SelectListItem() { Text = "Reaction Increase", Value = Commons.ESortType2.ReactionIncrease.ToString("d") },
+                new SelectListItem() { Text = "Share Increase", Value = Commons.ESortType2.ShareIncrease.ToString("d") },
+                new SelectListItem() { Text = "Comment Increase", Value = Commons.ESortType2.CommentIncrease.ToString("d") },
             };
             return _lstIndex;
         }
