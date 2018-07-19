@@ -205,6 +205,14 @@ namespace CMS_Shared.Utilities
             return result;
         }
 
+        public static string RamdomCookie(List<string> ListCookie)
+        {
+            var random = new Random();
+            int index = random.Next(ListCookie.Count);
+            var _cookie = ListCookie[index];
+            return _cookie;
+        }
+
         public static NameValueCollection GetQueryParameters(string dataWithQuery)
         {
             NameValueCollection result = new NameValueCollection();

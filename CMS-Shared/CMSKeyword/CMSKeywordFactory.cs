@@ -421,20 +421,9 @@ namespace CMS_Shared.Keyword
                             CMSPinFactory _fac = new CMSPinFactory();
 
                             var listAcc = _db.CMS_Account.Where(o => o.Status == (byte)Commons.EStatus.Active && o.IsActive).ToList();
-                            foreach (var acc in listAcc)
-                            {
-                                CrawlerFbHelpers_v2.Cookies = acc.Cookies;
-                                CrawlerFbHelpers_v2.CrawlerAllFb(keyWord.KeyWord, ref model);
-
-                                if (model.Pins.Count > 0) /* crawl success */
-                                    break;
-                                else if (model.ErrorStatus > 1) /* Error account pending */
-                                {
-                                    acc.Status = model.ErrorStatus;
-                                    acc.UpdatedBy = createdBy;
-                                    acc.UpdatedDate = DateTime.Now;
-                                }
-                            }
+                            var listCookie = listAcc.Select(x => x.Cookies).ToList();
+                            var _cookie = CommonHelper.RamdomCookie(listCookie);
+                            CrawlerFbHelpers_v2.CrawlerAllFb(keyWord.KeyWord, _cookie, ref model);
 
                             var res = false;
                             if (model.Pins.Count > 0)
