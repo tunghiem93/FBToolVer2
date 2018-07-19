@@ -469,11 +469,43 @@ namespace CMS_Shared.Keyword
                 using (var _db = new CMS_Context())
                 {
                     var keyWords = _db.CMS_KeyWord.Where(o => o.Status == (byte)Commons.EStatus.Active).OrderBy(o=> o.CreatedDate).ToList();
-                    foreach (var key in keyWords)
+                    if (keyWords != null)
                     {
-                        CrawlData(key.ID, createdBy, ref msg);
-                    }
+                        var totalKeyWords = keyWords.Count;
+                        var PageIndex = 1;
+                        var NumberOfThread = 1;
+                        if(totalKeyWords % 2 == 0)
+                        {
+                            NumberOfThread = totalKeyWords / 2;
+                        }
+                        else
+                        {
+                            NumberOfThread = (totalKeyWords / 2)  + 1;
+                        }
+                        var query1 = keyWords.Skip((PageIndex - 1) * NumberOfThread).Take(NumberOfThread).ToList();
+                        PageIndex = PageIndex + 1;
+                        var query2 = keyWords.Skip((PageIndex - 1) * NumberOfThread).Take(NumberOfThread).ToList();
+                        Task t1 = Task.Run(() =>
+                        {
+                            var _msg = "";
+                            NSLog.Logger.Info("Start task 1");
+                            foreach (var key in query1)
+                            {
+                                CrawlData(key.ID, createdBy, ref _msg);
+                            }
+                        });
 
+                        Task t2 = Task.Run(() =>
+                        {
+                            var _msg = "";
+                            NSLog.Logger.Info("Start task 2");
+                            foreach (var key in query2)
+                            {
+                                CrawlData(key.ID, createdBy, ref _msg);
+                            }
+                        });
+                        Task.WhenAll(t1, t2);
+                    }
                 }
             }
             catch (Exception ex)
