@@ -38,10 +38,14 @@ namespace CMS_DTO.CMSCrawler
         public DateTime CreatedDate { get; set; }
         public DateTime UpdateDate { get; set; }
         public string LastTime { get; set; }
+        public List<string> FbIds { get; set; }
+        public bool IsDynamic { get; set; }
+        public string LinkApi { get; set; }
         public PinsModels()
         {
             Board = new BoardModels();
             Images = new List<ImageModels>();
+            FbIds = new List<string>();
         }
     }
 
