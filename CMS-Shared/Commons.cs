@@ -35,6 +35,24 @@ namespace CMS_Shared
             ToolReduce = 6,
         }
 
+        public enum ESortType1
+        {
+            TimeCreatedAtIncrease = 1,
+            TimeCreatedAtDecrease = 2,
+            TimeOnToolIncrease = 3,
+            TimeOnToolDecrease = 4,
+        }
+
+        public enum ESortType2
+        {
+            ReactionIncrease = 1,
+            ReactionDecrease = 2,
+            ShareIncrease = 3,
+            ShareDecrease = 4,
+            CommentIncrease = 5,
+            CommentDecrease = 6,
+        }
+
         public enum EPinType
         {
             PinIncrease = 0,

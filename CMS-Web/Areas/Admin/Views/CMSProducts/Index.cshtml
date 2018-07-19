@@ -130,7 +130,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-2 col-sm-2 col-xs-12 " style="">
+                    @*<div class="col-md-2 col-sm-2 col-xs-12 " style="">
                         <div class="input-prepend input-group" style="width:100%">
                             @Html.DropDownListFor(model => model.Index,
                                 new SelectList(Model.ListIndex, "Value", "Text", Model.Index), "",
@@ -138,6 +138,21 @@
                                 {
                                     @class = "form-control select2_multiple",
                                     @id = "storeDdlViewQuantity",
+                                    @style = "width:100%;"
+                                })
+                            @Html.ValidationMessageFor(model => model.Index, null, new { @class = "label" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.Index, null, new { @class = "label" })
+                    </div>*@
+
+                    <div class="col-md-2 col-sm-2 col-xs-12 " style="">
+                        <div class="input-prepend input-group" style="width:100%">
+                            @Html.DropDownListFor(model => model.Sort2,
+                                new SelectList(Model.ListSort2, "Value", "Text", Model.Index), "",
+                                new
+                                {
+                                    @class = "form-control select2_multiple",
+                                    @id = "DdlSort2",
                                     @style = "width:100%;"
                                 })
                             @Html.ValidationMessageFor(model => model.Index, null, new { @class = "label" })
@@ -225,6 +240,11 @@
             allowClear: true
         });
 
+        $("#DdlSort2").select2({
+            placeholder: "Then order by",
+            allowClear: true
+        });
+
         $("#storeDdlViewPin").select2({
 
         })
@@ -261,6 +281,7 @@
         var TypeQuantity = $("#storeDdlViewQuantity").val();
         var TypeTime = $("#storeDdlView").val();
         var LstKeyWordID = $("#KeywordsDdl").val();
+        var SortData2 = $("#DdlSort2").val();
         var _url = window.location.href;
 
         var FilterModel = {
@@ -271,6 +292,8 @@
             PageIndex: _pageIndex,
             LstKeyWordID: [],
             TypeTime: TypeTime,
+            Sort1: TypeTime,
+            Sort2: SortData2,
             Url : _url
         };
         if (TypeQuantity == @Commons.EQuantityType.ZeroToOne.ToString("d")) {
@@ -313,6 +336,8 @@
                 PageIndex: _pageIndex,
                 LstKeyWordID: [],
                 TypeTime: TypeTime,
+                Sort1: TypeTime,
+                Sort2: SortData2,
                 Url: _url
             };
         }

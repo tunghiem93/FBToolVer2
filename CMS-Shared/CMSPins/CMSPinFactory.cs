@@ -43,7 +43,7 @@ namespace CMS_Shared.CMSEmployees
                         if (checkPin != null)
                         {
                             /* update days count */
-                            if (uPin.UpdatedDate.Value.Day !=DateTime.Now.Day)
+                            if (uPin.UpdatedDate.Value.Day != DateTime.Now.Day)
                                 uPin.DayCount++;
 
                             /* update other info */
@@ -145,7 +145,7 @@ namespace CMS_Shared.CMSEmployees
                             if (filter.LstGroupID.Count > 0)
                             {
                                 var lstKeyID = _db.CMS_R_GroupKey_KeyWord.Where(o => filter.LstGroupID.Contains(o.GroupKeyID) && o.Status != (byte)Commons.EStatus.Deleted).Select(o => o.KeyWordID).ToList();
-                                if(lstKeyID.Count > 0)
+                                if (lstKeyID.Count > 0)
                                 {
                                     if (filter.LstKeyWordID == null)
                                         filter.LstKeyWordID = new List<string>();
@@ -193,30 +193,32 @@ namespace CMS_Shared.CMSEmployees
                         totalPin = query.Count();
 
                         /* order data */
-                        if (filter.TypeTime.Equals(Commons.ETimeType.TimeReduce.ToString("d")))
-                        {
-                            query = query.OrderByDescending(x => x.Created_At).ThenBy(o=> o.ID);
-                        }
-                        else if (filter.TypeTime.Equals(Commons.ETimeType.TimeIncrease.ToString("d")))
-                        {
-                            query = query.OrderBy(x => x.Created_At).ThenBy(o => o.ID);
-                        }
-                        else if (filter.TypeTime.Equals(Commons.ETimeType.PinReduce.ToString("d")))
-                        {
-                            query = query.OrderByDescending(x => x.Repin_count).ThenBy(o => o.ID);
-                        }
-                        else if (filter.TypeTime.Equals(Commons.ETimeType.PinIncrease.ToString("d")))
-                        {
-                            query = query.OrderBy(x => x.Repin_count).ThenBy(o => o.ID);
-                        }
-                        else if (filter.TypeTime.Equals(Commons.ETimeType.ToolReduce.ToString("d")))
-                        {
-                            query = query.OrderByDescending(x => x.CreatedDate).ThenBy(o => o.ID);
-                        }
-                        else if (filter.TypeTime.Equals(Commons.ETimeType.ToolIncrease.ToString("d")))
-                        {
-                            query = query.OrderBy(x => x.CreatedDate).ThenBy(o => o.ID);
-                        }
+                        //if (filter.TypeTime.Equals(Commons.ETimeType.TimeReduce.ToString("d")))
+                        //{
+                        //    query = query.OrderByDescending(x => x.Created_At).ThenBy(o=> o.ID);
+                        //}
+                        //else if (filter.TypeTime.Equals(Commons.ETimeType.TimeIncrease.ToString("d")))
+                        //{
+                        //    query = query.OrderBy(x => x.Created_At).ThenBy(o => o.ID);
+                        //}
+                        //else if (filter.TypeTime.Equals(Commons.ETimeType.PinReduce.ToString("d")))
+                        //{
+                        //    query = query.OrderByDescending(x => x.Repin_count).ThenBy(o => o.ID);
+                        //}
+                        //else if (filter.TypeTime.Equals(Commons.ETimeType.PinIncrease.ToString("d")))
+                        //{
+                        //    query = query.OrderBy(x => x.Repin_count).ThenBy(o => o.ID);
+                        //}
+                        //else if (filter.TypeTime.Equals(Commons.ETimeType.ToolReduce.ToString("d")))
+                        //{
+                        //    query = query.OrderByDescending(x => x.CreatedDate).ThenBy(o => o.ID);
+                        //}
+                        //else if (filter.TypeTime.Equals(Commons.ETimeType.ToolIncrease.ToString("d")))
+                        //{
+                        //    query = query.OrderBy(x => x.CreatedDate).ThenBy(o => o.ID);
+                        //}
+
+                        SortPinData(ref query, filter.Sort1, filter.Sort2);
 
                         /* get by page size - page index */
                         query = query.Skip((filter.PageIndex - 1) * filter.PageSize).Take(filter.PageSize);
@@ -257,6 +259,140 @@ namespace CMS_Shared.CMSEmployees
             {
             }
             return result;
+        }
+
+        private void SortPinData(ref IQueryable<CMS_Pin> query, int sort1, int sort2)
+        {
+            try
+            {
+                switch (sort1)
+                {
+                    case (byte)Commons.ESortType1.TimeCreatedAtIncrease: /* time created_at increase */
+                        {
+                            switch (sort2)
+                            {
+                                case (byte)Commons.ESortType2.ReactionIncrease: /* reaction increase */
+                                    query = query.OrderBy(o => o.Created_At).ThenBy(o => o.ReactionCount).ThenBy(o=> o.ID);
+                                    break;
+
+                                case (byte)Commons.ESortType2.ReactionDecrease:/* reaction decrease */
+                                    query = query.OrderBy(o => o.Created_At).ThenByDescending(o => o.ReactionCount).ThenBy(o => o.ID);
+                                    break;
+
+                                case (byte)Commons.ESortType2.ShareIncrease: /* ShareCount increase */
+                                    query = query.OrderBy(o => o.Created_At).ThenBy(o => o.ShareCount).ThenBy(o => o.ID);
+                                    break;
+
+                                case (byte)Commons.ESortType2.ShareDecrease: /* ShareCount decrease */
+                                    query = query.OrderBy(o => o.Created_At).ThenByDescending(o => o.ShareCount).ThenBy(o => o.ID);
+                                    break;
+
+                                case (byte)Commons.ESortType2.CommentIncrease: /* CommentCount increase */
+                                    query = query.OrderBy(o => o.Created_At).ThenBy(o => o.CommentCount).ThenBy(o => o.ID);
+                                    break;
+
+                                case (byte)Commons.ESortType2.CommentDecrease: /* CommentCount decrease */
+                                    query = query.OrderBy(o => o.Created_At).ThenByDescending(o => o.CommentCount).ThenBy(o => o.ID);
+                                    break;
+                            }
+                        }
+                        break;
+
+                    case (byte)Commons.ESortType1.TimeCreatedAtDecrease: /* time created_at Decrease */
+                        {
+                            switch (sort2)
+                            {
+                                case (byte)Commons.ESortType2.ReactionIncrease: /* reaction increase */
+                                    query = query.OrderByDescending(o => o.Created_At).ThenBy(o => o.ReactionCount).ThenBy(o => o.ID);
+                                    break;
+
+                                case (byte)Commons.ESortType2.ReactionDecrease:/* reaction decrease */
+                                    query = query.OrderByDescending(o => o.Created_At).ThenByDescending(o => o.ReactionCount).ThenBy(o => o.ID);
+                                    break;
+
+                                case (byte)Commons.ESortType2.ShareIncrease: /* ShareCount increase */
+                                    query = query.OrderByDescending(o => o.Created_At).ThenBy(o => o.ShareCount).ThenBy(o => o.ID);
+                                    break;
+
+                                case (byte)Commons.ESortType2.ShareDecrease: /* ShareCount decrease */
+                                    query = query.OrderByDescending(o => o.Created_At).ThenByDescending(o => o.ShareCount).ThenBy(o => o.ID);
+                                    break;
+
+                                case (byte)Commons.ESortType2.CommentIncrease: /* CommentCount increase */
+                                    query = query.OrderByDescending(o => o.Created_At).ThenBy(o => o.CommentCount).ThenBy(o => o.ID);
+                                    break;
+
+                                case (byte)Commons.ESortType2.CommentDecrease: /* CommentCount decrease */
+                                    query = query.OrderByDescending(o => o.Created_At).ThenByDescending(o => o.CommentCount).ThenBy(o => o.ID);
+                                    break;
+                            }
+                        }
+                        break;
+
+                    case (byte)Commons.ESortType1.TimeOnToolIncrease: /* time on tool increase */
+                        {
+                            switch (sort2)
+                            {
+                                case (byte)Commons.ESortType2.ReactionIncrease: /* reaction increase */
+                                    query = query.OrderBy(o => o.CreatedDate).ThenBy(o => o.ReactionCount).ThenBy(o => o.ID);
+                                    break;
+
+                                case (byte)Commons.ESortType2.ReactionDecrease:/* reaction decrease */
+                                    query = query.OrderBy(o => o.CreatedDate).ThenByDescending(o => o.ReactionCount).ThenBy(o => o.ID);
+                                    break;
+
+                                case (byte)Commons.ESortType2.ShareIncrease: /* ShareCount increase */
+                                    query = query.OrderBy(o => o.CreatedDate).ThenBy(o => o.ShareCount).ThenBy(o => o.ID);
+                                    break;
+
+                                case (byte)Commons.ESortType2.ShareDecrease: /* ShareCount decrease */
+                                    query = query.OrderBy(o => o.CreatedDate).ThenByDescending(o => o.ShareCount).ThenBy(o => o.ID);
+                                    break;
+
+                                case (byte)Commons.ESortType2.CommentIncrease: /* CommentCount increase */
+                                    query = query.OrderBy(o => o.CreatedDate).ThenBy(o => o.CommentCount).ThenBy(o => o.ID);
+                                    break;
+
+                                case (byte)Commons.ESortType2.CommentDecrease: /* CommentCount decrease */
+                                    query = query.OrderBy(o => o.CreatedDate).ThenByDescending(o => o.CommentCount).ThenBy(o => o.ID);
+                                    break;
+                            }
+                        }
+                        break;
+
+                    case (byte)Commons.ESortType1.TimeOnToolDecrease: /* time created_at Decrease */
+                        {
+                            switch (sort2)
+                            {
+                                case (byte)Commons.ESortType2.ReactionIncrease: /* reaction increase */
+                                    query = query.OrderByDescending(o => o.CreatedDate).ThenBy(o => o.ReactionCount).ThenBy(o => o.ID);
+                                    break;
+
+                                case (byte)Commons.ESortType2.ReactionDecrease:/* reaction decrease */
+                                    query = query.OrderByDescending(o => o.CreatedDate).ThenByDescending(o => o.ReactionCount).ThenBy(o => o.ID);
+                                    break;
+
+                                case (byte)Commons.ESortType2.ShareIncrease: /* ShareCount increase */
+                                    query = query.OrderByDescending(o => o.CreatedDate).ThenBy(o => o.ShareCount).ThenBy(o => o.ID);
+                                    break;
+
+                                case (byte)Commons.ESortType2.ShareDecrease: /* ShareCount decrease */
+                                    query = query.OrderByDescending(o => o.CreatedDate).ThenByDescending(o => o.ShareCount).ThenBy(o => o.ID);
+                                    break;
+
+                                case (byte)Commons.ESortType2.CommentIncrease: /* CommentCount increase */
+                                    query = query.OrderByDescending(o => o.CreatedDate).ThenBy(o => o.CommentCount).ThenBy(o => o.ID);
+                                    break;
+
+                                case (byte)Commons.ESortType2.CommentDecrease: /* CommentCount decrease */
+                                    query = query.OrderByDescending(o => o.Created_At).ThenByDescending(o => o.CommentCount).ThenBy(o => o.ID);
+                                    break;
+                            }
+                        }
+                        break;
+                }
+            }
+            catch (Exception ex) { }
         }
     }
 }

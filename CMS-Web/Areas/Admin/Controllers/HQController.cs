@@ -27,13 +27,19 @@ namespace CMS_Web.Areas.Admin.Controllers
         public List<SelectListItem> getListTime()
         {
             var _lstTime = new List<SelectListItem>() {
-                new SelectListItem() {Text="Latest on Post",Value=Commons.ETimeType.TimeReduce.ToString("d") },
-                new SelectListItem() {Text="Latest on tool",Value=Commons.ETimeType.ToolReduce.ToString("d") },
-                new SelectListItem() {Text="Oldest on Post",Value=Commons.ETimeType.TimeIncrease.ToString("d")},
-                new SelectListItem() {Text="Oldest on tool",Value=Commons.ETimeType.ToolIncrease.ToString("d")},
+                //new SelectListItem() {Text="Latest on Post",Value=Commons.ETimeType.TimeReduce.ToString("d") },
+                //new SelectListItem() {Text="Latest on tool",Value=Commons.ETimeType.ToolReduce.ToString("d") },
+                //new SelectListItem() {Text="Oldest on Post",Value=Commons.ETimeType.TimeIncrease.ToString("d")},
+                //new SelectListItem() {Text="Oldest on tool",Value=Commons.ETimeType.ToolIncrease.ToString("d")},
+
                 //new SelectListItem() {Text="Repin reduce",Value=Commons.ETimeType.PinReduce.ToString("d") },
                 //new SelectListItem() {Text="Repin increase",Value=Commons.ETimeType.PinIncrease.ToString("d")},
                 //new SelectListItem() {Text="Custom",Value=Commons.ETimeType.TimeCustom.ToString("d")},
+
+                new SelectListItem() {Text="Latest on Post",Value=Commons.ESortType1.TimeCreatedAtDecrease.ToString("d") },
+                new SelectListItem() {Text="Latest on tool",Value=Commons.ESortType1.TimeOnToolDecrease.ToString("d") },
+                new SelectListItem() {Text="Oldest on Post",Value=Commons.ESortType1.TimeCreatedAtIncrease.ToString("d")},
+                new SelectListItem() {Text="Oldest on tool",Value=Commons.ESortType1.TimeOnToolIncrease.ToString("d")},
             };
 
             return _lstTime;
@@ -69,6 +75,19 @@ namespace CMS_Web.Areas.Admin.Controllers
                 new SelectListItem() { Text = "Latest on Like", Value = Commons.EIndex.LikeReduce.ToString("d") },
                 new SelectListItem() { Text = "Latest on Comment", Value = Commons.EIndex.CommentReduce.ToString("d") },
                 new SelectListItem() { Text = "Latest on Share", Value = Commons.EIndex.ShareReduce.ToString("d") },
+            };
+            return _lstIndex;
+        }
+
+        public List<SelectListItem> getListSort2()
+        {
+            var _lstIndex = new List<SelectListItem>() {
+                new SelectListItem() { Text = "Share Increase", Value = Commons.ESortType2.ShareIncrease.ToString("d") },
+                new SelectListItem() { Text = "Share Decrease", Value = Commons.ESortType2.ShareDecrease.ToString("d") },
+                new SelectListItem() { Text = "Reaction Increase", Value = Commons.ESortType2.ReactionIncrease.ToString("d") },
+                new SelectListItem() { Text = "Reaction Decrease", Value = Commons.ESortType2.ReactionDecrease.ToString("d") },
+                new SelectListItem() { Text = "Comment Increase", Value = Commons.ESortType2.CommentIncrease.ToString("d") },
+                new SelectListItem() { Text = "Comment Decrease", Value = Commons.ESortType2.CommentDecrease.ToString("d") },
             };
             return _lstIndex;
         }

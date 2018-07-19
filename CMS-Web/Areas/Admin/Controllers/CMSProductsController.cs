@@ -35,6 +35,10 @@ namespace CMS_Web.Areas.Admin.Controllers
                 FilterModel.PageSize = Commons.PageSize;
                 FilterModel.TypeTime = Commons.ETimeType.TimeReduce.ToString("d");
                 model.TypeTime = int.Parse(Commons.ETimeType.TimeReduce.ToString("d"));
+                FilterModel.Sort1 = (byte)Commons.ESortType1.TimeCreatedAtDecrease;
+                model.Sort1 = (byte)Commons.ESortType1.TimeCreatedAtDecrease;
+                FilterModel.Sort2 = (byte)Commons.ESortType2.ReactionDecrease;
+                model.Sort2 = (byte)Commons.ESortType2.ReactionDecrease;
                 model.Index = int.Parse(Commons.EIndex.LikeReduce.ToString("d"));
                 #region "Comment"
                 //if (Request.Cookies["FromDate"] != null)
@@ -107,6 +111,7 @@ namespace CMS_Web.Areas.Admin.Controllers
                 model.ListTime = getListTime();
                 model.ListQuantity = getListQuantity();
                 model.ListIndex = getListIndex();
+                model.ListSort2 = getListSort2();
                // model.ListRePin = getListRepinCount();
                 ViewBag.Keywords = getListKeyword();
                 ViewBag.ListGroupFanpage = getListGroupKeyword();
@@ -455,8 +460,11 @@ namespace CMS_Web.Areas.Admin.Controllers
                 FilterModel.CreatedDateFrom = null;
                 FilterModel.CreatedDateTo = null;
                // var _Key = Request["Key"] ?? "";
-                var TypeTime = Request["TypeTime"] ?? "";
-              //  var TypePin = Request["TypePin"] ?? "";
+                var TypeTime = Request["TypeTime"] ?? "2";
+                //var Sort1 = Request["Sort1"] ?? "";
+                var Sort2 = Request["Sort2"] ?? "2";
+
+                //  var TypePin = Request["TypePin"] ?? "";
                 var _TypeQuantity = Request["TypeQuantity"];
                 int TypeQuantity = -1;
                 if (!string.IsNullOrEmpty(_TypeQuantity))
@@ -534,7 +542,10 @@ namespace CMS_Web.Areas.Admin.Controllers
                    // Response.Cookies["Keywords"].Value = Keywords.ToString();
                   //  Response.Cookies["Keywords"].Expires = DateTime.Now.AddYears(1); // add expiry time
                 }
+
                 FilterModel.TypeTime = TypeTime;
+                FilterModel.Sort1 = Convert.ToByte(TypeTime);
+                FilterModel.Sort2 = Convert.ToByte(Sort2);
 
                 var modelCrawler = new CMS_CrawlerModels();
                 var _pinModels = new List<PinsModels>();
@@ -544,7 +555,6 @@ namespace CMS_Web.Areas.Admin.Controllers
                 if (result)
                 {
                     modelCrawler.Pins = _pinModels;
-                    
                 }
                 return PartialView("_ListItem", modelCrawler);
             }
