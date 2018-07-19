@@ -272,26 +272,30 @@ namespace CMS_Shared.CMSEmployees
                             switch (sort2)
                             {
                                 case (byte)Commons.ESortType2.ReactionIncrease: /* reaction increase */
-                                    query = query.OrderBy(o => o.Created_At).ThenBy(o => o.ReactionCount).ThenBy(o=> o.ID);
+                                    query = query.OrderBy(o =>DbFunctions.TruncateTime(o.Created_At)).ThenBy(o => o.ReactionCount).ThenBy(o=> o.ID);
                                     break;
 
                                 case (byte)Commons.ESortType2.ReactionDecrease:/* reaction decrease */
-                                    query = query.OrderBy(o => o.Created_At).ThenByDescending(o => o.ReactionCount).ThenBy(o => o.ID);
+                                    query = query.OrderBy(o => DbFunctions.TruncateTime(o.Created_At)).ThenByDescending(o => o.ReactionCount).ThenBy(o => o.ID);
                                     break;
 
                                 case (byte)Commons.ESortType2.ShareIncrease: /* ShareCount increase */
-                                    query = query.OrderBy(o => o.Created_At).ThenBy(o => o.ShareCount).ThenBy(o => o.ID);
+                                    query = query.OrderBy(o => DbFunctions.TruncateTime(o.Created_At)).ThenBy(o => o.ShareCount).ThenBy(o => o.ID);
                                     break;
 
                                 case (byte)Commons.ESortType2.ShareDecrease: /* ShareCount decrease */
-                                    query = query.OrderBy(o => o.Created_At).ThenByDescending(o => o.ShareCount).ThenBy(o => o.ID);
+                                    query = query.OrderBy(o => DbFunctions.TruncateTime(o.Created_At)).ThenByDescending(o => o.ShareCount).ThenBy(o => o.ID);
                                     break;
 
                                 case (byte)Commons.ESortType2.CommentIncrease: /* CommentCount increase */
-                                    query = query.OrderBy(o => o.Created_At).ThenBy(o => o.CommentCount).ThenBy(o => o.ID);
+                                    query = query.OrderBy(o => DbFunctions.TruncateTime(o.Created_At)).ThenBy(o => o.CommentCount).ThenBy(o => o.ID);
                                     break;
 
                                 case (byte)Commons.ESortType2.CommentDecrease: /* CommentCount decrease */
+                                    query = query.OrderBy(o => DbFunctions.TruncateTime(o.Created_At)).ThenByDescending(o => o.CommentCount).ThenBy(o => o.ID);
+                                    break;
+
+                                default:
                                     query = query.OrderBy(o => o.Created_At).ThenByDescending(o => o.CommentCount).ThenBy(o => o.ID);
                                     break;
                             }
@@ -303,26 +307,30 @@ namespace CMS_Shared.CMSEmployees
                             switch (sort2)
                             {
                                 case (byte)Commons.ESortType2.ReactionIncrease: /* reaction increase */
-                                    query = query.OrderByDescending(o => o.Created_At).ThenBy(o => o.ReactionCount).ThenBy(o => o.ID);
+                                    query = query.OrderByDescending(o => DbFunctions.TruncateTime(o.Created_At)).ThenBy(o => o.ReactionCount).ThenBy(o => o.ID);
                                     break;
 
                                 case (byte)Commons.ESortType2.ReactionDecrease:/* reaction decrease */
-                                    query = query.OrderByDescending(o => o.Created_At).ThenByDescending(o => o.ReactionCount).ThenBy(o => o.ID);
+                                    query = query.OrderByDescending(o => DbFunctions.TruncateTime(o.Created_At)).ThenByDescending(o => o.ReactionCount).ThenBy(o => o.ID);
                                     break;
 
                                 case (byte)Commons.ESortType2.ShareIncrease: /* ShareCount increase */
-                                    query = query.OrderByDescending(o => o.Created_At).ThenBy(o => o.ShareCount).ThenBy(o => o.ID);
+                                    query = query.OrderByDescending(o => DbFunctions.TruncateTime(o.Created_At)).ThenBy(o => o.ShareCount).ThenBy(o => o.ID);
                                     break;
 
                                 case (byte)Commons.ESortType2.ShareDecrease: /* ShareCount decrease */
-                                    query = query.OrderByDescending(o => o.Created_At).ThenByDescending(o => o.ShareCount).ThenBy(o => o.ID);
+                                    query = query.OrderByDescending(o => DbFunctions.TruncateTime(o.Created_At)).ThenByDescending(o => o.ShareCount).ThenBy(o => o.ID);
                                     break;
 
                                 case (byte)Commons.ESortType2.CommentIncrease: /* CommentCount increase */
-                                    query = query.OrderByDescending(o => o.Created_At).ThenBy(o => o.CommentCount).ThenBy(o => o.ID);
+                                    query = query.OrderByDescending(o => DbFunctions.TruncateTime(o.Created_At)).ThenBy(o => o.CommentCount).ThenBy(o => o.ID);
                                     break;
 
                                 case (byte)Commons.ESortType2.CommentDecrease: /* CommentCount decrease */
+                                    query = query.OrderByDescending(o => DbFunctions.TruncateTime(o.Created_At)).ThenByDescending(o => o.CommentCount).ThenBy(o => o.ID);
+                                    break;
+
+                                default:
                                     query = query.OrderByDescending(o => o.Created_At).ThenByDescending(o => o.CommentCount).ThenBy(o => o.ID);
                                     break;
                             }
@@ -334,26 +342,30 @@ namespace CMS_Shared.CMSEmployees
                             switch (sort2)
                             {
                                 case (byte)Commons.ESortType2.ReactionIncrease: /* reaction increase */
-                                    query = query.OrderBy(o => o.CreatedDate).ThenBy(o => o.ReactionCount).ThenBy(o => o.ID);
+                                    query = query.OrderBy(o => DbFunctions.TruncateTime(o.CreatedDate)).ThenBy(o => o.ReactionCount).ThenBy(o => o.ID);
                                     break;
 
                                 case (byte)Commons.ESortType2.ReactionDecrease:/* reaction decrease */
-                                    query = query.OrderBy(o => o.CreatedDate).ThenByDescending(o => o.ReactionCount).ThenBy(o => o.ID);
+                                    query = query.OrderBy(o => DbFunctions.TruncateTime(o.CreatedDate)).ThenByDescending(o => o.ReactionCount).ThenBy(o => o.ID);
                                     break;
 
                                 case (byte)Commons.ESortType2.ShareIncrease: /* ShareCount increase */
-                                    query = query.OrderBy(o => o.CreatedDate).ThenBy(o => o.ShareCount).ThenBy(o => o.ID);
+                                    query = query.OrderBy(o => DbFunctions.TruncateTime(o.CreatedDate)).ThenBy(o => o.ShareCount).ThenBy(o => o.ID);
                                     break;
 
                                 case (byte)Commons.ESortType2.ShareDecrease: /* ShareCount decrease */
-                                    query = query.OrderBy(o => o.CreatedDate).ThenByDescending(o => o.ShareCount).ThenBy(o => o.ID);
+                                    query = query.OrderBy(o => DbFunctions.TruncateTime(o.CreatedDate)).ThenByDescending(o => o.ShareCount).ThenBy(o => o.ID);
                                     break;
 
                                 case (byte)Commons.ESortType2.CommentIncrease: /* CommentCount increase */
-                                    query = query.OrderBy(o => o.CreatedDate).ThenBy(o => o.CommentCount).ThenBy(o => o.ID);
+                                    query = query.OrderBy(o => DbFunctions.TruncateTime(o.CreatedDate)).ThenBy(o => o.CommentCount).ThenBy(o => o.ID);
                                     break;
 
                                 case (byte)Commons.ESortType2.CommentDecrease: /* CommentCount decrease */
+                                    query = query.OrderBy(o => DbFunctions.TruncateTime(o.CreatedDate)).ThenByDescending(o => o.CommentCount).ThenBy(o => o.ID);
+                                    break;
+
+                                default:
                                     query = query.OrderBy(o => o.CreatedDate).ThenByDescending(o => o.CommentCount).ThenBy(o => o.ID);
                                     break;
                             }
@@ -365,31 +377,70 @@ namespace CMS_Shared.CMSEmployees
                             switch (sort2)
                             {
                                 case (byte)Commons.ESortType2.ReactionIncrease: /* reaction increase */
-                                    query = query.OrderByDescending(o => o.CreatedDate).ThenBy(o => o.ReactionCount).ThenBy(o => o.ID);
+                                    query = query.OrderByDescending(o => DbFunctions.TruncateTime(o.CreatedDate)).ThenBy(o => o.ReactionCount).ThenBy(o => o.ID);
                                     break;
 
                                 case (byte)Commons.ESortType2.ReactionDecrease:/* reaction decrease */
-                                    query = query.OrderByDescending(o => o.CreatedDate).ThenByDescending(o => o.ReactionCount).ThenBy(o => o.ID);
+                                    query = query.OrderByDescending(o => DbFunctions.TruncateTime(o.CreatedDate)).ThenByDescending(o => o.ReactionCount).ThenBy(o => o.ID);
                                     break;
 
                                 case (byte)Commons.ESortType2.ShareIncrease: /* ShareCount increase */
-                                    query = query.OrderByDescending(o => o.CreatedDate).ThenBy(o => o.ShareCount).ThenBy(o => o.ID);
+                                    query = query.OrderByDescending(o => DbFunctions.TruncateTime(o.CreatedDate)).ThenBy(o => o.ShareCount).ThenBy(o => o.ID);
                                     break;
 
                                 case (byte)Commons.ESortType2.ShareDecrease: /* ShareCount decrease */
-                                    query = query.OrderByDescending(o => o.CreatedDate).ThenByDescending(o => o.ShareCount).ThenBy(o => o.ID);
+                                    query = query.OrderByDescending(o => DbFunctions.TruncateTime(o.CreatedDate)).ThenByDescending(o => o.ShareCount).ThenBy(o => o.ID);
                                     break;
 
                                 case (byte)Commons.ESortType2.CommentIncrease: /* CommentCount increase */
-                                    query = query.OrderByDescending(o => o.CreatedDate).ThenBy(o => o.CommentCount).ThenBy(o => o.ID);
+                                    query = query.OrderByDescending(o => DbFunctions.TruncateTime(o.CreatedDate)).ThenBy(o => o.CommentCount).ThenBy(o => o.ID);
                                     break;
 
                                 case (byte)Commons.ESortType2.CommentDecrease: /* CommentCount decrease */
-                                    query = query.OrderByDescending(o => o.Created_At).ThenByDescending(o => o.CommentCount).ThenBy(o => o.ID);
+                                    query = query.OrderByDescending(o => DbFunctions.TruncateTime(o.CreatedDate)).ThenByDescending(o => o.CommentCount).ThenBy(o => o.ID);
+                                    break;
+
+                                default:
+                                    query = query.OrderByDescending(o => o.CreatedDate).ThenByDescending(o => o.CommentCount).ThenBy(o => o.ID);
                                     break;
                             }
                         }
                         break;
+                    default: /* don't set sort 1 */
+                        {
+                            switch (sort2)
+                            {
+                                case (byte)Commons.ESortType2.ReactionIncrease: /* reaction increase */
+                                    query = query.OrderBy(o => o.ReactionCount).ThenBy(o => o.ID);
+                                    break;
+
+                                case (byte)Commons.ESortType2.ReactionDecrease:/* reaction decrease */
+                                    query = query.OrderByDescending(o => o.ReactionCount).ThenBy(o => o.ID);
+                                    break;
+
+                                case (byte)Commons.ESortType2.ShareIncrease: /* ShareCount increase */
+                                    query = query.OrderBy(o => o.ShareCount).ThenBy(o => o.ID);
+                                    break;
+
+                                case (byte)Commons.ESortType2.ShareDecrease: /* ShareCount decrease */
+                                    query = query.OrderByDescending(o => o.ShareCount).ThenBy(o => o.ID);
+                                    break;
+
+                                case (byte)Commons.ESortType2.CommentIncrease: /* CommentCount increase */
+                                    query = query.OrderBy(o => o.CommentCount).ThenBy(o => o.ID);
+                                    break;
+
+                                case (byte)Commons.ESortType2.CommentDecrease: /* CommentCount decrease */
+                                    query = query.OrderByDescending(o => o.CommentCount).ThenBy(o => o.ID);
+                                    break;
+
+                                default:
+                                    query = query.OrderByDescending(o => o.CommentCount).ThenBy(o => o.ID);
+                                    break;
+                            }
+                        }
+                        break;
+
                 }
             }
             catch (Exception ex) { }
