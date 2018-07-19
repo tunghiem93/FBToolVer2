@@ -23,6 +23,8 @@ namespace CMS_DTO.CMSProduct
         public bool IsActive { get; set; }
 
         public int TypeTime { get; set; }
+        public int Sort1 { get; set; }
+        public int Sort2 { get; set; }
         public int TypePin { get; set; }
         public int Index { get; set; }
         public string GroupID { get; set; }
@@ -33,6 +35,7 @@ namespace CMS_DTO.CMSProduct
         public List<SelectListItem> ListQuantity { get; set; }
         public List<SelectListItem> ListRePin { get; set; }
         public List<SelectListItem> ListIndex { get; set; }
+        public List<SelectListItem> ListSort2 { get; set; }
         public HttpPostedFileBase[] PictureUpload { get; set; }
         public byte[] PictureByte { get; set; }
         public string ImageURL { get; set; }
