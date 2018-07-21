@@ -396,7 +396,7 @@ namespace CMS_Shared.Keyword
 
         public bool CrawlData(string Id, string createdBy, ref string msg)
         {
-            LogHelper.WriteLogs("CrawlerData: " + Id, "");
+            NSLog.Logger.Info("CrawlData: " + Id);
             var result = true;
             try
             {
@@ -446,6 +446,7 @@ namespace CMS_Shared.Keyword
                         }
                     }
                 }
+                NSLog.Logger.Info("ResponseCrawlData", result.ToString());
             }
             catch (Exception ex)
             {
@@ -453,8 +454,8 @@ namespace CMS_Shared.Keyword
                 result = false;
 
                 LogHelper.WriteLogs("ErrorCrawlData: " + Id, JsonConvert.SerializeObject(ex));
+                NSLog.Logger.Error("ErrorCrawlData: " + Id, ex);
             }
-            LogHelper.WriteLogs("ResponseCrawlData: " + Id, result.ToString());
 
             return result;
         }
@@ -462,71 +463,38 @@ namespace CMS_Shared.Keyword
         public bool CrawlAllKeyWords(string createdBy, ref string msg)
         {
             LogHelper.WriteLogs("CrawlAllKeyWords", "");
+            NSLog.Logger.Info("CrawlAllKeyWords");
             var result = true;
             try
             {
                 m_SemaphoreCrawlAll.WaitOne();
                 using (var _db = new CMS_Context())
                 {
-                    var keyWords = _db.CMS_KeyWord.Where(o => o.Status == (byte)Commons.EStatus.Active).OrderBy(o=> o.CreatedDate).ToList();
+                    var keyWords = _db.CMS_KeyWord.Where(o => o.Status == (byte)Commons.EStatus.Active).OrderBy(o=> o.Sequence).ToList();
                     if (keyWords != null)
                     {
-                        //var totalKeyWords = keyWords.Count;
-                        //var PageIndex = 1;
-                        //var NumberOfThread = 1;
-                        //if(totalKeyWords % 2 == 0)
-                        //{
-                        //    NumberOfThread = totalKeyWords / 2;
-                        //}
-                        //else
-                        //{
-                        //    NumberOfThread = (totalKeyWords / 2)  + 1;
-                        //}
-                        //var query1 = keyWords.Skip((PageIndex - 1) * NumberOfThread).Take(NumberOfThread).ToList();
-                        //PageIndex = PageIndex + 1;
-                        //var query2 = keyWords.Skip((PageIndex - 1) * NumberOfThread).Take(NumberOfThread).ToList();
-                        //Task t1 = Task.Run(() =>
-                        //{
-                        //    var _msg = "";
-                        //    NSLog.Logger.Info("Start task 1");
-                        //    foreach (var key in query1)
-                        //    {
-                        //        CrawlData(key.ID, createdBy, ref _msg);
-                        //    }
-                        //});
-
-                        //Task t2 = Task.Run(() =>
-                        //{
-                        //    var _msg = "";
-                        //    NSLog.Logger.Info("Start task 2");
-                        //    foreach (var key in query2)
-                        //    {
-                        //        CrawlData(key.ID, createdBy, ref _msg);
-                        //    }
-                        //});
-                        //Task.WhenAll(t1, t2);
-
                         foreach (var key in keyWords)
                         {
                             var _msg = "";
+                            LogHelper.WriteLogs(key.Sequence.ToString() + " " + key.KeyWord, key.ID);
                             CrawlData(key.ID, createdBy, ref _msg);
                         }
                     }
                 }
+                LogHelper.WriteLogs("ResponseCrawlAllKeyWords", result.ToString());
+                NSLog.Logger.Info("ResponseCrawlAllKeyWords", result.ToString());
             }
             catch (Exception ex)
             {
                 msg = "Crawl data is unsuccessfully.";
                 result = false;
-
                 LogHelper.WriteLogs("ErrorCrawlAllKeyWords:", JsonConvert.SerializeObject(ex));
+                NSLog.Logger.Error("ErrorCrawlAllKeyWords:", ex);
             }
             finally
             {
                 m_SemaphoreCrawlAll.Release();
             };
-            LogHelper.WriteLogs("ResponseCrawlAllKeyWords", result.ToString());
-
             return result;
         }
 
