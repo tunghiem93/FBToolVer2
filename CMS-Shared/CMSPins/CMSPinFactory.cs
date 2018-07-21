@@ -20,7 +20,7 @@ namespace CMS_Shared.CMSEmployees
 
         public bool CreateOrUpdate(List<PinsModels> lstPin, string KeyWordID, string createdBy, ref string msg)
         {
-            NSLog.Logger.Info("CreateOrUpdatePin: " + KeyWordID, JsonConvert.SerializeObject(lstPin));
+            NSLog.Logger.Info("CreateOrUpdatePin: " + KeyWordID, lstPin);
             var result = true;
 
             m_Semaphore.WaitOne();
@@ -110,7 +110,7 @@ namespace CMS_Shared.CMSEmployees
                     _db.SaveChanges();
                 }
 
-                NSLog.Logger.Info("ResponseCreateOrUpdatePin: " + KeyWordID, result.ToString());
+                NSLog.Logger.Info("ResponseCreateOrUpdatePin: " + KeyWordID, result);
 
             }
             catch (Exception ex)
