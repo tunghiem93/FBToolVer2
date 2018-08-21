@@ -397,6 +397,10 @@ namespace CMS_Shared.Keyword
         public bool CrawlData(string Id, string createdBy, ref string msg)
         {
             NSLog.Logger.Info("CrawlData: " + Id);
+            var model = new CMS_CrawlerModels();
+            var sequence = 0;
+            var key = "";
+
             var result = true;
             try
             {
@@ -406,6 +410,8 @@ namespace CMS_Shared.Keyword
                     var keyWord = _db.CMS_KeyWord.Where(o => o.ID == Id).FirstOrDefault();
                     if (keyWord != null)
                     {
+                        sequence = keyWord.Sequence;
+                        key = keyWord.KeyWord;
                         /* check time span crawl */
                         var timeSpanCrawl = DateTime.Now - keyWord.UpdatedDate;
                         if (timeSpanCrawl.Value.TotalMinutes > 5 || keyWord.UpdatedDate == keyWord.CreatedDate) /* 5min to crawl data again */
@@ -417,7 +423,6 @@ namespace CMS_Shared.Keyword
                             _db.SaveChanges();
 
                             /* call drawler api to crawl data */
-                            var model = new CMS_CrawlerModels();
                             CMSPinFactory _fac = new CMSPinFactory();
 
                             var listAcc = _db.CMS_Account.Where(o => o.Status == (byte)Commons.EStatus.Active && o.IsActive).ToList();
@@ -446,6 +451,8 @@ namespace CMS_Shared.Keyword
                         }
                     }
                 }
+
+                LogHelper.WriteLogs(sequence.ToString() + " " + key, "Num post: " + model.Pins.Count().ToString());
                 NSLog.Logger.Info("ResponseCrawlData", result.ToString());
             }
             catch (Exception ex)
@@ -470,7 +477,7 @@ namespace CMS_Shared.Keyword
                 m_SemaphoreCrawlAll.WaitOne();
                 using (var _db = new CMS_Context())
                 {
-                    var keyWords = _db.CMS_KeyWord.Where(o => o.Status == (byte)Commons.EStatus.Active).OrderBy(o=> o.Sequence).ToList();
+                    var keyWords = _db.CMS_KeyWord.Where(o => o.Status == (byte)Commons.EStatus.Active).OrderBy(o => o.Sequence).ToList();
                     if (keyWords != null)
                     {
                         foreach (var key in keyWords)
