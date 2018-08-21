@@ -332,7 +332,7 @@ namespace CMS_Shared.Utilities
             string _proxy = CommonHelper.RamdomProxy(ref _port);
             Uri uri = new Uri(url);
             var httpWebRequest = (HttpWebRequest)WebRequest.Create(uri);
-            httpWebRequest.Proxy = new WebProxy(_proxy, _port);
+            //httpWebRequest.Proxy = new WebProxy(_proxy, _port);
             httpWebRequest.KeepAlive = false;
             /* request need cookie & user agent */
             httpWebRequest.Headers["Cookie"] = cookie;
@@ -433,7 +433,7 @@ namespace CMS_Shared.Utilities
             var url = "https://www.facebook.com/pages/ads/more/?cursor=" + cursor + "&surface=www_page_ads&unit_count=8&country=1&dpr=1&__user=" + userId + "&__a=1&__req=v&__be=1&__pc=PHASED%3ADEFAULT&__rev=4075583&__spin_r=4075583&__spin_b=trunk&__spin_t=1530846023&page_id=" + pageId + "";
             Uri uri = new Uri(url);
             var httpWebRequest = (HttpWebRequest)WebRequest.Create(uri);
-            httpWebRequest.Proxy = new WebProxy(_proxy, _port);
+            //httpWebRequest.Proxy = new WebProxy(_proxy, _port);
             httpWebRequest.KeepAlive = false;
             /* request need cookie & user agent */
             httpWebRequest.Headers["Cookie"] = cookie;
@@ -682,7 +682,7 @@ namespace CMS_Shared.Utilities
            // Url = "https://www.facebook.com" + Url + "";
             Uri uri = new Uri(Url);
             var httpWebRequest = (HttpWebRequest)WebRequest.Create(uri);
-            httpWebRequest.Proxy = new WebProxy(_proxy, _port);
+            //httpWebRequest.Proxy = new WebProxy(_proxy, _port);
             httpWebRequest.KeepAlive = false;
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
             httpWebRequest.Headers["Cookie"] = cookie;
