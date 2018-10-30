@@ -148,7 +148,7 @@
         
 
     $(document).ready(function () {
-
+        RealtimeOnIIS();
         $SIDEBAR_MENU.find('li').removeClass("active");
 
         $SIDEBAR_MENU.find('a[href="' + CURRENT_URL + '"]').parent('li').addClass('current-page');
@@ -157,4 +157,21 @@
             return this.href.toLowerCase() == CURRENT_URL.toLowerCase();
         }).parent('li').addClass('current-page').addClass("active");
     })
+
+    RealtimeOnIIS = () => {
+        setInterval(function () {
+            $.ajax({
+                url: '@Url.Action("KeepIIS","Home")',
+                type: "post",
+                processData: false,
+                contentType: false,
+                success: function () {
+                },
+                complete: function () {
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                }
+            });
+        }, 120000);
+    }
 </script>

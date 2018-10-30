@@ -34,6 +34,12 @@ namespace CMS_Web.Areas.Admin.Controllers
             return View();
         }
 
+        [HttpPost]
+        public ActionResult KeepIIS()
+        {
+            return new HttpStatusCodeResult(HttpStatusCode.OK);
+        }
+
         [HttpGet]
         public ActionResult Logout()
         {
